@@ -1,0 +1,6 @@
+RewriteEngine on
+
+RewriteRule ".css$" "css.php" [L]
+
+RewriteCond .* -f
+RewriteRule .* index.php [END]
