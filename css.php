@@ -1,5 +1,9 @@
 <?php
-header("Content-Type: text/css");
+header("Content-Type: text/css; charset=UTF-8");
+
+function etag($time) {
+	return date("YMdHT", $time);
+}
 
 $file = trim($_SERVER['REQUEST_URI'], '/');
 $file = explode('/', $file);
@@ -29,6 +33,9 @@ if (strpos($_SERVER['HTTP_HOST'], 'test') === 0 or !file_exists($minfile) or tim
 	foreach($files as $file) {
 		include($file);
 	}
+	// Set ETag
+	header("Last-Modified: " . date('r'));
+	header("ETag: " . etag(time()));
 	// Output CSS to browser immediately and get CSS for slow minification process
 	$css = ob_get_flush();
 	// Minify
@@ -38,6 +45,12 @@ if (strpos($_SERVER['HTTP_HOST'], 'test') === 0 or !file_exists($minfile) or tim
 	file_put_contents($minfile, $css);
 	exit;
 } else {
+	header("Last-Modified: " . date('r', filemtime($minfile)));
+	// Determine if browser cached file
+	if (!empty($_SERVER['HTTP_IF_NONE_MATCH']) and $_SERVER['HTTP_IF_NONE_MATCH'] === etag(filemtime($minfile))) {
+		header("HTTP/1.1 304 Not Modified");
+		exit;
+	}
 	include($minfile);
 }
 ?>
