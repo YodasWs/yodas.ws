@@ -31,11 +31,6 @@ main > article, main > section, main > div {
 	outline: 1px solid black;
 }
 
-div#map {
-	height: 200px;
-	width: 200px;
-}
-
 article {
 }
 article > h1 {
