@@ -1,2 +1,7 @@
 RewriteEngine on
-RewriteRule "!\.(css|js)" "$0" [F]
+RewriteBase /components
+
+RewriteCond "%{REQUEST_URI}" -f
+RewriteRule "^(.*)\.js$" "$1/js.php" [END]
+
+RewriteRule "!\.(css|js)$" - [F]

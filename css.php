@@ -1,5 +1,6 @@
 <?php
 header("Content-Type: text/css; charset=UTF-8");
+date_default_timezone_set('America/Detroit');
 
 function etag($time) {
 	return date("YMdHT", $time);
@@ -17,7 +18,7 @@ $isIE = (strpos($file, 'ie') === 0);
 
 // List CSS Files to Combine
 $files = array();
-$glob = glob("{layouts,components/*}/*.css", GLOB_BRACE) or array();
+$glob = glob("{{layouts,components/*}/*.css,components/*/css.php}", GLOB_BRACE) or array();
 foreach ($glob as $css) {
 	if (strpos($css, 'ie') !== 0 || $isIE)
 		$files[] = $css;

@@ -1,5 +1,54 @@
 <?php
 header('Content-type: text/javascript');
+require_once("../../site.php");
+$worldxml = simplexml_load_file('../../world.xml');
+
+// 15 Dec 2008
+// Creates the text within the Info Window for given Google Maps Marker
+function loadGMarker($xml, $i) {
+	// Upgraded 8 Oct 2010 to HTML output in return $txt
+	$locale = ($xml->locale[$i]['area']) ? $xml->locale[$i]['area'] : $xml->locale[$i]->google; // Added Area Markers, 26 Jan 2009
+	// Add Click Event to display Info Window, 15 Jul 2008
+	$txt = "<div class=\"gMarker\">";
+	if (count($xml->locale[$i]->date) == 1) { // If one date for locale, link directly to it, 1 Oct 2008
+		$temp = BlogSite::date($xml->locale[$i]->date);
+		$href = ($temp['file']) ? $temp['path'] : $locale;
+	} else $href = $locale; // 1 Oct 2008
+	$txt .= "<a class=\"map\" href=\"$href\">$locale</a>";
+	if (count($xml->locale[$i]->date) > 1) { // If multiple dates, offer link to latest, 11 Dec 2008
+		$dates = array();
+		foreach ($xml->locale[$i]->date as $date) {
+			$date = (string) $date;
+			$date = explode(' ', $date);
+			$dates[] = "$date[2] " . BlogSite::str_num( BlogSite::int_mon($date[1])) . " " . (((int) $date[0] < 10 and strpos((string) $date[0], '0') !== 0) ? '0' : '') . "$date[0]";
+		}
+		rsort($dates);
+		$date = explode(' ', $dates[0]);
+		$txt .= "<br/><small>Last Visit: <a class=\"map\" href=\"{$date[0]}/" . BlogSite::str_mon($date[1]) . "/{$date[2]}\">{$date[2]} " . BlogSite::str_mon($date[1]) . " {$date[0]}</a></small>";
+	}
+	// Display Pics in Info Bubbles, 29 Sep 2008
+	if (count($xml->locale[$i]->img) > 0 and count($xml->locale[$i]->img) <= bubbleNumPic) {
+		$txt .= "<br/>";
+		foreach ($xml->locale[$i]->img as $img) $txt .= "<img src=\"{$img['src']}\" height=\"100\" alt=\"$locale\" />";
+	} else if (count($xml->locale[$i]->img) > bubbleNumPic) {
+		$txt .= "<br/>";
+		$k = randArray(bubbleNumPic, 0, count($xml->locale[$i]->img)-1);
+		for ($j=0; $j<bubbleNumPic; $j++) {
+			$num = $k[$j];
+			$txt .= "<img src=\"{$xml->locale[$i]->img[$num]['src']}\" height=\"100\" alt=\"$locale\" />";
+		}
+	}
+	$txt .= "</div>";
+	$txt = preg_replace("/'/", "\\'", $txt);
+	return $txt;
+}
+function randArray($size, $min=0, $max=100) {
+	$list = array();
+	for ($i=0; $i<$size; $i++) $list[] = rand($min, $max);
+	for ($i=1; $i<$size; $i++) for ($j=0; $j<$i; $j++) while ($list[$i] == $list[$j]) $list[$i] = rand($min, $max);
+	return $list;
+}
+
 echo <<<startWorldMap
 var map;
 // Load Google Maps JavaScript API
@@ -70,7 +119,7 @@ function panWorldMap() { // 21 Dec 2011
 	map.setZoom(6);
 	$(win).each(function(i, ele) { ele.close(); });
 	win[marker].open(map, markers[marker]);
-	mapPan = setTimeout('panWorldMap();', 20000);
+	mapPan = setTimeout(panWorldMap, 20000);
 }
 EndWorldMap;
 
@@ -80,11 +129,11 @@ EndWorldMap;
 
 echo <<<AutoPan
 loadWorldMap();
-mapPan = setTimeout('panWorldMap();', 30000);
+mapPan = setTimeout(panWorldMap, 30000);
 $('#worldmap').mouseenter(function() {
 	clearTimeout(mapPan);
 }).mouseleave(function() {
-	mapPan = setTimeout('panWorldMap();', 10000);
+	mapPan = setTimeout(panWorldMap, 10000);
 });
 AutoPan;
 ?>
