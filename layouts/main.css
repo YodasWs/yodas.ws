@@ -24,6 +24,10 @@ main {
 	display: block;
 	margin: 0 auto;
 	width: 98%;
+	display: flex;
+	flex-flow: row wrap;
+	align-items: flex-start;
+	justify-content: space-around;
 }
 main > article, main > section, main > div {
 	display: block;
