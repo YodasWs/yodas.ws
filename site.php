@@ -9,6 +9,7 @@ class BlogSite {
 	private $dirLayouts = "layouts/";
 	private $fileHeader = "header.php";
 	private $fileFooter = "footer.php";
+	private $javascript = array();
 
 	public function flush() {
 		ob_flush();
@@ -16,12 +17,11 @@ class BlogSite {
 
 	public function __construct() {
 		ob_start();
-		include_once($this->dirLayouts.$this->fileHeader);
 
-		$this->date = self::date($_SERVER['REQUEST_URL']);
+		$this->date = self::getDate($_SERVER['REQUEST_URL']);
 	}
 
-	public static function date($str) {
+	public static function getDate($str) {
 		$date = array();
 		$arr = explode('/', trim($str, '/'));
 		if (preg_match("'^\d{4}$'", $arr[0])) {
@@ -35,7 +35,7 @@ class BlogSite {
 				}
 			}
 		}
-		return $arr;
+		return $date;
 	}
 
 	public static function int_mon($str) {
@@ -112,26 +112,36 @@ class BlogSite {
 	}
 
 	public function __destruct() {
+		$content = ob_get_clean();
+
+		include_once($this->dirLayouts.$this->fileHeader);
+		echo $content;
 		include_once($this->dirLayouts.$this->fileFooter);
-		ob_end_flush();
 	}
 
 	public function __set($var, $val) {
-		// Does Directory Exist?
-		if (in_array($var,array('dirLayouts'))) {
+		switch ($var) {
+		case 'dirLayouts':
+			// Does Directory Exist?
 			if (is_dir($val))
 				$this->$var = $val;
-		}
-		// Does File Exist?
-		if (in_array($var,array('fileHeader','fileFooter'))) {
+			break;
+		case 'fileHeader':
+		case 'fileFooter':
+			// Does File Exist?
 			if (is_file($this->dirLayouts.$val))
 				$this->$var = $val;
+			break;
+		case 'javascript':
+			if (file_exists("components\\{$val}\js.php") and !in_array($val, $this->javascript))
+				$this->javascript[] = $val;
+			break;
 		}
 	}
 
 	public function __get($var) {
 		if (in_array($var, array(
-			'title'
+			'title','javascript'
 		))) return $this->$var;
 	}
 }

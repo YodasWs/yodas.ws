@@ -1,5 +1,4 @@
 <?php
-header('Content-type: text/javascript');
 require_once("../../site.php");
 $worldxml = simplexml_load_file('../../world.xml');
 
@@ -11,7 +10,7 @@ function loadGMarker($xml, $i) {
 	// Add Click Event to display Info Window, 15 Jul 2008
 	$txt = "<div class=\"gMarker\">";
 	if (count($xml->locale[$i]->date) == 1) { // If one date for locale, link directly to it, 1 Oct 2008
-		$temp = BlogSite::date($xml->locale[$i]->date);
+		$temp = BlogSite::getDate($xml->locale[$i]->date);
 		$href = ($temp['file']) ? $temp['path'] : $locale;
 	} else $href = $locale; // 1 Oct 2008
 	$txt .= "<a class=\"map\" href=\"$href\">$locale</a>";
@@ -58,6 +57,7 @@ markers = new Array();
 function loadWorldMap() {
 	if (!document.getElementById("worldmap")) return false;
 	geocode = new google.maps.Geocoder();
+console.log(geocode)
 	ops = { zoom: 2, center: new google.maps.LatLng(35, 7), mapTypeId: google.maps.MapTypeId.ROADMAP,
 		disableDefaultUI: true, mapTypeControl: false, scaleControl: false, zoomControl: true, panControl: true,
 		minZoom: 1, maxZoom: 10
@@ -121,6 +121,7 @@ function panWorldMap() { // 21 Dec 2011
 	win[marker].open(map, markers[marker]);
 	mapPan = setTimeout(panWorldMap, 20000);
 }
+
 EndWorldMap;
 
 // Explore Foursquare Venues
@@ -128,6 +129,7 @@ EndWorldMap;
 #$venue = @file_get_contents($url);
 
 echo <<<AutoPan
+$('#google-maps-js').load(function(){
 loadWorldMap();
 mapPan = setTimeout(panWorldMap, 30000);
 $('#worldmap').mouseenter(function() {
@@ -135,5 +137,6 @@ $('#worldmap').mouseenter(function() {
 }).mouseleave(function() {
 	mapPan = setTimeout(panWorldMap, 10000);
 });
+})
 AutoPan;
 ?>

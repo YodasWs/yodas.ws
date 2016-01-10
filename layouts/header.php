@@ -6,6 +6,9 @@
 <link rel="stylesheet" href="main.css"/>
 <script src="components/upgrdr.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<?php foreach ($this->javascript as $js) {
+	echo "<script src=\"/components/{$js}.js\"></script>";
+} ?>
 </head>
 <body>
 <?php include_once("google_analytics.php"); ?>

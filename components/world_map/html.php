@@ -3,9 +3,8 @@
 (function(s,a,m,j,x){
 	x=s.getElementsByTagName(a)[0];
 	m.forEach(function(i){
-		j=s.createElement(a),
-		j.async=1;
-		j.src=m[i];
+		j=s.createElement(a)
+		j.async=1;j.src=i;j.id='google-maps-js'
 		x.parentNode.insertBefore(j,x)
 	})
 })(document,'script',['http://maps.google.com/maps/api/js?v=3&sensor=false&region=US'])

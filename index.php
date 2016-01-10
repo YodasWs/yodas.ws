@@ -5,7 +5,7 @@ $blog = new BlogSite();
 switch ($_SERVER['REQUEST_URL']) {
 case '/':
 case '':
-	require_once("components/world_map/html.php");
+	require_once("components/world_map/world_map.php");
 	break;
 }
 ?>
