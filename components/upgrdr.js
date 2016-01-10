@@ -9,7 +9,10 @@ Array.prototype.indexOf=function(a,b){if(this===undefined||this===null){throw ne
 // Extend String.prototype.trim to PHP behavior to remove more than just white space
 String.prototype.trim=function(chars){return this.replace(new RegExp('^['+(chars||'\\uffef\\ua0\\s')+']+|['+(chars||'\\uffef\\ua0\\s')+']+$','g'),'')};
 // ECMAScript 6
-if(!Number.isInteger)
-Number.isInteger=function(a){return typeof a==='number'&&isFinite(a)&&Math.abs(a)<Math.pow(2,53)-1&&Math.floor(a)===a};
-if(!Number.parseFloat)Number.parseFloat=parseFloat;
-if(!Number.parseInt)Number.parseInt=parseInt;
+Number.isFinite=Number.isFinite||function(n){return typeof n==='number'&&isFinite(n)};
+Number.isInteger=Number.isInteger||function(a){return Number.isFinite(a)&&Math.abs(a)<Math.pow(2,53)-1&&Math.floor(a)===a};
+Number.parseFloat=Number.parseFloat||parseFloat;
+Number.parseInt=Number.parseInt||parseInt;
+Number.isNaN=Number.isNaN||function(x){return typeof x==='number'&&isNaN(x)};
+Math.log10=Math.log10||function(x){return Math.log(x)/Math.log(10)};
+Math.sign=Math.sign||function(x){x=+x;if(x===0||Number.isNaN(x))return x;return x>0?1:-1};
