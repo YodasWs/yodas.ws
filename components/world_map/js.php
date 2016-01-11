@@ -57,7 +57,6 @@ markers = new Array();
 function loadWorldMap() {
 	if (!document.getElementById("worldmap")) return false;
 	geocode = new google.maps.Geocoder();
-console.log(geocode)
 	ops = { zoom: 2, center: new google.maps.LatLng(35, 7), mapTypeId: google.maps.MapTypeId.ROADMAP,
 		disableDefaultUI: true, mapTypeControl: false, scaleControl: false, zoomControl: true, panControl: true,
 		minZoom: 1, maxZoom: 10
@@ -129,7 +128,7 @@ EndWorldMap;
 #$venue = @file_get_contents($url);
 
 echo <<<AutoPan
-$('#google-maps-js').load(function(){
+$('script[src*="maps.google.com/maps/api/js"]').load(function(){
 loadWorldMap();
 mapPan = setTimeout(panWorldMap, 30000);
 $('#worldmap').mouseenter(function() {
