@@ -1,5 +1,6 @@
 div#worldmap {
 	height: 500px;
 	min-width: 400px;
-	flex: 0 1 98%;
+	flex: 0 1 100%;
+	margin: 0 auto;
 }

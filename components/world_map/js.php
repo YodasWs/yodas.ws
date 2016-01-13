@@ -1,5 +1,6 @@
 <?php
 require_once("../../site.php");
+require_once("world_map.php");
 $worldxml = simplexml_load_file('../../world.xml');
 
 // 15 Dec 2008
