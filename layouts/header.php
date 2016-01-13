@@ -15,7 +15,7 @@
 <header>
 	<a href="/" rel="home"><h1><?=$this->title?></h1></a>
 </header>
-<nav>
-	<a href="/">Home</a>
-</nav>
+<nav><ul>
+	<li><a href="/">Home</a></li>
+</ul></nav>
 <main>

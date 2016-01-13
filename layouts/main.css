@@ -1,5 +1,5 @@
 * { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
-:root { font-size: 14pt; font-family: "Trebuchet MS", "Open Sans", sans-serif; }
+:root { font-size: 12pt; font-family: "Trebuchet MS", "Open Sans", sans-serif; }
 html,body { width: 100%; padding: 0; margin: 0; }
 a:link, a:visited { color: blue; }
 a:link { text-decoration: none; }
@@ -19,6 +19,30 @@ header h1 {
 	color: black;
 }
 
+body > nav {
+	border-bottom: 1px solid black;
+	background: honeydew;
+	padding: 1rem 0;
+}
+body > nav > ul {
+	display: block;
+	list-style: none;
+	max-width: 1080px;
+	margin: 0 auto;
+	padding: 0;
+	width: 90%;
+	min-width: 400px;
+}
+body > nav > ul li {
+	display: inline-block;
+}
+body > nav > ul li > a {
+	display: block;
+	margin: 0;
+	height: 0;
+	width: 0;
+}
+
 main {
 	outline: 1px solid black;
 	display: block;
@@ -31,7 +55,7 @@ main {
 }
 main > article, main > section, main > div {
 	display: block;
-	margin: 0 auto;
+	margin: 1rem;
 	outline: 1px solid black;
 }
 

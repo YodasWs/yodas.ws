@@ -1,6 +1,6 @@
 </main>
 <footer>
-	<small>&copy;2015 Samuel B Grundman</small>
+	<small>&copy;2016 Samuel B Grundman</small>
 </footer>
 </body>
 </html>
