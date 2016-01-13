@@ -1,0 +1,8 @@
+main:has(article.tile) {
+	display: flex;
+}
+article.tile {
+	display: inline-block;
+	width: 300px;
+	height: 200px;
+}
