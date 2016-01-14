@@ -1,6 +1,9 @@
 div#worldmap {
-	height: 500px;
+	height: 300px;
 	min-width: 400px;
-	flex: 0 1 100%;
+	flex: 1 0 50%;
 	margin: 0 auto;
+}
+div#worldmap + * {
+	align-self: stretch;
 }

@@ -6,8 +6,9 @@ class WorldMap implements Component {
 	private $top_places;
 	private $xml;
 
-	public static function html($b) {
-		$b->javascript = "world_map";
+	public static function html() {
+		global $blog;
+		$blog->javascript = "world_map";
 		require_once("components/world_map/html.php");
 	}
 
@@ -25,6 +26,7 @@ class WorldMap implements Component {
 			$this->top_places[(string)$l->google] = count($l->img);
 		}
 		arsort($this->top_places);
+		$this->top_places = array_keys($this->top_places);
 	}
 
 	public function __get($var) {

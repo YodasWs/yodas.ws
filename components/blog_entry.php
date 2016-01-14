@@ -5,8 +5,9 @@ class BlogEntry implements Component {
 
 	public static function buildFromDate($date) {
 		if (is_string($date)) {
-			BlogSite::getDate($date);
+			$date = BlogSite::getDate($date);
 		} else throw Exception("Invalid date given");
+		return new BlogEntry("{$date['year']}/{$date['mon']}/{$date['day']}");
 	}
 
 	public function __construct() {
@@ -16,6 +17,8 @@ class BlogEntry implements Component {
 		}
 		if (gettype($args[0]) == 'string' and preg_match("'^/\d{4}(/\d\d(/\d\d)?)?'", $arg[0])) {
 			// TODO: Is Date, Load Entry(-ies)
+			$date = BlogSite::getDate($arg[0]);
+		} else if (gettype($args[0]) == 'array') {
 		} else if (gettype($args[0]) == 'string') {
 			// TODO: Not Date, Check world.xml
 			$this->title = $args[0];

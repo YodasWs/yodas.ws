@@ -18,11 +18,11 @@ case '':
 	$wm = WorldMap::singleton();
 	$tp = array_slice($wm->top_places, 0, 24);
 
-	foreach ($tp as $p => $n) {
+	foreach ($tp as $p) {
 		$tile[] = new Tile($p);
 	}
 
-	WorldMap::html($blog);
+	WorldMap::html();
 	foreach ($tile as $t) {
 		$t->html();
 	}

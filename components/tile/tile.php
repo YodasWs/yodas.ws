@@ -8,6 +8,8 @@ class Tile extends BlogEntry {
 	}
 
 	public function html() {
+		global $blog;
+		$blog->javascript = "tile";
 		require("html.php");
 	}
 }
