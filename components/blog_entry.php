@@ -11,16 +11,25 @@ class BlogEntry implements Component {
 	}
 
 	public function __construct() {
+		global $blog;
 		$args = func_get_args();
 		if (gettype($args[0]) == 'array') {
 			$args = $args[0];
 		}
-		if (gettype($args[0]) == 'string' and preg_match("'^/\d{4}(/\d\d(/\d\d)?)?'", $arg[0])) {
+		if (gettype($args[0]) == 'object') {
+			switch (get_class($args[0])) {
+			case 'SimpleXMLElement':
+				$this->title = (string) $args[0]->google;
+				break;
+			}
+		} else if (gettype($args[0]) == 'string' and preg_match("'^/\d{4}(/\d\d(/\d\d)?)?'", $arg[0])) {
 			// TODO: Is Date, Load Entry(-ies)
 			$date = BlogSite::getDate($arg[0]);
 		} else if (gettype($args[0]) == 'array') {
+			// TODO: Is this a Date?
 		} else if (gettype($args[0]) == 'string') {
 			// TODO: Not Date, Check world.xml
+			$wm = $blog->getWorldMap();
 			$this->title = $args[0];
 		}
 	}

@@ -10,6 +10,7 @@ class BlogSite {
 	private $fileHeader = "header.php";
 	private $fileFooter = "footer.php";
 	private $javascript = array();
+	private $world_map;
 
 	public function flush() {
 		ob_flush();
@@ -18,7 +19,7 @@ class BlogSite {
 	public function __construct() {
 		ob_start();
 
-		$this->date = self::getDate($_SERVER['REQUEST_URL']);
+		$this->date = self::getDate($_SERVER['REQUEST_URI']);
 	}
 
 	public static function getDate($str) {
@@ -111,6 +112,19 @@ class BlogSite {
 		return str_pad($mon, 2, '0', STR_PAD_LEFT);
 	}
 
+	public function getWorldMap() {
+		require_once("components/world_map/world_map.php");
+		$this->world_map = WorldMap::singleton();
+		return $this->world_map;
+	}
+
+	public function loc($loc) {
+		if (empty($this->world_map)) $this->getWorldMap();
+		$xml = $this->world_map->getLocation($loc);
+		if (gettype($xml) != 'SimpleXMLElement') return false;
+		return $xml;
+	}
+
 	public function __destruct() {
 		$content = ob_get_clean();
 
@@ -143,6 +157,7 @@ class BlogSite {
 		if (in_array($var, array(
 			'title','javascript'
 		))) return $this->$var;
+		if (preg_match("'^(world_?)?map$'", $var)) return $this->getWorldMap();
 	}
 }
 ?>
