@@ -10,6 +10,7 @@ $file = trim($_SERVER['REQUEST_URI'], '/');
 $file = explode('/', $file);
 $file = end($file);
 $minfile = explode('.', $file);
+if (end($minfile) != 'css') $minfile[] = 'css';
 array_splice($minfile, -1, 0, 'min');
 $minfile = implode('.', $minfile);
 
