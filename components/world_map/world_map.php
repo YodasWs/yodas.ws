@@ -1,4 +1,5 @@
 <?php
+chdir($_SERVER['DOCUMENT_ROOT']);
 require_once("components/component.php");
 class WorldMap implements Component {
 
@@ -17,6 +18,11 @@ class WorldMap implements Component {
 			self::$self = new WorldMap();
 		}
 		return self::$self;
+	}
+
+	public static function grabLocation($loc) {
+		$wm = self::$self;
+		return $wm->getLocation($loc);
 	}
 
 	public function getLocation($loc) {

@@ -1,7 +1,8 @@
 <?php
-require_once("../../site.php");
-require_once("world_map.php");
-$worldxml = simplexml_load_file('../../world.xml');
+chdir($_SERVER['DOCUMENT_ROOT']);
+require_once("site.php");
+require_once("components/world_map/world_map.php");
+$worldxml = simplexml_load_file('world.xml');
 
 // 15 Dec 2008
 // Creates the text within the Info Window for given Google Maps Marker
@@ -58,7 +59,7 @@ markers = new Array();
 function loadWorldMap() {
 	if (!document.getElementById("worldmap")) return false;
 	geocode = new google.maps.Geocoder();
-	ops = { zoom: 2, center: new google.maps.LatLng(35, 7), mapTypeId: google.maps.MapTypeId.ROADMAP,
+	ops = { zoom: 2, center: new google.maps.LatLng(47, 15), mapTypeId: google.maps.MapTypeId.ROADMAP,
 		disableDefaultUI: true, mapTypeControl: false, scaleControl: false, zoomControl: true, panControl: true,
 		minZoom: 1, maxZoom: 10
 	};
