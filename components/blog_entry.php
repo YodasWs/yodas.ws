@@ -2,6 +2,7 @@
 require_once("components/component.php");
 class BlogEntry implements Component {
 	private $title;
+	private $xml;
 
 	public static function buildFromDate($date) {
 		if (is_string($date)) {
@@ -20,6 +21,7 @@ class BlogEntry implements Component {
 			switch (get_class($args[0])) {
 			case 'SimpleXMLElement':
 				$this->title = (string) $args[0]->google;
+				$this->xml = $args[0];
 				break;
 			}
 		} else if (gettype($args[0]) == 'string' and preg_match("'^/\d{4}(/\d\d(/\d\d)?)?'", $arg[0])) {
@@ -30,7 +32,12 @@ class BlogEntry implements Component {
 		} else if (gettype($args[0]) == 'string') {
 			// TODO: Not Date, Check world.xml
 			$wm = $blog->getWorldMap();
-			$this->title = $args[0];
+			$loc = $wm->grabLocation($args[0]);
+			if (!empty($loc)) {
+				echo '<pre>' . print_r($loc, true) . '</pre>';
+				$this->title = $args[0];
+				$this->xml = $loc;
+			}
 		}
 	}
 
@@ -39,7 +46,7 @@ class BlogEntry implements Component {
 
 	public function __get($var) {
 		if (in_array($var, array(
-			'title',
+			'xml','title',
 		))) return $this->$var;
 	}
 	public function __set($var, $val) {
