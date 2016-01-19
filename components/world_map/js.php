@@ -115,7 +115,10 @@ $numMarkers = count($worldxml->locale);
 echo <<<EndWorldMap
 }
 function panWorldMap() { // 21 Dec 2011
-	var marker = Math.floor(Math.random() * $numMarkers);
+	var marker
+	do {
+		marker = Math.floor(Math.random() * $numMarkers);
+	} while(!markers[marker].getPosition)
 	map.panTo(markers[marker].getPosition());
 	map.setZoom(6);
 	$(win).each(function(i, ele) { ele.close(); });
