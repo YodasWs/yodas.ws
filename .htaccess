@@ -1,11 +1,16 @@
 RewriteEngine on
 
 #### Layouts Folder ####
-RewriteRule ^layouts/ - [F]
+RewriteRule ^layouts/.+ layouts/index.php [R=301]
+RewriteRule ^layouts/ layouts/index.php [END]
 
 #### Components Folder ####
 
-# JavaScript Only
+# Component Library
+RewriteCond %{HTTP_ACCEPT} text/html
+RewriteRule ^components/ components/index.php [END]
+
+# JavaScript Files
 
 RewriteCond %{DOCUMENT_ROOT}/components/$1/js.php -f
 RewriteRule ^components/([^/\.]+)(/|\.js)?$ components/$1/js.php
@@ -41,5 +46,6 @@ RewriteRule ^main.css$ css.php [END]
 
 #### Catch All ####
 
-#RewriteRule .* index.php [END]
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule .* index.php [END]
 FallbackResource index.php
