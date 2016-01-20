@@ -121,7 +121,7 @@ class BlogSite {
 	public function loc($loc) {
 		if (empty($this->world_map)) $this->getWorldMap();
 		$xml = $this->world_map->getLocation($loc);
-		if (gettype($xml) != 'SimpleXMLElement') return false;
+		if (gettype($xml) != 'object' or get_class($xml) != 'SimpleXMLElement') return false;
 		return $xml;
 	}
 
