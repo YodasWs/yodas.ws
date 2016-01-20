@@ -40,7 +40,6 @@ default:
 	$page = trim($_SERVER['REQUEST_URI'], '/');
 	if (strstr($page, '/') === false) {
 		$xml = $blog->loc($page);
-			print "<h1>" . urldecode($page) . "</h1>";
 		if (!empty($xml)) {
 			print "<h1>" . urldecode($page) . "</h1>";
 			print '<pre>' . print_r($xml, true) . '</pre>';
