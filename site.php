@@ -1,4 +1,5 @@
 <?php
+chdir($_SERVER['DOCUMENT_ROOT']);
 class BlogSite {
 	private $title = 'YodasWs';
 	private $date = array(

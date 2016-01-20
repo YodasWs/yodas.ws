@@ -54,6 +54,14 @@ main {
 	align-content: flex-start;
 	justify-content: space-around;
 }
+main > h1, main > h2, main > h3, main > h4, main > h5, main > h6 {
+	text-align: center;
+	flex-basis: 100%;
+	margin: 0 0 1rem;
+}
+main > h1:first-child, main > h2:first-child, main > h3:first-child, main > h4:first-child, main > h5:first-child, main > h6:first-child {
+	margin-top: 0.5rem;
+}
 main > article, main > section, main > div {
 	display: block;
 	margin: 1rem;
