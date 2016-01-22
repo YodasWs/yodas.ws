@@ -63,6 +63,7 @@ function loadWorldMap() {
 		disableDefaultUI: true, mapTypeControl: false, scaleControl: false, zoomControl: true, panControl: true,
 		minZoom: 1, maxZoom: 10
 	};
+	if ($('#worldmap').width() < 670) ops.zoom--
 	map = new google.maps.Map(document.getElementById("worldmap"), ops);
 	$('#worldmap').slideDown('slow');\n
 startWorldMap;
