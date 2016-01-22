@@ -1,15 +1,9 @@
 <?php
 require_once("site.php");
 $blog = new BlogSite();
+$uri = trim($_SERVER['REQUEST_URI'], '/');
 
-
-// TODO: View Blog Entry
-if (preg_match("'^/\d{4}/\d\d/\d\d'", $_SERVER['REQUEST_URI'])) {
-// TODO: View Month Calendar
-} else if (preg_match("'^/\d{4}/\d\d'", $_SERVER['REQUEST_URI'])) {
-// TODO: View Year Calendar/List
-} else if (preg_match("'^/\d{4}'", $_SERVER['REQUEST_URI'])) {
-} else switch (trim($_SERVER['REQUEST_URI'], '/')) {
+switch ($uri) {
 // Show Homepage
 case '':
 	require_once("components/tile/tile.php");
@@ -27,8 +21,9 @@ case '':
 	}
 	break;
 case 'world':
-	if (!preg_match("'(^|\W)text/html(\W|$)'", $_SERVER['HTTP_ACCEPT'])) {
-		// header("HTTP/1.1 40x Unacceptable");
+	if (!strstr($_SERVER['HTTP_ACCEPT'], "text/html")) {
+		header("HTTP/1.1 404 Not Found");
+		echo '<h1>404 Not Found</h1>';
 		exit;
 	}
 	$wm = $blog->world_map;
@@ -37,11 +32,10 @@ case 'world':
 	print '</pre>';
 	break;
 default:
-	$page = trim($_SERVER['REQUEST_URI'], '/');
-	if (strstr($page, '/') === false) {
-		$xml = $blog->loc($page);
+	if (strstr($uri, '/') === false) {
+		$xml = $blog->loc($uri);
 		if (!empty($xml)) {
-			print "<h1>" . urldecode($page) . "</h1>";
+			print "<h1>" . urldecode($uri) . "</h1>";
 			print '<pre>' . print_r($xml, true) . '</pre>';
 			exit;
 		}

@@ -28,6 +28,16 @@ RewriteRule ^components/ - [F]
 	Header set Content-type application/javascript
 </FilesMatch>
 
+#### Dates in URL ####
+
+RewriteRule ^\d{4}/(\w{3}|\d{2})/\d{2} entry.php [END]
+
+RewriteCond %{DOCUMENT_ROOT}/$1 -d
+RewriteRule ^(\d{4}/(\w{3}|\d{2})/$) month.php [END]
+
+RewriteCond %{DOCUMENT_ROOT}/$1 -d
+RewriteRule ^(\d{4})/$ year.php [END]
+
 #### CSS Files ####
 <Files css.php>
 	Header set Content-type text/css
@@ -46,6 +56,5 @@ RewriteRule ^main.css$ css.php [END]
 
 #### Catch All ####
 
-RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule .* index.php [END]
 FallbackResource index.php
