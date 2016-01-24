@@ -113,6 +113,10 @@ class BlogSite {
 		return str_pad($mon, 2, '0', STR_PAD_LEFT);
 	}
 
+	public static function urlencode($str) {
+		return preg_replace("'%(a-f0-9)'i", '', $str);
+	}
+
 	public function getWorldMap() {
 		require_once("components/world_map/world_map.php");
 		$this->world_map = WorldMap::singleton();

@@ -27,7 +27,9 @@ class WorldMap implements Component {
 
 	public function getLocation($loc) {
 		foreach ($this->xml->locale as $l) {
-			if (!empty($l->google) and (string) $l->google == $loc) return $l;
+			if (!empty($l->google) and (
+				(string) $l->google == $loc or BlogSite::urlencode((string) $l->google) == $loc
+			)) return $l;
 		}
 		return false;
 	}

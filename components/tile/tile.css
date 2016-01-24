@@ -1,7 +1,41 @@
 article.tile {
 	display: inline-block;
 	min-height: 200px;
-	width: 300px;
+	max-width: 300px;
 	align-self: center;
+	flex-grow: 1;
 	text-shadow: 0px 0px 3px white;
+	text-shadow: 1px 1px 1px white;
+	overflow: hidden;
+	position: relative;
+	transition: background 1s;
+}
+@media (min-width: 700px) {
+	article.tile {
+		flex-basis: 25%;
+		margin: 0.5rem;
+	}
+}
+@media (max-width: 699px) {
+	article.tile {
+		flex-basis: 45%;
+	}
+}
+article.tile > h1 {
+	text-align: center;
+	letter-spacing: 1px;
+	font-family: Calibri, sans-serif;
+	font-weight: bold;
+	margin: 0.5rem 0 1rem;
+}
+article.tile > h1 > a:visited,
+article.tile > h1 > a:link {
+	color: black;
+}
+article.tile > h1 > a:link:active,
+article.tile > h1 > a:link:hover {
+	text-decoration: none;
+}
+article.tile > img {
+	display: none;
 }

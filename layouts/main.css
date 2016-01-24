@@ -64,12 +64,6 @@ main > h1:first-child, main > h2:first-child, main > h3:first-child, main > h4:f
 }
 main > article, main > section, main > div {
 	display: block;
-	margin: 1rem;
+	margin: 0.5rem 2%;
 	outline: 1px solid black;
-}
-
-article {
-}
-article > h1 {
-	text-align: center;
 }
