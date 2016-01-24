@@ -20,20 +20,19 @@ class BlogEntry implements Component {
 			$args = $args[0];
 		}
 		if (gettype($args[0]) == 'object') {
-			switch (get_class($args[0])) {
-			case 'SimpleXMLElement':
-				$this->xml = $args[0];
-				break;
-			default:
-				return false;
-			}
+			return false;
 		} else if (gettype($args[0]) == 'string' and preg_match("'^/\d{4}(/\d\d(/\d\d)?)?'", $arg[0])) {
 			// TODO: Is Date, Load Entry(-ies)
 			$date = BlogSite::getDate($arg[0]);
 			return false;
 		} else if (gettype($args[0]) == 'array') {
+			// If World Map XML, take it
+			if (!empty($args[0]['locale'])) {
+				$this->xml = $args[0]['locale'];
+			} else if (!empty($args[0]['google'])) {
+				$this->xml = $args[0];
 			// TODO: Is this a Date?
-			return false;
+			} else return false;
 		} else if (gettype($args[0]) == 'string') {
 			// Not Date, Check world.xml
 			$wm = $blog->getWorldMap();
@@ -42,8 +41,8 @@ class BlogEntry implements Component {
 				$this->xml = $loc;
 			} else return false;
 		}
-		if (!empty($this->xml->google)) {
-			$this->title = (string) $this->xml->google;
+		if (!empty($this->xml['google'])) {
+			$this->title = (string) $this->xml['google'];
 			if (empty($this->url)) {
 				$this->url = BlogSite::urlencode($this->title);
 			}
@@ -59,11 +58,14 @@ class BlogEntry implements Component {
 		))) return $this->$var;
 		switch ($var) {
 		case 'img':
-			if (empty($this->xml->img)) return array();
 			if (!empty($this->img)) return $this->img;
-			foreach ($this->xml->img as $i) {
-				if (strpos($i['src'], 'http') === false) {
-					$i['src'] = "http://yodas.ws/{$i['src']}";
+			if (empty($this->xml['img'])) return array();
+			if (!empty($this->xml['img']) and empty($this->xml['img'][0])) {
+				$this->xml['img'] = array($this->xml['img']);
+			}
+			foreach ($this->xml['img'] as $i) {
+				if (strpos($i['@attributes']['src'], 'http') === false) {
+					$i['@attributes']['src'] = "http://yodas.ws/{$i['@attributes']['src']}";
 				}
 				$this->img[] = $i;
 			}
@@ -79,7 +81,7 @@ class BlogEntry implements Component {
 	public function __isset($var) {
 		if (in_array($var, array(
 			'img'
-		))) return count($this->xml->img) > 0;
+		))) return count($this->xml['img']) > 0;
 	}
 
 }

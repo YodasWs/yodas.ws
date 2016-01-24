@@ -26,16 +26,16 @@ class WorldMap implements Component {
 	}
 
 	public function getLocation($loc) {
-		foreach ($this->xml->locale as $l) {
-			if (!empty($l->google) and (
-				(string) $l->google == $loc or BlogSite::urlencode((string) $l->google) == $loc
+		foreach ($this->xml['locale'] as $l) {
+			if (!empty($l['google']) and (
+				(string) $l['google'] == $loc or BlogSite::urlencode((string) $l['google']) == $loc
 			)) return $l;
 		}
 		return false;
 	}
 
 	public function __construct() {
-		$this->xml = simplexml_load_file('world.xml');
+		$this->xml = json_decode(json_encode(simplexml_load_file('world.xml')), true);
 	}
 
 	public function __get($var) {
@@ -45,15 +45,15 @@ class WorldMap implements Component {
 		case 'top_places':
 			if (!empty($this->top_places)) return $this->top_places;
 			$this->top_places = array();
-			foreach ($this->xml->locale as $l) {
+			foreach ($this->xml['locale'] as $l) {
 				$this->top_places[] = $l;
 			}
 			uasort($this->top_places, function($a, $b) {
-				if (empty($a->img) and !empty($b->img)) return 1;
-				if (!empty($a->img) and empty($b->img)) return -1;
-				if (!empty($a->img) and !empty($b->img)) {
-					if (count($a->img) == count($b->img)) return 0;
-					return (count($a->img) < count($b->img)) ? 1 : -1;
+				if (empty($a['img']) and !empty($b['img'])) return 1;
+				if (!empty($a['img']) and empty($b['img'])) return -1;
+				if (!empty($a['img']) and !empty($b['img'])) {
+					if (count($a['img']) == count($b['img'])) return 0;
+					return (count($a['img']) < count($b['img'])) ? 1 : -1;
 				}
 				return 0;
 			});
