@@ -39,3 +39,7 @@ article.tile > h1 > a:link:hover {
 article.tile > img {
 	display: none;
 }
+article.tile > .alt {
+	position: absolute;
+	bottom: 5px; left: 5px;
+}

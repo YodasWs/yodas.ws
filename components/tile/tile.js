@@ -4,11 +4,19 @@ Math.randInt = function(min, max) {
 HTMLElement.prototype.changeImage = function() {
 	var $a = $(this),
 		$i = $a.children('img'),
-		i = Math.randInt(0, $i.length-1)
+		i = Number.parseInt($a.data('i'), 10) + 1 || 0,
+		alt = $('<div class="alt">'),
+		img
+	$a.find('.alt').remove()
+	if (i == $i.length) i = 0
+	img = $($i[i])
+	if (img.attr('alt')) {
+		alt.text(img.attr('alt')).appendTo($a)
+	}
 	$a.css({
-		background: 'url(' + $($i[i]).attr('src') + ') center center no-repeat',
+		background: 'url(' + img.attr('src') + ') center center no-repeat',
 		backgroundSize: 'cover'
-	})
+	}).data('i', i)
 	setTimeout(this.changeImage.bind(this), Math.randInt(5, 20) * 1000)
 }
 $(document).ready(function(){
