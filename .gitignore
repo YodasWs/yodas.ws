@@ -4,3 +4,4 @@
 *.min.css
 *.min.js
 google_analytics.php
+secret.php
