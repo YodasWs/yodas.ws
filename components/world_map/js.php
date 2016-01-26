@@ -3,6 +3,7 @@ chdir($_SERVER['DOCUMENT_ROOT']);
 require_once("site.php");
 require_once("components/world_map/world_map.php");
 $worldxml = simplexml_load_file('world.xml');
+define('bubbleNumPic',0);
 
 // 15 Dec 2008
 // Creates the text within the Info Window for given Google Maps Marker
@@ -15,7 +16,8 @@ function loadGMarker($xml, $i) {
 		$temp = BlogSite::getDate($xml->locale[$i]->date);
 		$href = ($temp['file']) ? $temp['path'] : $locale;
 	} else $href = $locale; // 1 Oct 2008
-	$txt .= "<a class=\"map\" href=\"$href\">$locale</a>";
+#	$txt .= "<a class=\"map\" href=\"http://yodas.ws/$href\">$locale</a>";
+	$txt .= "<a>$locale</a>";
 	if (count($xml->locale[$i]->date) > 1) { // If multiple dates, offer link to latest, 11 Dec 2008
 		$dates = array();
 		foreach ($xml->locale[$i]->date as $date) {
@@ -25,18 +27,16 @@ function loadGMarker($xml, $i) {
 		}
 		rsort($dates);
 		$date = explode(' ', $dates[0]);
-		$txt .= "<br/><small>Last Visit: <a class=\"map\" href=\"{$date[0]}/" . BlogSite::str_mon($date[1]) . "/{$date[2]}\">{$date[2]} " . BlogSite::str_mon($date[1]) . " {$date[0]}</a></small>";
+#		$txt .= "<br/><small>Last Visit: <a class=\"map\" href=\"http://yodas.ws/{$date[0]}/" . BlogSite::str_mon($date[1]) . "/{$date[2]}\">{$date[2]} " . BlogSite::str_mon($date[1]) . " {$date[0]}</a></small>";
 	}
 	// Display Pics in Info Bubbles, 29 Sep 2008
 	if (count($xml->locale[$i]->img) > 0 and count($xml->locale[$i]->img) <= bubbleNumPic) {
-		$txt .= "<br/>";
-		foreach ($xml->locale[$i]->img as $img) $txt .= "<img src=\"{$img['src']}\" height=\"100\" alt=\"$locale\" />";
+		foreach ($xml->locale[$i]->img as $img) $txt .= "<img src=\"http://yodas.ws/{$img['src']}\" height=\"100\" alt=\"$locale\" />";
 	} else if (count($xml->locale[$i]->img) > bubbleNumPic) {
-		$txt .= "<br/>";
 		$k = randArray(bubbleNumPic, 0, count($xml->locale[$i]->img)-1);
 		for ($j=0; $j<bubbleNumPic; $j++) {
 			$num = $k[$j];
-			$txt .= "<img src=\"{$xml->locale[$i]->img[$num]['src']}\" height=\"100\" alt=\"$locale\" />";
+			$txt .= "<img src=\"http://yodas.ws/{$xml->locale[$i]->img[$num]['src']}\" height=\"100\" alt=\"$locale\" />";
 		}
 	}
 	$txt .= "</div>";

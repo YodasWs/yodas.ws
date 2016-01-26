@@ -8,5 +8,5 @@ if (!empty($this->img)) foreach ($this->img as $i) {
 	echo join(' ', $img);
 }
 ?>
-	<h1><a href="<?=$this->url?>"><?=$this->title?></a></h1>
+	<h1><?=$this->title?></h1>
 </article>

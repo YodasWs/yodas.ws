@@ -1,5 +1,6 @@
 <?php
 chdir($_SERVER['DOCUMENT_ROOT']);
+session_start();
 class BlogSite {
 	private $title = 'YodasWs';
 	private $date = array(
@@ -70,25 +71,18 @@ class BlogSite {
 		} else if (!is_string($str)) {
 			return false;
 		}
-		switch (strtolower(substr($str, 0, 3))) {
-		case 'jan':
-		case 'feb':
-		case 'mar':
-		case 'apr':
-		case 'may':
-		case 'jun':
-		case 'jul':
-		case 'aug':
-		case 'sep':
-		case 'oct':
-		case 'nov':
-		case 'dec':
-			return true;
-		}
+		if (in_array(strtolower(substr($str,0,3)), array(
+			'jan','feb','mar','apr','may','jun',
+			'jul','aug','sep','oct','nov','dec'
+		))) return true;
 		return false;
 	}
 
 	public static function str_mon($mon) {
+		if (in_array(strtolower(substr($mon,0,3)), array(
+			'jan','feb','mar','apr','may','jun',
+			'jul','aug','sep','oct','nov','dec'
+		))) return strtoupper(substr($mon,0,1)) . strtolower(substr($mon,1,2));
 		$mon = (int) $mon;
 		switch ($mon) {
 			case 1: return "Jan";
