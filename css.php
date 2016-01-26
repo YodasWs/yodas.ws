@@ -40,6 +40,7 @@ if (strpos($_SERVER['HTTP_HOST'], 'test') === 0 or !file_exists($minfile) or tim
 	header("ETag: " . etag(time()));
 	// Output CSS to browser immediately and get CSS for slow minification process
 	$css = ob_get_flush();
+	// TODO: Can we terminate the connection to the client so the below code can continue to run on the server without affecting the client?
 	// Minify
 	$tidy->load_template('highest_compression');
 	$tidy->parse($css);
@@ -53,6 +54,7 @@ if (strpos($_SERVER['HTTP_HOST'], 'test') === 0 or !file_exists($minfile) or tim
 		header("HTTP/1.1 304 Not Modified");
 		exit;
 	}
+	header("ETag: " . etag(filemtime($minfile)));
 	include($minfile);
 }
 ?>
