@@ -7,3 +7,16 @@ div#worldmap {
 div#worldmap + * {
 	align-self: stretch;
 }
+
+.gm-style-iw {
+}
+.gMarker {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-around;
+	align-content: flex-start;
+}
+.gMarker > a:first-of-type {
+	text-align: center;
+	flex-basis: 100%;
+}
