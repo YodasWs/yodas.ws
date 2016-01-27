@@ -13,6 +13,7 @@ class BlogSite {
 	private $fileFooter = "footer.php";
 	private $javascript = array();
 	private $world_map;
+	private $lang;
 
 	public function flush() {
 		ob_flush();
@@ -22,6 +23,12 @@ class BlogSite {
 		ob_start();
 
 		$this->date = self::getDate($_SERVER['REQUEST_URI']);
+
+		// Set Preferred Language
+		$this->lang = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		foreach ($this->lang as &$l) {
+			if (strstr($l, ';')) $l = substr($l, 0, strpos($l, ';'));
+		}
 	}
 
 	public static function getDate($str) {
@@ -155,7 +162,7 @@ class BlogSite {
 
 	public function __get($var) {
 		if (in_array($var, array(
-			'title','javascript'
+			'lang','title','javascript'
 		))) return $this->$var;
 		if (preg_match("'^(world_?)?map$'", $var)) return $this->getWorldMap();
 	}

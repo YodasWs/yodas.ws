@@ -54,6 +54,11 @@ RewriteCond %{REQUEST_URI} !^/main\.css$
 RewriteRule .* main.css [R=301]
 RewriteRule ^main.css$ css.php [END]
 
+#### XML Files ####
+RewriteCond %{HTTP_HOST} test.yodas.ws
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^world(.\w\w)?.xml$ - [END]
+
 #### Catch All ####
 
 RewriteRule .* index.php [END]

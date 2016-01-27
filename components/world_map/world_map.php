@@ -35,7 +35,17 @@ class WorldMap implements Component {
 	}
 
 	public function __construct() {
+		global $blog;
 		$this->xml = json_decode(json_encode(simplexml_load_file('world.xml')), true);
+
+		$lang_xml = false;
+		foreach ($blog->lang as $l) if (file_exists("world.{$l}.xml")) {
+			$lang_xml = simplexml_load_file("world.{$l}.xml");
+			break;
+		}
+		if (empty($lang_xml)) $lang_xml = simplexml_load_file('world.en.xml');
+		$lang_xml = json_decode(json_encode($lang_xml), true);
+		$this->xml = array_merge_recursive($this->xml, $lang_xml);
 	}
 
 	public function __get($var) {
