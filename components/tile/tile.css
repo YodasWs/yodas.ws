@@ -1,4 +1,7 @@
 article.tile {
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
 	display: inline-block;
 	min-height: 200px;
 	max-width: 300px;
@@ -8,7 +11,7 @@ article.tile {
 	text-shadow: 1px 1px 1px white;
 	overflow: hidden;
 	position: relative;
-	transition: background 1s;
+	transition: background 1s, flex-basis 750ms, max-width 750ms, min-height 1s;
 }
 @media (min-width: 700px) {
 	article.tile {
@@ -42,4 +45,12 @@ article.tile > img {
 article.tile > .alt {
 	position: absolute;
 	bottom: 5px; left: 5px;
+}
+
+article.tile.expanded {
+	background-position: center left, center right;
+	background-size: auto;
+	min-height: 400px;
+	max-width: 98%;
+	flex-basis: 98%;
 }
