@@ -12,15 +12,17 @@ class BlogSite {
 	private $fileHeader = "header.php";
 	private $fileFooter = "footer.php";
 	private $javascript = array();
+	private $page_wrap = true;
 	private $world_map;
 
 	public function flush() {
 		ob_flush();
 	}
 
-	public function __construct() {
+	public function __construct($wrap=true) {
 		ob_start();
 
+		$this->page_wrap = $wrap;
 		$this->date = self::getDate($_SERVER['REQUEST_URI']);
 	}
 
@@ -127,9 +129,9 @@ class BlogSite {
 	public function __destruct() {
 		$content = ob_get_clean();
 
-		include_once($this->dirLayouts.$this->fileHeader);
+		if ($this->page_wrap) include_once($this->dirLayouts.$this->fileHeader);
 		echo $content;
-		include_once($this->dirLayouts.$this->fileFooter);
+		if ($this->page_wrap) include_once($this->dirLayouts.$this->fileFooter);
 	}
 
 	public function __set($var, $val) {
