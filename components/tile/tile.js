@@ -6,7 +6,7 @@ Tile.prototype.changeImage = function() {
 	var $a = $(this),
 		$i = $a.children('img'),
 		n = $a.is('.expanded') ? 2 : 1,
-		i = Number.parseInt(this.bg_i, 10) - n + 2 || 0,
+		i = Number.parseInt(this.bg_i, 10) + 1 || 0,
 		bg = [],
 		img,k
 	clearTimeout(this.bgto)
@@ -29,9 +29,12 @@ Tile.prototype.changeImage = function() {
 }
 $(document).ready(function(){
 	$('article.tile').each(function(){
+		// Instantiate Tile Objects
 		this.tile = new Tile()
 		this.tile.changeImage.call(this)
 	}).on('click', function(){
+		// Expand/Collapse Tiles
+		if ($(this).is('.expanded')) this.tile.bg_i = Math.max(this.tile.bg_i - 1, 0)
 		$(this).toggleClass('expanded').siblings('.tile.expanded').removeClass('expanded')
 		this.tile.changeImage.call(this)
 	})
