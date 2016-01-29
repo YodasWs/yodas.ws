@@ -11,8 +11,8 @@ Tile.prototype.changeImage = function() {
 		img,k
 	clearTimeout(this.bgto)
 	$a.find('.alt').remove()
+	if (i >= $i.length) i -= $i.length
 	for (var j=0; j<n; j++) {
-		if (i == $i.length) i = 0
 		k = i + j
 		while (k >= $i.length) k -= $i.length
 		img = $($i[k])
@@ -34,7 +34,10 @@ $(document).ready(function(){
 		this.tile.changeImage.call(this)
 	}).on('click', function(){
 		// Expand/Collapse Tiles
-		if ($(this).is('.expanded')) this.tile.bg_i = Math.max(this.tile.bg_i - 1, 0)
+		if (!$(this).is('.expanded')) {
+			this.bg_i = this.bg_i - 1
+			if (this.bg_i < 0) this.bg_i = $(this).children('img').length - 1
+		}
 		$(this).toggleClass('expanded').siblings('.tile.expanded').removeClass('expanded')
 		this.tile.changeImage.call(this)
 	})
