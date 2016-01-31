@@ -1,0 +1,3 @@
+agency_id,agency_name,agency_url,agency_timezone,agency_lang,agency_fare_url
+tozan_bus,Hakone Tozan Bus,https://www.hakone-tozanbus.co.jp,Asia/Tokyo,jp,
+tozan_rail,Hakone Tozan Railway,https://www.hakone-tozan.co.jp,Asia/Tokyo,jp,

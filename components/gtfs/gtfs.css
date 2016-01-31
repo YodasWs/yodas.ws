@@ -1,0 +1,6 @@
+#gtfs {
+	display: block;
+	flex-basis: 100%;
+	min-height: 400px;
+	margin: 0;
+}
