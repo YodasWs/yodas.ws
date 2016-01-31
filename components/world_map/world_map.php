@@ -10,6 +10,7 @@ class WorldMap implements Component {
 	public static function html() {
 		global $blog;
 		$blog->javascript = "world_map";
+		$blog->javascript = "http://maps.google.com/maps/api/js?v=3&region=US";
 		require_once("components/world_map/html.php");
 	}
 

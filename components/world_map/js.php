@@ -91,7 +91,7 @@ if (status == google.maps.GeocoderStatus.OK) try {
 	markers[$i] = new google.maps.Marker({ position: point[0].geometry.location, map: map, title: "$locale", zIndex: $zed });
 	win[$i] = new google.maps.InfoWindow({content: '$win'});
 	google.maps.event.addListener(markers[$i], 'click', function() {
-		$(win).each(function(i, ele) { ele.close(); });
+		win.forEach(function(e){e.close()})
 		win[$i].open(map, markers[$i]);
 	});
 	document.getElementById('hiddenLatLng').innerHTML += "$locale: " + point[0].geometry.location.lat() + ', ' + point[0].geometry.location.lng() + "<br/>\\n";
@@ -106,7 +106,7 @@ gMap;
 	markers[$i] = new google.maps.Marker({ position: pnt, map: map, title: "$locale", zIndex: $zed });
 	win[$i] = new google.maps.InfoWindow({content: '$win'});
 	google.maps.event.addListener(markers[$i], 'click', function() {
-		$(win).each(function(i, ele) { ele.close(); });
+		win.forEach(function(e){e.close()})
 		win[$i].open(map, markers[$i]);
 	});
 	markers[$i].setMap(map);\n

@@ -149,7 +149,10 @@ class BlogSite {
 			break;
 		case 'javascript':
 			if (!in_array($val, $this->javascript) && (
-				file_exists("components\\{$val}\\{$val}.js") || file_exists("components\\{$val}\\js.php")
+				strpos($val, 'http://') === 0 ||
+				strpos($val, 'https://') === 0 ||
+				file_exists("components\\{$val}\\js.php") ||
+				file_exists("components\\{$val}\\{$val}.js")
 			)) $this->javascript[] = $val;
 			break;
 		}
