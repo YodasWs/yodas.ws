@@ -1,6 +1,6 @@
 <?php session_start(); ?>
 window.gtfs = gtfs || {}
-gtfs.extremes = { lat:{min:180,max:0},lon:{min:180,max:0} }
+gtfs.extremes = { north:-90, south:180, east:-180, west:180 }
 gtfs.tripRoute = {}
 gtfs.routes = {}
 gtfs.stops = {}
@@ -38,6 +38,21 @@ gtfs.parseHeader = function(h) {
 		r[h.trim()] = i
 	})
 	return r
+}
+gtfs.setBounds = function(pts) {
+	var bounds = {
+		north:-90,
+		south:180,
+		east:-180,
+		west:180
+	}
+	pts.forEach(function(p){
+		bounds.south = Math.min(bounds.south, p.lat)
+		bounds.north = Math.max(bounds.north, p.lat)
+		bounds.east = Math.max(bounds.east, p.lng)
+		bounds.west = Math.min(bounds.west, p.lng)
+	})
+	gtfs.map.fitBounds(bounds)
 }
 // Load and Draw GTFS Shapes
 gtfs.loadShapes = function(url) {
@@ -96,17 +111,14 @@ gtfs.loadShapes = function(url) {
 					lat: Number.parseFloat(r[head.shape_pt_lat]),
 					lng: Number.parseFloat(r[head.shape_pt_lon])
 				})
-				// Save Extreme Points to calculate Map center
-				gtfs.extremes.lat.min = Math.min(gtfs.extremes.lat.min, Number.parseFloat(r[head.shape_pt_lat]))
-				gtfs.extremes.lon.min = Math.min(gtfs.extremes.lon.min, Number.parseFloat(r[head.shape_pt_lon]))
-				gtfs.extremes.lat.max = Math.max(gtfs.extremes.lat.max, Number.parseFloat(r[head.shape_pt_lat]))
-				gtfs.extremes.lon.max = Math.max(gtfs.extremes.lon.max, Number.parseFloat(r[head.shape_pt_lon]))
+				// Save Extreme Points for Map Bounds
+				gtfs.extremes.south = Math.min(gtfs.extremes.south, Number.parseFloat(r[head.shape_pt_lat]))
+				gtfs.extremes.north = Math.max(gtfs.extremes.north, Number.parseFloat(r[head.shape_pt_lat]))
+				gtfs.extremes.east = Math.max(gtfs.extremes.east, Number.parseFloat(r[head.shape_pt_lon]))
+				gtfs.extremes.west = Math.min(gtfs.extremes.west, Number.parseFloat(r[head.shape_pt_lon]))
 			})
-			// Set Map Center
-			gtfs.map.center = new google.maps.LatLng({
-				lat: (gtfs.extremes.lat.min + gtfs.extremes.lat.max) / 2,
-				lng: (gtfs.extremes.lon.min + gtfs.extremes.lon.max) / 2
-			})
+			// Set Map Bounds
+			gtfs.map.fitBounds(gtfs.extremes)
 			// Paste Shapes on Map
 			for (var i in gtfs.poly) {
 				gtfs.poly[i].Polyline = new google.maps.Polyline({
@@ -148,15 +160,15 @@ gtfs.loadShapes = function(url) {
 					stop_id = r[head.stop_id],
 					route_id = gtfs.tripRoute[trip_id]
 				if (!r[head.stop_id]) return
-				gtfs.routes[route_id].stops.push(gtfs.stops[stop_id])
+				gtfs.routes[route_id].stops.push(stop_id)
 			})
 			// Build Lists of Route Stations
 			for (i in gtfs.routes) {
 				var r = gtfs.routes[i], $l = $('<ol>')
 					$t = $('<section class="route" data-route-id="' + i + '">')
 				$t.append('<h1 style="background:' + r.color + ';color:' + r.txtColor + '">' + (r.num ? r.num + ' ' : '') + r.name)
-				r.stops.forEach(function(s, id){
-					$l.append('<li data-station-id="' + id + '">' + s.name)
+				r.stops.forEach(function(s){
+					$l.append('<li data-station-id="' + s + '">' + gtfs.stops[s].name)
 				})
 				$('main').append($t.append($l))
 			}
@@ -164,10 +176,8 @@ gtfs.loadShapes = function(url) {
 	})
 }
 $('script[src*="maps.google.com/maps/api/js"]').load(function(){
-	var zoom = $('#gtfs').width() < 550 ? 11 : 12
 	// Load Google Maps
 	gtfs.map = new google.maps.Map(document.getElementById('gtfs'), {
-		center: new google.maps.LatLng(35.22, 139.07),
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		keyboardShortcuts: true,
 		disableDefaultUI: true,
@@ -175,8 +185,7 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 		scrollWheel: true,
 		zoomControl: true,
 		maxZoom: 17,
-		minZoom: 10,
-		zoom: zoom
+		minZoom: 10
 	})
 <?php
 foreach ($_SESSION['gtfs_locs'] as $loc) {
@@ -185,17 +194,28 @@ foreach ($_SESSION['gtfs_locs'] as $loc) {
 ?>
 	// Highlight Routes
 	$('main').on('click', 'section.route', function(e) {
-		var isOpen = $(e.target).closest('section').is('active')
+		var isOpen = $(e.target).closest('section').is('.active')
 		$('section.route.active').trigger('unfocus')
 		if (!isOpen) {
 			var $s = $(e.target).closest('section').addClass('active')
 				route = $s.data('route-id'),
-				shape = gtfs.routes[route].shape
+				shape = gtfs.routes[route].shape,
+				pts = []
 			if (!shape || !gtfs.poly[shape]) return
 			gtfs.poly[shape].Polyline.setOptions({
 				strokeWeight: 4,
 				zIndex: 1
 			})
+			gtfs.routes[route].stops.forEach(function(s){
+				pts.push(gtfs.stops[s])
+			})
+			$('html,body').animate({scrollTop: 0}, 300, function() {
+				if (pts.length) gtfs.setBounds(pts)
+				else gtfs.map.fitBounds(gtfs.extremes)
+			})
+		} else {
+			// Reset Map
+			gtfs.map.fitBounds(gtfs.extremes)
 		}
 	}).on('unfocus', function(e) {
 		var $s = $(e.target).closest('section').removeClass('active'),

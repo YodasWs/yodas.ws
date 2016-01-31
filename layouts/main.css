@@ -67,3 +67,7 @@ main > article, main > section, main > div {
 	margin: 0.5rem 2%;
 	outline: 1px solid black;
 }
+
+.gm-style {
+	width: calc(100% - 1px) !important;
+}

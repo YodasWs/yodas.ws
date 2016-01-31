@@ -2,12 +2,17 @@
 	display: block;
 	min-height: 400px;
 	margin: 0;
+	flex-basis: 100%;
+	flex-grow: 1;
 	order: 0;
-	flex-basis: 70%;
+	border: 1px solid black;
+	outline: 0 none;
 }
 main > section.route {
-	border-collapse: collapse;
+	transition: flex-basis 300ms, margin 300ms;
+	border: 1px solid black;
 	margin: .5rem;
+	outline: 0 none;
 }
 main > section.route.active {
 	margin: 0 0 .5rem;
@@ -36,9 +41,15 @@ main > section.route li {
 	padding: 2px 5px;
 }
 
+@media (min-width: 800px) {
+	#gtfs {
+		margin-right: 5px;
+		flex-basis: 70%;
+	}
+}
 @media (max-width: 600px) {
 	#gtfs {
-		flex-basis: 100%;
+		margin-right: 0;
 	}
 	main > section.route:first-of-type,
 	main > section.route.active {
