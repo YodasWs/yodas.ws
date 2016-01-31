@@ -1,7 +1,9 @@
 <?php session_start(); ?>
 window.gtfs = gtfs || {}
 gtfs.extremes = { lat:{min:180,max:0},lon:{min:180,max:0} }
+gtfs.tripRoute = {}
 gtfs.routes = {}
+gtfs.stops = {}
 gtfs.poly = {}
 gtfs.setShapeRoute = function(shape, route) {
 	gtfs.poly[shape] = gtfs.poly[shape] || {}
@@ -29,6 +31,13 @@ gtfs.setShapeRoute = function(shape, route) {
 		if (gtfs.poly[shape].color) gtfs.poly[shape].Polyline.setOptions({strokeColor: gtfs.poly[shape].color})
 	}
 }
+gtfs.parseHeader = function(h) {
+	var r = {}
+	h.split(',').forEach(function(h, i) {
+		r[h.trim()] = i
+	})
+	return r
+}
 // Load and Draw GTFS Shapes
 gtfs.loadShapes = function(url) {
 	$.ajax({
@@ -36,15 +45,18 @@ gtfs.loadShapes = function(url) {
 		dateType:'text',
 		success:function(data){
 			data = data.split("\n")
-			data.shift()
+			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
 				r = r.split(',')
-				if (r[0] == '') return
-				gtfs.routes[r[0]] = gtfs.routes[r[0]] || {}
-				gtfs.routes[r[0]].color = '#' + r[6]
-				gtfs.routes[r[0]].name = r[3]
-				gtfs.routes[r[0]].type = r[4]
-				gtfs.routes[r[0]].num = r[2]
+				if (r[head.route_id] == '') return
+				// Save Pertinent Route Data
+				gtfs.routes[r[head.route_id]] = gtfs.routes[r[head.route_id]] || {}
+				gtfs.routes[r[head.route_id]].txtColor = '#' + (r[head.route_text_color] || '000000')
+				gtfs.routes[r[head.route_id]].color = '#' + (r[head.route_color] || 'ffffff')
+				gtfs.routes[r[head.route_id]].name = r[head.route_long_name]
+				gtfs.routes[r[head.route_id]].type = r[head.route_type]
+				gtfs.routes[r[head.route_id]].num = r[head.route_short_name]
+				gtfs.routes[r[head.route_id]].stops = []
 			})
 		}
 	})
@@ -53,13 +65,17 @@ gtfs.loadShapes = function(url) {
 		dateType:'text',
 		success:function(data){
 			data = data.split("\n")
-			data.shift()
+			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
 				r = r.split(',')
-				if (r[0] == '') return
-				route = r[0]
-				shape = r[7]
-				if (r[7] != '') gtfs.setShapeRoute(shape, route)
+				if (!head.shape_id) return
+				if (r[head.route_id] == '') return
+				route = r[head.route_id]
+				shape = r[head.shape_id]
+				// Associate Shape to Route
+				if (shape != '') gtfs.setShapeRoute(shape, route)
+				// Associate Trip to Route
+				gtfs.tripRoute[r[head.trip_id]] = route
 			})
 		}
 	})
@@ -67,27 +83,30 @@ gtfs.loadShapes = function(url) {
 		url:'/gtfs/' + url + '/shapes.txt',
 		dateType:'text',
 		success:function(data){
-			var l
 			data = data.split("\n")
-			data.shift()
+			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
 				r = r.split(',')
-				if (r[0] == '') return
-				gtfs.poly[r[0]] = gtfs.poly[r[0]] || {}
-				gtfs.poly[r[0]].path = gtfs.poly[r[0]].path || []
-				gtfs.poly[r[0]].path.push({
-					lat: Number.parseFloat(r[1]),
-					lng: Number.parseFloat(r[2])
+				if (r[head.shape_id] == '') return
+				// Save Shape Point
+				gtfs.poly[r[head.shape_id]] = gtfs.poly[r[head.shape_id]] || {}
+				gtfs.poly[r[head.shape_id]].path = gtfs.poly[r[head.shape_id]].path || []
+				gtfs.poly[r[head.shape_id]].path.push({
+					lat: Number.parseFloat(r[head.shape_pt_lat]),
+					lng: Number.parseFloat(r[head.shape_pt_lon])
 				})
-				gtfs.extremes.lat.min = Math.min(gtfs.extremes.lat.min, Number.parseFloat(r[1]))
-				gtfs.extremes.lon.min = Math.min(gtfs.extremes.lon.min, Number.parseFloat(r[2]))
-				gtfs.extremes.lat.max = Math.max(gtfs.extremes.lat.max, Number.parseFloat(r[1]))
-				gtfs.extremes.lon.max = Math.max(gtfs.extremes.lon.max, Number.parseFloat(r[2]))
+				// Save Extreme Points to calculate Map center
+				gtfs.extremes.lat.min = Math.min(gtfs.extremes.lat.min, Number.parseFloat(r[head.shape_pt_lat]))
+				gtfs.extremes.lon.min = Math.min(gtfs.extremes.lon.min, Number.parseFloat(r[head.shape_pt_lon]))
+				gtfs.extremes.lat.max = Math.max(gtfs.extremes.lat.max, Number.parseFloat(r[head.shape_pt_lat]))
+				gtfs.extremes.lon.max = Math.max(gtfs.extremes.lon.max, Number.parseFloat(r[head.shape_pt_lon]))
 			})
+			// Set Map Center
 			gtfs.map.center = new google.maps.LatLng({
 				lat: (gtfs.extremes.lat.min + gtfs.extremes.lat.max) / 2,
 				lng: (gtfs.extremes.lon.min + gtfs.extremes.lon.max) / 2
 			})
+			// Paste Shapes on Map
 			for (var i in gtfs.poly) {
 				gtfs.poly[i].Polyline = new google.maps.Polyline({
 					path: gtfs.poly[i].path,
@@ -98,6 +117,46 @@ gtfs.loadShapes = function(url) {
 					clickable: true
 				})
 				gtfs.poly[i].Polyline.setMap(gtfs.map)
+			}
+		}
+	})
+	$.ajax({
+		url:'/gtfs/' + url + '/stops.txt',
+		success:function(data){
+			data = data.split("\n")
+			var head = gtfs.parseHeader(data.shift())
+			data.forEach(function(r){
+				r = r.split(',')
+				if (r[head.stop_id] == '') return
+				gtfs.stops[r[head.stop_id]] = {
+					lat: Number.parseFloat(r[head.stop_lat]),
+					lng: Number.parseFloat(r[head.stop_lon]),
+					name: r[head.stop_name]
+				}
+			})
+		}
+	})
+	$.ajax({
+		url:'/gtfs/' + url + '/stop_times.txt',
+		success:function(data){
+			data = data.split("\n")
+			var head = gtfs.parseHeader(data.shift())
+			data.forEach(function(r){
+				r = r.split(',')
+				var trip_id = r[head.trip_id],
+					stop_id = r[head.stop_id],
+					route_id = gtfs.tripRoute[trip_id]
+				if (!r[head.stop_id]) return
+				gtfs.routes[route_id].stops.push(gtfs.stops[stop_id])
+			})
+			for (i in gtfs.routes) {
+				var r = gtfs.routes[i],
+					$t = $('<table>').append('<thead><tr><th style="background:' + r.color + ';color:' + r.txtColor + '">' +
+						(r.num ? r.num + ' ' : '') + r.name)
+				r.stops.forEach(function(s){
+					$t.append('<tr><td>' + s.name)
+				})
+				$('main').append($t)
 			}
 		}
 	})
