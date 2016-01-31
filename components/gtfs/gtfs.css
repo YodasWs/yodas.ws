@@ -1,15 +1,53 @@
 #gtfs {
 	display: block;
-	flex-basis: 100%;
 	min-height: 400px;
 	margin: 0;
+	order: 0;
+	flex-basis: 70%;
 }
-main > table {
+main > section.route {
 	border-collapse: collapse;
 	margin: .5rem;
 }
-main > table td,
-main > table th {
-	border: 1px solid black;
+main > section.route.active {
+	margin: 0 0 .5rem;
+	flex-basis: 25%;
+	flex-grow: 1;
+	order: 1;
+}
+main > section.route {
+	flex-basis: auto;
+	max-width: 500px;
+	order: 2;
+}
+main > section.route li:not(:last-of-type) {
+	border-bottom: 1px solid black;
+}
+main > section.route > h1 {
+	text-align: center;
 	padding: 2px 5px;
+	cursor: pointer;
+	margin: 0;
+}
+main > section.route > ol {
+	margin: 0;
+}
+main > section.route li {
+	padding: 2px 5px;
+}
+
+@media (max-width: 600px) {
+	#gtfs {
+		flex-basis: 100%;
+	}
+	main > section.route:first-of-type,
+	main > section.route.active {
+		flex-basis: 100%;
+		max-width: none;
+	}
+	main > section.route {
+		flex-basis: 100%;
+		max-width: none;
+		margin: 0;
+	}
 }

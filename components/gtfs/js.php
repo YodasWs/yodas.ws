@@ -8,6 +8,7 @@ gtfs.poly = {}
 gtfs.setShapeRoute = function(shape, route) {
 	gtfs.poly[shape] = gtfs.poly[shape] || {}
 	if (gtfs.routes[route]) {
+		gtfs.routes[route].shape = shape
 		if (!gtfs.poly[shape].color && gtfs.routes[route].color)
 			gtfs.poly[shape].color = gtfs.routes[route].color
 		switch (Number.parseInt(gtfs.routes[route].type, 10)) {
@@ -149,19 +150,21 @@ gtfs.loadShapes = function(url) {
 				if (!r[head.stop_id]) return
 				gtfs.routes[route_id].stops.push(gtfs.stops[stop_id])
 			})
+			// Build Lists of Route Stations
 			for (i in gtfs.routes) {
-				var r = gtfs.routes[i],
-					$t = $('<table>').append('<thead><tr><th style="background:' + r.color + ';color:' + r.txtColor + '">' +
-						(r.num ? r.num + ' ' : '') + r.name)
-				r.stops.forEach(function(s){
-					$t.append('<tr><td>' + s.name)
+				var r = gtfs.routes[i], $l = $('<ol>')
+					$t = $('<section class="route" data-route-id="' + i + '">')
+				$t.append('<h1 style="background:' + r.color + ';color:' + r.txtColor + '">' + (r.num ? r.num + ' ' : '') + r.name)
+				r.stops.forEach(function(s, id){
+					$l.append('<li data-station-id="' + id + '">' + s.name)
 				})
-				$('main').append($t)
+				$('main').append($t.append($l))
 			}
 		}
 	})
 }
 $('script[src*="maps.google.com/maps/api/js"]').load(function(){
+	var zoom = $('#gtfs').width() < 550 ? 11 : 12
 	// Load Google Maps
 	gtfs.map = new google.maps.Map(document.getElementById('gtfs'), {
 		center: new google.maps.LatLng(35.22, 139.07),
@@ -173,11 +176,35 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 		zoomControl: true,
 		maxZoom: 17,
 		minZoom: 10,
-		zoom: 12
+		zoom: zoom
 	})
 <?php
 foreach ($_SESSION['gtfs_locs'] as $loc) {
 	echo "\tgtfs.loadShapes('$loc')\n";
 }
 ?>
+	// Highlight Routes
+	$('main').on('click', 'section.route', function(e) {
+		var isOpen = $(e.target).closest('section').is('active')
+		$('section.route.active').trigger('unfocus')
+		if (!isOpen) {
+			var $s = $(e.target).closest('section').addClass('active')
+				route = $s.data('route-id'),
+				shape = gtfs.routes[route].shape
+			if (!shape || !gtfs.poly[shape]) return
+			gtfs.poly[shape].Polyline.setOptions({
+				strokeWeight: 4,
+				zIndex: 1
+			})
+		}
+	}).on('unfocus', function(e) {
+		var $s = $(e.target).closest('section').removeClass('active'),
+			route = $s.data('route-id'),
+			shape = gtfs.routes[route].shape
+		if (!shape || !gtfs.poly[shape]) return
+		gtfs.poly[shape].Polyline.setOptions({
+			strokeWeight: gtfs.poly[shape].weight,
+			zIndex: 0
+		})
+	})
 })
