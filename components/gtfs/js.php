@@ -95,6 +95,14 @@ gtfs.loadShapes = function(url) {
 			})
 		}
 	})
+	gtfs.saveShapePoint = function(shape, lat, lng) {
+				// Save Shape Point
+				gtfs.poly[shape] = gtfs.poly[shape] || {}
+				gtfs.poly[shape].path = gtfs.poly[shape].path || []
+				gtfs.poly[shape].path.push({
+					lat: lat, lng: lng
+				})
+	}
 	$.ajax({
 		url:'/gtfs/' + url + '/shapes.txt',
 		dateType:'text',
@@ -160,7 +168,8 @@ gtfs.loadShapes = function(url) {
 					stop_id = r[head.stop_id],
 					route_id = gtfs.tripRoute[trip_id]
 				if (!r[head.stop_id]) return
-				gtfs.routes[route_id].stops.push(stop_id)
+				if (gtfs.routes[route_id] && gtfs.routes[route_id].stops)
+					gtfs.routes[route_id].stops.push(stop_id)
 			})
 			// Build Lists of Route Stations
 			for (i in gtfs.routes) {
@@ -171,6 +180,9 @@ gtfs.loadShapes = function(url) {
 					$l.append('<li data-station-id="' + s + '">' + gtfs.stops[s].name)
 				})
 				$('main').append($t.append($l))
+				if (!gtfs.routes[i].shape) {
+					// TODO: Use this List of Stops to draw a Polyline
+				}
 			}
 		}
 	})
