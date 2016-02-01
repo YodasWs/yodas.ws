@@ -20,6 +20,12 @@ case '':
 		$t->html();
 	}
 	break;
+case 'hakone':
+	require_once("components/gtfs/gtfs.php");
+	$gtfs = new GTFS();
+	$gtfs->addLocation('jp/hakone');
+	$gtfs->html();
+	break;
 case 'world':
 	if (!strstr($_SERVER['HTTP_ACCEPT'], "text/html")) {
 		header("HTTP/1.1 404 Not Found");

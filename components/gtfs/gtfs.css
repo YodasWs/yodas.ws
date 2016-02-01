@@ -1,0 +1,64 @@
+#gtfs {
+	display: block;
+	min-height: 400px;
+	margin: 0;
+	flex-basis: 100%;
+	flex-grow: 1;
+	order: 0;
+	border: 1px solid black;
+	outline: 0 none;
+}
+main > section.route {
+	transition: flex-basis 300ms, margin 300ms;
+	border: 1px solid black;
+	margin: .5rem;
+	outline: 0 none;
+}
+main > section.route.active {
+	margin: 0 0 .5rem;
+	flex-basis: 25%;
+	flex-grow: 1;
+	order: 1;
+}
+main > section.route {
+	flex-basis: auto;
+	max-width: 500px;
+	order: 2;
+}
+main > section.route li:not(:last-of-type) {
+	border-bottom: 1px solid black;
+}
+main > section.route > h1 {
+	text-align: center;
+	padding: 2px 5px;
+	cursor: pointer;
+	margin: 0;
+}
+main > section.route > ol {
+	margin: 0;
+}
+main > section.route li {
+	padding: 2px 5px;
+}
+
+@media (min-width: 800px) {
+	#gtfs {
+		margin-right: 5px;
+		flex-basis: 70%;
+	}
+}
+@media (max-width: 600px) {
+	#gtfs {
+		margin-right: 0;
+	}
+	main > section.route:first-of-type,
+	main > section.route.active {
+		flex-basis: 100%;
+		max-width: none;
+	}
+	main > section.route {
+		flex-basis: 100%;
+		max-width: none;
+		margin: 0;
+	}
+}
