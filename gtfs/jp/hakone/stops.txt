@@ -6,7 +6,7 @@ stn-iriuda,Iriuda Station,35.2407720,139.1210600,1
 stn-hakone-yumoto,Hakone-yumoto Station,35.2335,139.1039,1
 stn-tonosawa,Tonosawa Station,35.2332210,139.0938770,1
 stn-ohiradai,Ohiradai Station,35.2385760,139.0741200,1
-stn-miyanoshita,miyanoshita Station,35.2419920,139.0630100,1
+stn-miyanoshita,Miyanoshita Station,35.2419920,139.0630100,1
 stn-kowakidani,Kowakidani Station,35.2405760,139.0524830,1
 stn-chokoku,Chokoku-no-Mori Station,35.2464500,139.0508340,1
 stn-gora,Gora Station,35.2508,139.0482,1
@@ -17,6 +17,7 @@ stn-kamigora,Kami-Gora Station,35.2472410,139.0381780,1
 stn-sounzan,Sounzan Station,35.2464630,139.0355950,1
 stn-owakudani,Owakudani Station,35.2442960,139.0200970,1
 stn-ubako,Ubako Station,35.2445466,139.0059891,1
+tonosawa-hot-spr,Tonosawa,35.2327790,139.0928042,0
 hakonemachi,Hakonemachi,35.1896438,139.0255558,0
 togendai,Togendai,35.2378800,138.9945710,1
 stn-gotemba,Gotemba Station,35.2999550,138.9342130,1
@@ -28,3 +29,5 @@ sengoku-kogen,Sengoku-kogen,35.2587248,139.0008205,0
 hakone-art,Hakone Art Museum,35.2486612,139.0434086,0
 motohakone-ko,Motohakone-ko,35.2009123,139.0306655,0
 hatajuku,Hatajuku,35.2120595,139.0627259,0
+pola-art,Pola Art Museum,35.2562880,139.0204167,0
+ichibanzaka,Ichibanzaka,35.2487313,139.0483975,0
