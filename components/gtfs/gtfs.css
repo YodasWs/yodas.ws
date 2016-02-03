@@ -40,6 +40,13 @@ main > section.route > ol {
 main > section.route li {
 	padding: 2px 5px;
 }
+main > section.route li[data-stop-id] {
+	cursor: pointer;
+	transition: background 500ms;
+}
+main > section.route li[data-stop-id].active {
+	background: lightgreen;
+}
 
 @media (min-width: 800px) {
 	#gtfs {
