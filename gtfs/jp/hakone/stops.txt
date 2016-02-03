@@ -31,3 +31,7 @@ motohakone-ko,Motohakone-ko,35.2009123,139.0306655,0
 hatajuku,Hatajuku,35.2120595,139.0627259,0
 pola-art,Pola Art Museum,35.2562880,139.0204167,0
 ichibanzaka,Ichibanzaka,35.2487313,139.0483975,0
+kowakien,Kowaki-en,35.2392024,139.0465683,0
+chokoku,Hakone Open Air Museum,35.2452528,139.0506721,0
+ninotaira,Ninotaira,35.2429177,139.0497923,0
+ninotaira-iriguchi,Ninotaira-iriguchi,35.2409330,139.0494221,0
