@@ -25,6 +25,9 @@ gtfs.setShapeRoute = function(shape, route) {
 		case 6: // Gondola
 			gtfs.poly[shape].weight = 2
 			break;
+		case 7: // Funicular
+			gtfs.poly[shape].weight = 2
+			break;
 		}
 	}
 	if (gtfs.poly[shape].Polyline) {
@@ -53,6 +56,14 @@ gtfs.setBounds = function(pts) {
 		bounds.west = Math.min(bounds.west, p.lng)
 	})
 	gtfs.map.fitBounds(bounds)
+}
+gtfs.saveShapePoint = function(shape, lat, lng) {
+	// Save Shape Point
+	gtfs.poly[shape] = gtfs.poly[shape] || {}
+	gtfs.poly[shape].path = gtfs.poly[shape].path || []
+	gtfs.poly[shape].path.push({
+		lat: lat, lng: lng
+	})
 }
 // Load and Draw GTFS Shapes
 gtfs.loadShapes = function(url) {
@@ -95,14 +106,6 @@ gtfs.loadShapes = function(url) {
 			})
 		}
 	})
-	gtfs.saveShapePoint = function(shape, lat, lng) {
-				// Save Shape Point
-				gtfs.poly[shape] = gtfs.poly[shape] || {}
-				gtfs.poly[shape].path = gtfs.poly[shape].path || []
-				gtfs.poly[shape].path.push({
-					lat: lat, lng: lng
-				})
-	}
 	$.ajax({
 		url:'/gtfs/' + url + '/shapes.txt',
 		dateType:'text',
@@ -138,6 +141,7 @@ gtfs.loadShapes = function(url) {
 					clickable: true
 				})
 				gtfs.poly[i].Polyline.setMap(gtfs.map)
+				// TODO: When Polyline clicked, activate Route Stop List
 			}
 		}
 	})
@@ -149,6 +153,7 @@ gtfs.loadShapes = function(url) {
 			data.forEach(function(r){
 				r = r.split(',')
 				if (r[head.stop_id] == '') return
+				// Save Pertinent Stop Information for easy retrieval
 				gtfs.stops[r[head.stop_id]] = {
 					lat: Number.parseFloat(r[head.stop_lat]),
 					lng: Number.parseFloat(r[head.stop_lon]),
@@ -170,6 +175,7 @@ gtfs.loadShapes = function(url) {
 				if (!r[head.stop_id]) return
 				if (gtfs.routes[route_id] && gtfs.routes[route_id].stops)
 					gtfs.routes[route_id].stops.push(stop_id)
+				if (!gtfs.routes[route_id].shape) gtfs.routes[route_id].shape = trip_id
 			})
 			// Build Lists of Route Stations
 			for (i in gtfs.routes) {
@@ -180,8 +186,24 @@ gtfs.loadShapes = function(url) {
 					$l.append('<li data-station-id="' + s + '">' + gtfs.stops[s].name)
 				})
 				$('main').append($t.append($l))
-				if (!gtfs.routes[i].shape) {
-					// TODO: Use this List of Stops to draw a Polyline
+				if (!gtfs.poly[r.shape]) {
+					gtfs.poly[r.shape] = {}
+					gtfs.poly[r.shape].path = []
+					// Use this List of Stops to draw a Polyline
+					r.stops.forEach(function(s) {
+						gtfs.poly[r.shape].path.push(gtfs.stops[s])
+					})
+					gtfs.setShapeRoute(r.shape, i)
+					// Draw Polyline
+					gtfs.poly[r.shape].Polyline = new google.maps.Polyline({
+						path: gtfs.poly[r.shape].path,
+						geodesic: true,
+						strokeColor: (typeof gtfs.poly[r.shape].color == 'string' ? gtfs.poly[r.shape].color : '#008800'),
+						strokeWeight: (gtfs.poly[r.shape].weight || 8),
+						strokeOpacity: 1,
+						clickable: true
+					})
+					gtfs.poly[r.shape].Polyline.setMap(gtfs.map)
 				}
 			}
 		}
@@ -204,6 +226,8 @@ foreach ($_SESSION['gtfs_locs'] as $loc) {
 	echo "\tgtfs.loadShapes('$loc')\n";
 }
 ?>
+})
+$(document).ready(function(){
 	// Highlight Routes
 	$('main').on('click', 'section.route', function(e) {
 		var isOpen = $(e.target).closest('section').is('.active')
