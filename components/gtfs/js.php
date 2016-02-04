@@ -25,6 +25,9 @@ gtfs.setShapeRoute = function(shape, route) {
 		case 6: // Gondola
 			gtfs.poly[shape].weight = 2
 			break;
+		case 7: // Funicular
+			gtfs.poly[shape].weight = 2
+			break;
 		}
 	}
 	if (gtfs.poly[shape].Polyline) {
@@ -54,8 +57,32 @@ gtfs.setBounds = function(pts) {
 	})
 	gtfs.map.fitBounds(bounds)
 }
+gtfs.saveShapePoint = function(shape, lat, lng) {
+	// Save Shape Point
+	gtfs.poly[shape] = gtfs.poly[shape] || {}
+	gtfs.poly[shape].path = gtfs.poly[shape].path || []
+	gtfs.poly[shape].path.push({
+		lat: lat, lng: lng
+	})
+}
 // Load and Draw GTFS Shapes
 gtfs.loadShapes = function(url) {
+	$.ajax({
+		url:'/gtfs/' + url + '/agency.txt',
+		dateType:'text',
+		success:function(data){
+			data = data.split("\n")
+			var head = gtfs.parseHeader(data.shift())
+			data.forEach(function(r){
+				r = r.split(',')
+				if (r[0] == '') return
+				var $a = $('<section class="agency">')
+				$a.append('<h1>' + r[head.agency_name])
+				if (r[head.agency_url]) $a.append('<a href="' + r[head.agency_url] + '" target="_blank">Agency Website</a>')
+				$a.appendTo('main')
+			})
+		}
+	})
 	$.ajax({
 		url:'/gtfs/' + url + '/routes.txt',
 		dateType:'text',
@@ -130,6 +157,7 @@ gtfs.loadShapes = function(url) {
 					clickable: true
 				})
 				gtfs.poly[i].Polyline.setMap(gtfs.map)
+				// TODO: When Polyline clicked, activate Route Stop List
 			}
 		}
 	})
@@ -141,10 +169,21 @@ gtfs.loadShapes = function(url) {
 			data.forEach(function(r){
 				r = r.split(',')
 				if (r[head.stop_id] == '') return
+				// Save Pertinent Stop Information for easy retrieval
 				gtfs.stops[r[head.stop_id]] = {
 					lat: Number.parseFloat(r[head.stop_lat]),
 					lng: Number.parseFloat(r[head.stop_lon]),
-					name: r[head.stop_name]
+					name: r[head.stop_name],
+					// Place Google Maps Marker
+					Marker: new google.maps.Marker({
+						position:{
+							lat: Number.parseFloat(r[head.stop_lat]),
+							lng: Number.parseFloat(r[head.stop_lon]),
+						},
+						title: r[head.stop_name],
+						visible: false,
+						map: gtfs.map
+					})
 				}
 			})
 		}
@@ -160,7 +199,9 @@ gtfs.loadShapes = function(url) {
 					stop_id = r[head.stop_id],
 					route_id = gtfs.tripRoute[trip_id]
 				if (!r[head.stop_id]) return
-				gtfs.routes[route_id].stops.push(stop_id)
+				if (gtfs.routes[route_id] && gtfs.routes[route_id].stops)
+					gtfs.routes[route_id].stops.push(stop_id)
+				if (!gtfs.routes[route_id].shape) gtfs.routes[route_id].shape = trip_id
 			})
 			// Build Lists of Route Stations
 			for (i in gtfs.routes) {
@@ -168,9 +209,28 @@ gtfs.loadShapes = function(url) {
 					$t = $('<section class="route" data-route-id="' + i + '">')
 				$t.append('<h1 style="background:' + r.color + ';color:' + r.txtColor + '">' + (r.num ? r.num + ' ' : '') + r.name)
 				r.stops.forEach(function(s){
-					$l.append('<li data-station-id="' + s + '">' + gtfs.stops[s].name)
+					$l.append('<li data-stop-id="' + s + '">' + gtfs.stops[s].name)
 				})
 				$('main').append($t.append($l))
+				if (!gtfs.poly[r.shape]) {
+					gtfs.poly[r.shape] = {}
+					gtfs.poly[r.shape].path = []
+					// Use this List of Stops to draw a Polyline
+					r.stops.forEach(function(s) {
+						gtfs.poly[r.shape].path.push(gtfs.stops[s])
+					})
+					gtfs.setShapeRoute(r.shape, i)
+					// Draw Polyline
+					gtfs.poly[r.shape].Polyline = new google.maps.Polyline({
+						path: gtfs.poly[r.shape].path,
+						geodesic: true,
+						strokeColor: (typeof gtfs.poly[r.shape].color == 'string' ? gtfs.poly[r.shape].color : '#008800'),
+						strokeWeight: (gtfs.poly[r.shape].weight || 8),
+						strokeOpacity: 1,
+						clickable: true
+					})
+					gtfs.poly[r.shape].Polyline.setMap(gtfs.map)
+				}
 			}
 		}
 	})
@@ -192,12 +252,20 @@ foreach ($_SESSION['gtfs_locs'] as $loc) {
 	echo "\tgtfs.loadShapes('$loc')\n";
 }
 ?>
+})
+$(document).ready(function(){
 	// Highlight Routes
-	$('main').on('click', 'section.route', function(e) {
-		var isOpen = $(e.target).closest('section').is('.active')
-		$('section.route.active').trigger('unfocus')
+	$('main').on('click', 'section[data-route-id]', function(e) {
+		var isOpen = $(e.target).closest('section[data-route-id]').is('.active'),
+			switching = $(e.target).closest('li[data-stop-id]').length > 0
+		// If switched Stops, don't reset Map
+		if (isOpen && switching) {
+			switching = switching && $(e.target).closest('li[data-stop-id]').is('.active')
+		}
+		// Highlight Route on Map
 		if (!isOpen) {
-			var $s = $(e.target).closest('section').addClass('active')
+			$('section[data-route-id].active').trigger('unfocus')
+			var $s = $(e.target).closest('section[data-route-id]').addClass('active')
 				route = $s.data('route-id'),
 				shape = gtfs.routes[route].shape,
 				pts = []
@@ -213,12 +281,13 @@ foreach ($_SESSION['gtfs_locs'] as $loc) {
 				if (pts.length) gtfs.setBounds(pts)
 				else gtfs.map.fitBounds(gtfs.extremes)
 			})
-		} else {
+		} else if (!switching) {
 			// Reset Map
+			$('section[data-route-id].active').trigger('unfocus')
 			gtfs.map.fitBounds(gtfs.extremes)
 		}
 	}).on('unfocus', function(e) {
-		var $s = $(e.target).closest('section').removeClass('active'),
+		var $s = $(e.target).closest('section[data-route-id]').removeClass('active'),
 			route = $s.data('route-id'),
 			shape = gtfs.routes[route].shape
 		if (!shape || !gtfs.poly[shape]) return
@@ -227,4 +296,24 @@ foreach ($_SESSION['gtfs_locs'] as $loc) {
 			zIndex: 0
 		})
 	})
+	// Show Station/Stop on Map
+	$('main').on('click', 'li[data-stop-id]', function(e) {
+		var $t = $(e.target).closest('li[data-stop-id]'),
+			id = $t.data('stop-id'),
+			isOpen = gtfs.stops[id].Marker.getVisible()
+		if ($(e.target).closest('section[data-route-id]').is('.active') || !$t.is('.active')) {
+			gtfs.hideStops()
+			$('li[data-stop-id].active').removeClass('active')
+			$('section.route.highlighted').removeClass('highlighted')
+			if (!isOpen) {
+				$('li[data-stop-id="' + id + '"]').addClass('active').parents('section.route').addClass('highlighted')
+				gtfs.stops[id].Marker.setVisible(true)
+			}
+		}
+	})
 })
+gtfs.hideStops = function() {
+	for (var id in gtfs.stops) {
+		gtfs.stops[id].Marker.setVisible(false)
+	}
+}
