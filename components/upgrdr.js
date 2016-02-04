@@ -7,7 +7,7 @@ Array.prototype.forEach=function(a,b){var T,k,O,l,m;if(this==null){throw new Typ
 if (!Array.prototype.indexOf)
 Array.prototype.indexOf=function(a,b){if(this===undefined||this===null){throw new TypeError('"this" is null or not defined')}var length=this.length>>>0;b=+b||0;if(Math.abs(b)===Infinity){b=0}if(b<0){b+=length;if(b<0)b=0}for(;b<length;b++){if(this[b]===a)return b}return -1};
 // Extend String.prototype.trim to PHP behavior to remove more than just white space
-String.prototype.trim=function(chars){return this.replace(new RegExp('^['+(chars||'\\uffef\\ua0\\s')+']+|['+(chars||'\\uffef\\ua0\\s')+']+$','g'),'')};
+String.prototype.trim=function(chars){return this.replace(new RegExp('^['+(chars||'\\uffef\\u00a0\\s')+']+|['+(chars||'\\uffef\\u00a0\\s')+']+$','g'),'')};
 // ECMAScript 6
 Number.isFinite=Number.isFinite||function(n){return typeof n==='number'&&isFinite(n)};
 Number.isInteger=Number.isInteger||function(a){return Number.isFinite(a)&&Math.abs(a)<Math.pow(2,53)-1&&Math.floor(a)===a};
