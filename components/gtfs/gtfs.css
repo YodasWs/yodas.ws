@@ -16,38 +16,38 @@ main > section > h1 {
 	margin: 0;
 }
 
-main > section.route {
+main > section[data-route-id] {
 	flex-basis: auto;
 	max-width: 500px;
 	order: 3;
 }
-main > section.route.highlighted {
+main > section[data-route-id].highlighted {
 	order: 2;
 }
-main > section.route.active {
+main > section[data-route-id].active {
 	margin: 0 0 .5rem;
 	flex-basis: 25%;
 	flex-grow: 1;
 	order: 1;
 }
-main > section.route li:not(:last-of-type) {
+main > section[data-route-id] li:not(:last-of-type) {
 	border-bottom: 1px solid black;
 }
-main > section.route > h1 {
+main > section[data-route-id] > h1 {
 	cursor: pointer;
 	padding: 2px 5px;
 }
-main > section.route > ol {
+main > section[data-route-id] > ol {
 	margin: 0;
 }
-main > section.route li {
+main > section[data-route-id] li {
 	padding: 2px 5px;
 }
-main > section.route li[data-stop-id] {
+main > section[data-route-id] li[data-stop-id] {
 	cursor: pointer;
 	transition: background 500ms;
 }
-main > section.route li[data-stop-id].active {
+main > section[data-route-id] li[data-stop-id].active {
 	background: lightgreen;
 }
 
@@ -82,12 +82,12 @@ main > small {
 	#gtfs {
 		margin-right: 0;
 	}
-	main > section.route:first-of-type,
-	main > section.route.active {
+	main > section[data-route-id]:first-of-type,
+	main > section[data-route-id].active {
 		flex-basis: 100%;
 		max-width: none;
 	}
-	main > section.route {
+	main > section[data-route-id] {
 		flex-basis: 100%;
 		max-width: none;
 		margin: 0;

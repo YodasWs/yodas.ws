@@ -14,7 +14,7 @@ gtfs.setShapeRoute = function(shape, route) {
 		switch (Number.parseInt(gtfs.routes[route].type, 10)) {
 		case 2: // Rail
 			gtfs.poly[shape].weight = 3
-			gtfs.poly[shape].label = '🚉'
+			gtfs.poly[shape].label = '🚆'
 			break;
 		case 3: // Bus
 			gtfs.poly[shape].weight = 1
@@ -91,7 +91,7 @@ gtfs.loadShapes = function(url) {
 			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
 				r = r.split(',')
-				if (r[head.route_id] == '') return
+				if (r[0] == '') return
 				// Save Pertinent Route Data
 				gtfs.routes[r[head.route_id]] = gtfs.routes[r[head.route_id]] || {}
 				gtfs.routes[r[head.route_id]].txtColor = '#' + (r[head.route_text_color] || '000000')
@@ -100,6 +100,23 @@ gtfs.loadShapes = function(url) {
 				gtfs.routes[r[head.route_id]].type = r[head.route_type]
 				gtfs.routes[r[head.route_id]].num = r[head.route_short_name]
 				gtfs.routes[r[head.route_id]].stops = []
+				switch (Number.parseInt(gtfs.routes[r[head.route_id]].type, 10)) {
+				case 2: // Rail
+					gtfs.routes[r[head.route_id]].label = '🚆'
+					break;
+				case 3: // Bus
+					gtfs.routes[r[head.route_id]].label = '🚏'
+					break;
+				case 5: // Cable Car
+					gtfs.routes[r[head.route_id]].label = '🚞'
+					break;
+				case 6: // Gondola
+					gtfs.routes[r[head.route_id]].label = '🚡'
+					break;
+				case 7: // Funicular
+					gtfs.routes[r[head.route_id]].label = '🚞'
+					break;
+				}
 			})
 		}
 	})
@@ -112,7 +129,7 @@ gtfs.loadShapes = function(url) {
 			data.forEach(function(r){
 				r = r.split(',')
 				if (!head.shape_id) return
-				if (r[head.route_id] == '') return
+				if (r[0] == '') return
 				route = r[head.route_id]
 				shape = r[head.shape_id]
 				// Associate Shape to Route
@@ -130,7 +147,7 @@ gtfs.loadShapes = function(url) {
 			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
 				r = r.split(',')
-				if (r[head.shape_id] == '') return
+				if (r[0] == '') return
 				// Save Shape Point
 				gtfs.poly[r[head.shape_id]] = gtfs.poly[r[head.shape_id]] || {}
 				gtfs.poly[r[head.shape_id]].path = gtfs.poly[r[head.shape_id]].path || []
@@ -168,7 +185,7 @@ gtfs.loadShapes = function(url) {
 			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
 				r = r.split(',')
-				if (r[head.stop_id] == '') return
+				if (r[0] == '') return
 				// Save Pertinent Stop Information for easy retrieval
 				gtfs.stops[r[head.stop_id]] = {
 					lat: Number.parseFloat(r[head.stop_lat]),
@@ -199,6 +216,7 @@ gtfs.loadShapes = function(url) {
 					stop_id = r[head.stop_id],
 					route_id = gtfs.tripRoute[trip_id]
 				if (!r[head.stop_id]) return
+				// TODO: If the same as the last stop, don't add
 				if (gtfs.routes[route_id] && gtfs.routes[route_id].stops)
 					gtfs.routes[route_id].stops.push(stop_id)
 				if (!gtfs.routes[route_id].shape) gtfs.routes[route_id].shape = trip_id
@@ -206,9 +224,13 @@ gtfs.loadShapes = function(url) {
 			// Build Lists of Route Stations
 			for (i in gtfs.routes) {
 				var r = gtfs.routes[i], $l = $('<ol>')
-					$t = $('<section class="route" data-route-id="' + i + '">')
+					$t = $('<section data-route-id="' + i + '">')
 				$t.append('<h1 style="background:' + r.color + ';color:' + r.txtColor + '">' + (r.num ? r.num + ' ' : '') + r.name)
 				r.stops.forEach(function(s){
+					if (!gtfs.stops[s] || !gtfs.stops[s].name) {
+						console.error('Stop ' + s + ' not found!')
+						return
+					}
 					$l.append('<li data-stop-id="' + s + '">' + gtfs.stops[s].name)
 				})
 				$('main').append($t.append($l))
@@ -300,13 +322,15 @@ $(document).ready(function(){
 	$('main').on('click', 'li[data-stop-id]', function(e) {
 		var $t = $(e.target).closest('li[data-stop-id]'),
 			id = $t.data('stop-id'),
+			route_id = $t.parents('section[data-route-id]').data('route-id'),
 			isOpen = gtfs.stops[id].Marker.getVisible()
 		if ($(e.target).closest('section[data-route-id]').is('.active') || !$t.is('.active')) {
 			gtfs.hideStops()
 			$('li[data-stop-id].active').removeClass('active')
-			$('section.route.highlighted').removeClass('highlighted')
+			$('section[data-route-id].highlighted').removeClass('highlighted')
 			if (!isOpen) {
-				$('li[data-stop-id="' + id + '"]').addClass('active').parents('section.route').addClass('highlighted')
+				$('li[data-stop-id="' + id + '"]').addClass('active').parents('section[data-route-id]').addClass('highlighted')
+				gtfs.stops[id].Marker.setLabel(gtfs.routes[route_id].label || '')
 				gtfs.stops[id].Marker.setVisible(true)
 			}
 		}
