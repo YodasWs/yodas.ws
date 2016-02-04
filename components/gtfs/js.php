@@ -68,6 +68,22 @@ gtfs.saveShapePoint = function(shape, lat, lng) {
 // Load and Draw GTFS Shapes
 gtfs.loadShapes = function(url) {
 	$.ajax({
+		url:'/gtfs/' + url + '/agency.txt',
+		dateType:'text',
+		success:function(data){
+			data = data.split("\n")
+			var head = gtfs.parseHeader(data.shift())
+			data.forEach(function(r){
+				r = r.split(',')
+				if (r[0] == '') return
+				var $a = $('<section class="agency">')
+				$a.append('<h1>' + r[head.agency_name])
+				if (r[head.agency_url]) $a.append('<a href="' + r[head.agency_url] + '" target="_blank">Agency Website</a>')
+				$a.appendTo('main')
+			})
+		}
+	})
+	$.ajax({
 		url:'/gtfs/' + url + '/routes.txt',
 		dateType:'text',
 		success:function(data){
@@ -288,8 +304,9 @@ $(document).ready(function(){
 		if ($(e.target).closest('section[data-route-id]').is('.active') || !$t.is('.active')) {
 			gtfs.hideStops()
 			$('li[data-stop-id].active').removeClass('active')
+			$('section.route.highlighted').removeClass('highlighted')
 			if (!isOpen) {
-				$('li[data-stop-id="' + id + '"]').addClass('active')
+				$('li[data-stop-id="' + id + '"]').addClass('active').parents('section.route').addClass('highlighted')
 				gtfs.stops[id].Marker.setVisible(true)
 			}
 		}

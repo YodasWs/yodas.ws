@@ -6,7 +6,8 @@ RewriteRule ^layouts/ layouts/index.php [END]
 
 #### GTFS Data
 RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^gtfs/.*/(routes|shapes|stop(s|_times)|trips).txt$ - [END]
+RewriteCond %{HTTP_REFERER} yodas.ws
+RewriteRule ^gtfs/.*/(agency|routes|shapes|stop(s|_times)|trips).txt$ - [END]
 RewriteRule ^gtfs/ - [F]
 
 #### Components Folder ####
