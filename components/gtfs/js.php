@@ -13,24 +13,28 @@ gtfs.setShapeRoute = function(shape, route) {
 			gtfs.poly[shape].color = gtfs.routes[route].color
 		switch (Number.parseInt(gtfs.routes[route].type, 10)) {
 		case 2: // Rail
+			gtfs.poly[shape].opacity = 1
 			gtfs.poly[shape].weight = 3
 			gtfs.poly[shape].label = '🚆'
 			break;
 		case 3: // Bus
-			gtfs.poly[shape].weight = 1
+			gtfs.poly[shape].weight = 2
 			break;
 		case 5: // Cable Car
 			gtfs.poly[shape].weight = 2
 			break;
 		case 6: // Gondola
+			gtfs.poly[shape].opacity = 1
 			gtfs.poly[shape].weight = 2
 			break;
 		case 7: // Funicular
+			gtfs.poly[shape].opacity = 1
 			gtfs.poly[shape].weight = 2
 			break;
 		}
 	}
 	if (gtfs.poly[shape].Polyline) {
+		if (gtfs.poly[shape].opacity) gtfs.poly[shape].Polyline.setOptions({opacity: gtfs.poly[shape].opacity})
 		if (gtfs.poly[shape].weight) gtfs.poly[shape].Polyline.setOptions({strokeWeight: gtfs.poly[shape].weight})
 		if (gtfs.poly[shape].color) gtfs.poly[shape].Polyline.setOptions({strokeColor: gtfs.poly[shape].color})
 	}
@@ -66,7 +70,7 @@ gtfs.saveShapePoint = function(shape, lat, lng) {
 	})
 }
 // Load and Draw GTFS Shapes
-gtfs.loadShapes = function(url) {
+gtfs.loadGTFS = function(url) {
 	$.ajax({
 		url:'/gtfs/' + url + '/agency.txt',
 		dateType:'text',
@@ -118,6 +122,7 @@ gtfs.loadShapes = function(url) {
 					break;
 				}
 			})
+			$(document).trigger($.Event('loaded', { file:'routes.txt' }))
 		}
 	})
 	$.ajax({
@@ -137,6 +142,7 @@ gtfs.loadShapes = function(url) {
 				// Associate Trip to Route
 				gtfs.tripRoute[r[head.trip_id]] = route
 			})
+			$(document).trigger($.Event('loaded', { file:'trips.txt' }))
 		}
 	})
 	$.ajax({
@@ -169,13 +175,15 @@ gtfs.loadShapes = function(url) {
 					path: gtfs.poly[i].path,
 					geodesic: true,
 					strokeColor: gtfs.poly[i].color || '#008800',
-					strokeWeight: gtfs.poly[i].weight || 4,
+					strokeWeight: gtfs.poly[i].weight || 2,
+					opacity: gtfs.poly[i].opacity || .6,
 					strokeOpacity: 1,
 					clickable: true
 				})
 				gtfs.poly[i].Polyline.setMap(gtfs.map)
 				// TODO: When Polyline clicked, activate Route Stop List
 			}
+			$(document).trigger($.Event('loaded', { file:'shapes.txt' }))
 		}
 	})
 	$.ajax({
@@ -203,6 +211,7 @@ gtfs.loadShapes = function(url) {
 					})
 				}
 			})
+			$(document).trigger($.Event('loaded', { file:'stops.txt' }))
 		}
 	})
 	$.ajax({
@@ -247,13 +256,15 @@ gtfs.loadShapes = function(url) {
 						path: gtfs.poly[r.shape].path,
 						geodesic: true,
 						strokeColor: (typeof gtfs.poly[r.shape].color == 'string' ? gtfs.poly[r.shape].color : '#008800'),
-						strokeWeight: (gtfs.poly[r.shape].weight || 8),
+						strokeWeight: (gtfs.poly[r.shape].weight || 2),
+						opacity: gtfs.poly[i].opacity || .6,
 						strokeOpacity: 1,
 						clickable: true
 					})
 					gtfs.poly[r.shape].Polyline.setMap(gtfs.map)
 				}
 			}
+			$(document).trigger($.Event('loaded', { file:'stop_times.txt' }))
 		}
 	})
 }
@@ -266,16 +277,18 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 		scaleControl: true,
 		scrollWheel: true,
 		zoomControl: true,
-		maxZoom: 17,
+		maxZoom: 18,
 		minZoom: 10
 	})
 <?php
 foreach ($_SESSION['gtfs_locs'] as $loc) {
-	echo "\tgtfs.loadShapes('$loc')\n";
+	echo "\tgtfs.loadGTFS('$loc')\n";
 }
 ?>
 })
-$(document).ready(function(){
+$(document).on('loaded', function(e) {
+	gtfs.loadedFiles.push(e.file)
+}).ready(function(){
 	// Highlight Routes
 	$('main').on('click', 'section[data-route-id]', function(e) {
 		var isOpen = $(e.target).closest('section[data-route-id]').is('.active'),
@@ -294,6 +307,7 @@ $(document).ready(function(){
 			if (!shape || !gtfs.poly[shape]) return
 			gtfs.poly[shape].Polyline.setOptions({
 				strokeWeight: 4,
+				opacity: 1,
 				zIndex: 1
 			})
 			gtfs.routes[route].stops.forEach(function(s){
@@ -315,6 +329,7 @@ $(document).ready(function(){
 		if (!shape || !gtfs.poly[shape]) return
 		gtfs.poly[shape].Polyline.setOptions({
 			strokeWeight: gtfs.poly[shape].weight,
+			opacity: gtfs.poly[i].opacity || .6,
 			zIndex: 0
 		})
 	})
