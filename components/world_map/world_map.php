@@ -9,8 +9,8 @@ class WorldMap implements Component {
 
 	public static function html() {
 		global $blog;
-		$blog->javascript = "world_map";
-		$blog->javascript = "http://maps.google.com/maps/api/js?v=3&region=US";
+#		$blog->javascript = "world_map";
+#		$blog->javascript = "http://maps.google.com/maps/api/js?v=3&region=US";
 		require_once("components/world_map/html.php");
 	}
 
@@ -28,15 +28,17 @@ class WorldMap implements Component {
 
 	public function getLocation($loc) {
 		foreach ($this->xml['locale'] as $l) {
-			if (!empty($l['google']) and (
-				(string) $l['google'] == $loc or BlogSite::urlencode((string) $l['google']) == $loc
+			if (!empty($l['name']) and (
+				(string) $l['name'] == $loc or BlogSite::urlencode((string) $l['name']) == $loc
 			)) return $l;
 		}
 		return false;
 	}
 
 	public function __construct() {
-		$this->xml = json_decode(json_encode(simplexml_load_file('world.xml')), true);
+		$this->xml = json_decode(json_encode(simplexml_load_file('world2.xml')), true);
+		if (!empty($this->xml['locale']['@attributes']))
+			$this->xml['locale'] = array($this->xml['locale']);
 	}
 
 	public function __get($var) {

@@ -10,6 +10,7 @@ Tile.prototype.changeImage = function() {
 		bg = [],
 		img,k
 	clearTimeout(this.bgto)
+	if (!$i.length) return
 	$a.find('.alt').remove()
 	if (i >= $i.length) i -= $i.length
 	for (var j=0; j<n; j++) {

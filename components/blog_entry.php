@@ -29,7 +29,7 @@ class BlogEntry implements Component {
 			// If World Map XML, take it
 			if (!empty($args[0]['locale'])) {
 				$this->xml = $args[0]['locale'];
-			} else if (!empty($args[0]['google'])) {
+			} else if (!empty($args[0]['name'])) {
 				$this->xml = $args[0];
 			// TODO: Is this a Date?
 			} else return false;
@@ -41,8 +41,8 @@ class BlogEntry implements Component {
 				$this->xml = $loc;
 			} else return false;
 		}
-		if (!empty($this->xml['google'])) {
-			$this->title = (string) $this->xml['google'];
+		if (!empty($this->xml['name'])) {
+			$this->title = (string) $this->xml['name'];
 			if (empty($this->url)) {
 				$this->url = BlogSite::urlencode($this->title);
 			}
@@ -60,13 +60,10 @@ class BlogEntry implements Component {
 		case 'img':
 			if (!empty($this->img)) return $this->img;
 			if (empty($this->xml['img'])) return array();
-			if (!empty($this->xml['img']) and empty($this->xml['img'][0])) {
+			if (is_string($this->xml['img'])) {
 				$this->xml['img'] = array($this->xml['img']);
 			}
 			foreach ($this->xml['img'] as $i) {
-				if (strpos($i['@attributes']['src'], 'http') === false) {
-					$i['@attributes']['src'] = "http://yodas.ws/{$i['@attributes']['src']}";
-				}
 				$this->img[] = $i;
 			}
 			shuffle($this->img);

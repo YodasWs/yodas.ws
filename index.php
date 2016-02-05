@@ -3,13 +3,19 @@ require_once("site.php");
 $blog = new BlogSite();
 $uri = trim($_SERVER['REQUEST_URI'], '/');
 
+$dir = explode('/', $uri);
+if (preg_match("'^[a-z]{2}$'", $dir[0])) {
+	// This is a country code
+	// TODO: Look up in world.xml
+}
+
 switch ($uri) {
 // Show Homepage
 case '':
 	require_once("components/tile/tile.php");
 
 	$wm = $blog->world_map;
-	$tp = array_slice($wm->top_places, 0, 24);
+	$tp = array_slice($wm->top_places, 0, min(24, count($wm->top_places)));
 
 	foreach ($tp as $p) {
 		$tile[] = new Tile($p);
