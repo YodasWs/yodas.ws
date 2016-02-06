@@ -1,5 +1,6 @@
 <?php
 require_once("components/component.php");
+require_once("components/img/img.php");
 class BlogEntry implements Component {
 	private $title;
 	private $img = array();

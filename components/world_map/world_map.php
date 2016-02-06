@@ -21,6 +21,14 @@ class WorldMap implements Component {
 		return self::$self;
 	}
 
+	public function getByCountry($cc) {
+		$loc = array();
+		foreach ($this->xml['locale'] as $l) {
+			if ($l['@attributes']['cc'] == $cc) $loc[] = $l;
+		}
+		return $loc;
+	}
+
 	public static function grabLocation($loc) {
 		$wm = self::$self;
 		return $wm->getLocation($loc);

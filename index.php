@@ -7,6 +7,16 @@ $dir = explode('/', $uri);
 if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 	// This is a country code
 	// TODO: Look up in world.xml
+	$wm = $blog->world_map;
+	$locations = $wm->getByCountry($dir[0]);
+	if (count($locations)) {
+		require_once("components/tile/tile.php");
+		foreach ($locations as $l) {
+			$t = new Tile($l);
+			$t->html();
+		}
+		exit;
+	}
 }
 
 switch ($uri) {
@@ -55,8 +65,10 @@ default:
 	header("HTTP/1.1 404 Not Found");
 	print <<<NotFoundHTML
 <h1>404 Not Found</h1>
-<p>Sorry, we couldn't find the requested file.</p>
-<p><a href="/">Return Home</a></p>
+<div style="border:0 none;min-height:50vh">
+	<p>Sorry, we couldn't find the requested file.</p>
+	<p><a href="/">Return Home</a></p>
+</div>
 NotFoundHTML;
 }
 ?>

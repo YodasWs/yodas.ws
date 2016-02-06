@@ -1,14 +1,20 @@
 RewriteEngine on
 
 #### Layouts Folder ####
-RewriteRule ^layouts/.+ layouts/index.php [R=301]
+RewriteRule ^layouts/.+ /layouts/ [R=301,END]
 RewriteRule ^layouts/ layouts/index.php [END]
 
-#### GTFS Data
+#### GTFS Data ####
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteCond %{HTTP_REFERER} yodas.ws
 RewriteRule ^gtfs/.*/(agency|routes|shapes|stop(s|_times)|trips).txt$ - [END]
 RewriteRule ^gtfs/ - [F]
+
+#### Country Code URLs, Location Search ####
+RewriteRule ^gb/?$ /uk/ [R=301,END]
+RewriteRule ^([a-z]{2})$ /$1/ [R=301,END]
+RewriteRule ^gb/ uk/
+RewriteRule ^[a-z]{2}/ index.php [END]
 
 #### Components Folder ####
 
@@ -35,11 +41,38 @@ RewriteRule ^components/ - [F]
 </FilesMatch>
 
 #### Dates in URL ####
+RewriteRule ^(\d{4})/01 $1/Jan/ [R=301]
+RewriteRule ^(\d{4})/02 $1/Feb/ [R=301]
+RewriteRule ^(\d{4})/03 $1/Mar/ [R=301]
+RewriteRule ^(\d{4})/04 $1/Apr/ [R=301]
+RewriteRule ^(\d{4})/05 $1/May/ [R=301]
+RewriteRule ^(\d{4})/06 $1/Jun/ [R=301]
+RewriteRule ^(\d{4})/07 $1/Jul/ [R=301]
+RewriteRule ^(\d{4})/08 $1/Aug/ [R=301]
+RewriteRule ^(\d{4})/09 $1/Sep/ [R=301]
+RewriteRule ^(\d{4})/10 $1/Oct/ [R=301]
+RewriteRule ^(\d{4})/11 $1/Nov/ [R=301]
+RewriteRule ^(\d{4})/12 $1/Dec/ [R=301]
+#RewriteRule ^(\d{4})/Jan/ $1/01/
+#RewriteRule ^(\d{4})/Feb/ $1/02/
+#RewriteRule ^(\d{4})/Mar/ $1/03/
+#RewriteRule ^(\d{4})/Apr/ $1/04/
+#RewriteRule ^(\d{4})/May/ $1/05/
+#RewriteRule ^(\d{4})/Jun/ $1/06/
+#RewriteRule ^(\d{4})/Jul/ $1/07/
+#RewriteRule ^(\d{4})/Aug/ $1/08/
+#RewriteRule ^(\d{4})/Sep/ $1/09/
+#RewriteRule ^(\d{4})/Oct/ $1/10/
+#RewriteRule ^(\d{4})/Nov/ $1/11/
+#RewriteRule ^(\d{4})/Dec/ $1/12/
 
-RewriteRule ^\d{4}/(\w{3}|\d{2})/\d{2} entry.php [END]
+# Unknown Month, goto Year
+#RewriteCond %{DOCUMENT_ROOT}/$1 -d
+#RewriteCond %{DOCUMENT_ROOT}/$1/$2 !-d
+#RewriteRule ^(\d{4})/(\d{2})/?$ $1/ [R=302]
 
 RewriteCond %{DOCUMENT_ROOT}/$1 -d
-RewriteRule ^(\d{4}/(\w{3}|\d{2})/$) month.php [END]
+RewriteRule ^(\d{4}/\d{2})/$ month.php [END]
 
 RewriteCond %{DOCUMENT_ROOT}/$1 -d
 RewriteRule ^(\d{4})/$ year.php [END]
