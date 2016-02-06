@@ -17,23 +17,23 @@ class BlogEntry implements Component {
 	public function __construct() {
 		global $blog;
 		$args = func_get_args();
-		if (gettype($args[0]) == 'array') {
-			$args = $args[0];
-		}
-		if (gettype($args[0]) == 'object') {
+		if (is_array($args[0])) $args = $args[0];
+		if (is_object($args[0])) {
 			return false;
-		} else if (gettype($args[0]) == 'string' and preg_match("'^/\d{4}(/\d\d(/\d\d)?)?'", $arg[0])) {
+		} else if (is_string($args[0]) and preg_match("'^/?\d{4}(/\d\d(/\d\d)?)?'", $arg[0])) {
 			// TODO: Is Date, Load Entry(-ies)
 			$date = BlogSite::getDate($arg[0]);
 			return false;
-		} else if (gettype($args[0]) == 'array') {
+		} else if (is_array($args[0])) {
 			// If World Map XML, take it
 			if (!empty($args[0]['locale'])) {
 				$this->xml = $args[0]['locale'];
 			} else if (!empty($args[0]['name'])) {
-				$this->xml = $args[0];
+				$this->xml = count($args) == 1 ? $args[0] : $args;
 			// TODO: Is this a Date?
-			} else return false;
+			} else {
+				return false;
+			}
 		} else if (gettype($args[0]) == 'string') {
 			// Not Date, Check world.xml
 			$wm = $blog->getWorldMap();

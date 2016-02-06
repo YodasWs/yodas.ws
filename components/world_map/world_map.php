@@ -21,16 +21,8 @@ class WorldMap implements Component {
 		return self::$self;
 	}
 
-	public function getByCountry($cc) {
-		$loc = array();
-		foreach ($this->xml['locale'] as $l) {
-			if ($l['@attributes']['cc'] == $cc) $loc[] = $l;
-		}
-		return $loc;
-	}
-
 	public static function grabLocation($loc) {
-		$wm = self::$self;
+		$wm = self::singleton();
 		return $wm->getLocation($loc);
 	}
 
@@ -38,9 +30,45 @@ class WorldMap implements Component {
 		foreach ($this->xml['locale'] as $l) {
 			if (!empty($l['name']) and (
 				(string) $l['name'] == $loc or BlogSite::urlencode((string) $l['name']) == $loc
-			)) return $l;
+			)) {
+				if (is_string($l['img'])) $l['img'] = array($l['img']);
+				return $l;
+			}
 		}
 		return false;
+	}
+
+	public static function getImages($location) {
+		$xml = self::grabLocation($location);
+		if (empty($xml)) return array();
+		if (is_string($xml['img'])) $xml['img'] = array($xml['img']);
+		$img = array();
+		foreach ($xml['img'] as $i) {
+			$img[] = new Img($i);
+		}
+		return $img;
+	}
+
+	public function locationsByCountry() {
+		$list = array();
+		foreach ($this->xml['locale'] as $l) {
+			$list[$l['@attributes']['cc']][] = $l;
+		}
+		uasort($list, function($a, $b) {
+			if (count($a) == count($b)) return 0;
+			return (count($a) < count($b)) ? 1 : -1;
+		});
+		return $list;
+	}
+
+	public function getByCountry($cc) {
+		$countries = $this->locationsByCountry();
+		if (!empty($countries[$cc])) return $countries[$cc];
+		return array();
+	}
+
+	public function getCountryName($cc, $lang='en') {
+		$names = simplexml_load_file("lang/cc.{$lang}.xml");
 	}
 
 	public function __construct() {
@@ -60,6 +88,8 @@ class WorldMap implements Component {
 				$this->top_places[] = $l;
 			}
 			uasort($this->top_places, function($a, $b) {
+				if (is_string($a['img'])) $a['img'] = array($a['img']);
+				if (is_string($b['img'])) $b['img'] = array($b['img']);
 				if (empty($a['img']) and !empty($b['img'])) return 1;
 				if (!empty($a['img']) and empty($b['img'])) return -1;
 				if (!empty($a['img']) and !empty($b['img'])) {

@@ -6,16 +6,25 @@ $uri = trim($_SERVER['REQUEST_URI'], '/');
 $dir = explode('/', $uri);
 if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 	// This is a country code
-	// TODO: Look up in world.xml
-	$wm = $blog->world_map;
-	$locations = $wm->getByCountry($dir[0]);
+	$locations = $blog->world_map->getByCountry($dir[0]);
 	if (count($locations)) {
-		require_once("components/tile/tile.php");
-		foreach ($locations as $l) {
-			$t = new Tile($l);
-			$t->html();
+		if (count($dir) == 1) {
+			require_once("components/tile/tile.php");
+			foreach ($locations as $l) {
+				$t = new Tile($l);
+				$t->html();
+			}
+			exit;
+		} else {
+			$gtfs_dir = strtolower("{$dir[0]}/{$dir[1]}");
+			if (is_dir("gtfs/$gtfs_dir")) {
+				require_once("components/gtfs/gtfs.php");
+				$gtfs = new GTFS();
+				$gtfs->addLocation($gtfs_dir);
+				$gtfs->html();
+				exit;
+			}
 		}
-		exit;
 	}
 }
 
@@ -25,33 +34,26 @@ case '':
 	require_once("components/tile/tile.php");
 
 	$wm = $blog->world_map;
-	$tp = array_slice($wm->top_places, 0, min(24, count($wm->top_places)));
 
+	$countries = $wm->locationsByCountry();
+	$countries = array_slice($countries, 0, 5);
+	foreach ($countries as $c) {
+		$c = new Tile($c);
+		// TODO: Add Country Information to Tile
+		// TODO: Set Title to Country Name
+		$tile[] = $c;
+	}
+
+	$tp = array_slice($wm->top_places, 0, min(24, count($wm->top_places)));
 	foreach ($tp as $p) {
 		$tile[] = new Tile($p);
 	}
 
 	WorldMap::html();
 	foreach ($tile as $t) {
+#		echo '<pre>' . print_r($t,1) . '</pre>';
 		$t->html();
 	}
-	break;
-case 'hakone':
-	require_once("components/gtfs/gtfs.php");
-	$gtfs = new GTFS();
-	$gtfs->addLocation('jp/hakone');
-	$gtfs->html();
-	break;
-case 'world':
-	if (!strstr($_SERVER['HTTP_ACCEPT'], "text/html")) {
-		header("HTTP/1.1 404 Not Found");
-		echo '<h1>404 Not Found</h1>';
-		exit;
-	}
-	$wm = $blog->world_map;
-	print '<pre>';
-	print_r($wm);
-	print '</pre>';
 	break;
 default:
 	if (strstr($uri, '/') === false) {

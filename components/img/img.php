@@ -7,6 +7,9 @@ class Img implements Component {
 	private $xml;
 
 	public function __construct($filename) {
+		$filename = explode('.', $filename);
+		if (end($filename) != 'xml') $filename[] = 'xml';
+		$filename = implode('.', $filename);
 		if (!file_exists($filename)) {
 			throw Exception("Could not find $filename");
 		}
