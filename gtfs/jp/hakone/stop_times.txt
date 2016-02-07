@@ -65,10 +65,10 @@ tozan_R_1,,,motohakone-ko,25,,0
 tozan_S_1,,,sengoku,10,,0
 tozan_S_1,,,pola-art,15,,0
 tozan_S_1,,,hakone-art,16,,0
+tozan_S_1,,,ichibanzaka,19,,0
 tozan_S_1,,,stn-gora,20,,0
 tozan_S_1,,,ichibanzaka,21,,0
 tozan_S_1,,,stn-chokoku,22,,0
-tozan_S_1,,,ichibanzaka,23,,0
 tozan_S_1,,,chokoku,24,,0
 tozan_S_1,,,ninotaira,25,,0
 tozan_S_1,,,ninotaira-iriguchi,26,,0

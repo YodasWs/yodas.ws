@@ -1,4 +1,12 @@
 <?php session_start(); ?>
+window.csv = {}
+csv.splitRow = function(r) {
+	r = r.match(/((?!,)|(?=^))("[^"]*"|[^,]*)(?=,|$)/g)
+	if (r && r.length) r = r.map(function(t) {
+		return t.trim('"')
+	})
+	return r
+}
 window.gtfs = gtfs || {}
 gtfs.extremes = { north:-90, south:180, east:-180, west:180 }
 gtfs.loadedFiles = []
@@ -42,7 +50,7 @@ gtfs.setShapeRoute = function(shape, route) {
 }
 gtfs.parseHeader = function(h) {
 	var r = {}
-	h.split(',').forEach(function(h, i) {
+	csv.splitRow(h).forEach(function(h, i) {
 		r[h.trim()] = i
 	})
 	return r
@@ -75,8 +83,8 @@ gtfs.listAgencies = function(data) {
 	var head = gtfs.parseHeader(data.shift()),
 		$a = $('<section class="agency">')
 	data.forEach(function(r){
-		r = r.split(',')
-		if (r[0] == '') return
+		r = csv.splitRow(r)
+		if (!r || r[0] == '') return
 		$a.append('<h1>' + r[head.agency_name])
 		if (r[head.agency_url]) $a.append('<a href="' + r[head.agency_url] + '" target="_blank">Agency Website</a>')
 	})
@@ -110,8 +118,8 @@ gtfs.loadGTFS = function(url) {
 			data = data.split("\n")
 			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
-				r = r.split(',')
-				if (r[0] == '') return
+				r = csv.splitRow(r)
+				if (!r || r[0] == '') return
 				// Save Pertinent Route Data
 				gtfs.routes[r[head.route_id]] = gtfs.routes[r[head.route_id]] || {}
 				gtfs.routes[r[head.route_id]].txtColor = '#' + (r[head.route_text_color] || '000000')
@@ -153,10 +161,10 @@ gtfs.loadGTFS = function(url) {
 		success:function(data){
 			data = data.split("\n")
 			var head = gtfs.parseHeader(data.shift())
+			if (head.shape_id || head.shape_id === 0)
 			data.forEach(function(r){
 				r = r.split(',')
-				if (!head.shape_id) return
-				if (r[0] == '') return
+				if (!r || r[0] == '') return
 				route = r[head.route_id]
 				shape = r[head.shape_id]
 				// Associate Shape to Route
@@ -174,8 +182,8 @@ gtfs.loadGTFS = function(url) {
 			data = data.split("\n")
 			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
-				r = r.split(',')
-				if (r[0] == '') return
+				r = csv.splitRow(r)
+				if (!r || r[0] == '') return
 				// Save Shape Point
 				gtfs.poly[r[head.shape_id]] = gtfs.poly[r[head.shape_id]] || {}
 				gtfs.poly[r[head.shape_id]].path = gtfs.poly[r[head.shape_id]].path || []
@@ -214,8 +222,8 @@ gtfs.loadGTFS = function(url) {
 			data = data.split("\n")
 			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
-				r = r.split(',')
-				if (r[0] == '') return
+				r = csv.splitRow(r)
+				if (!r || r[0] == '') return
 				// Save Pertinent Stop Information for easy retrieval
 				gtfs.stops[r[head.stop_id]] = {
 					lat: Number.parseFloat(r[head.stop_lat]),
@@ -307,6 +315,19 @@ foreach ($_SESSION['gtfs_locs'] as $loc) {
 	echo "\tgtfs.loadGTFS('$loc')\n";
 }
 ?>
+	gtfs.map.zoom = gtfs.map.getZoom()
+	gtfs.map.addListener('idle', function(e) {
+		var zoom = gtfs.map.getZoom()
+		if (Number.isNaN(zoom)) return
+		if (zoom == gtfs.map.zoom) return
+		gtfs.map.zoom = zoom
+		console.log('Zoom: ' + zoom)
+		for (var i in gtfs.poly) {
+			gtfs.poly[i].Polyline.setOptions({
+				strokeWeight: gtfs.poly[i].weight + (zoom >= 14 ? zoom - 13: 0)
+			})
+		}
+	})
 })
 $(document).on('loaded', function(e) {
 	gtfs.loadedFiles.push(e.file)
@@ -351,7 +372,7 @@ $(document).on('loaded', function(e) {
 		if (!shape || !gtfs.poly[shape]) return
 		gtfs.poly[shape].Polyline.setOptions({
 			strokeWeight: gtfs.poly[shape].weight,
-			opacity: gtfs.poly[i].opacity || .6,
+			opacity: gtfs.poly[shape].opacity || .6,
 			zIndex: 0
 		})
 	})
