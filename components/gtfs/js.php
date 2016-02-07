@@ -1,6 +1,7 @@
 <?php session_start(); ?>
 window.gtfs = gtfs || {}
 gtfs.extremes = { north:-90, south:180, east:-180, west:180 }
+gtfs.loadedFiles = []
 gtfs.tripRoute = {}
 gtfs.routes = {}
 gtfs.stops = {}
@@ -69,25 +70,40 @@ gtfs.saveShapePoint = function(shape, lat, lng) {
 		lat: lat, lng: lng
 	})
 }
+gtfs.listAgencies = function(data) {
+	data = data.split("\n")
+	var head = gtfs.parseHeader(data.shift()),
+		$a = $('<section class="agency">')
+	data.forEach(function(r){
+		r = r.split(',')
+		if (r[0] == '') return
+		$a.append('<h1>' + r[head.agency_name])
+		if (r[head.agency_url]) $a.append('<a href="' + r[head.agency_url] + '" target="_blank">Agency Website</a>')
+	})
+	$('main section.agency').remove()
+	$a.appendTo('main')
+}
 // Load and Draw GTFS Shapes
 gtfs.loadGTFS = function(url) {
-	$.ajax({
+	if (
+		!localStorage.getItem('gtfs.' + url + '.agency.txt') ||
+		!localStorage.getItem('gtfs.' + url + '.agency.date') ||
+		Number.parseInt(localStorage.getItem('gtfs.agency.date'), 10) < Date.now() - 1000 * 60 * 60 * 24 * 7
+	) $.ajax({
 		url:'/gtfs/' + url + '/agency.txt',
 		dateType:'text',
 		success:function(data){
-			data = data.split("\n")
-			var head = gtfs.parseHeader(data.shift())
-			data.forEach(function(r){
-				r = r.split(',')
-				if (r[0] == '') return
-				var $a = $('<section class="agency">')
-				$a.append('<h1>' + r[head.agency_name])
-				if (r[head.agency_url]) $a.append('<a href="' + r[head.agency_url] + '" target="_blank">Agency Website</a>')
-				$a.appendTo('main')
-			})
+			localStorage.setItem('gtfs.' + url + '.agency.date', Date.now())
+			localStorage.setItem('gtfs.' + url + '.agency.txt', data)
+			gtfs.listAgencies(data)
 		}
-	})
-	$.ajax({
+	}); else gtfs.listAgencies(localStorage.getItem('gtfs.' + url + '.agency.txt'))
+	if (
+		!localStorage.getItem('gtfs.' + url + '.routes.date') ||
+		!localStorage.getItem('gtfs.' + url + '.routes.head') ||
+		!localStorage.getItem('gtfs.' + url + '.routes.array') ||
+		Number.parseInt(localStorage.getItem('gtfs.routes.date'), 10) < Date.now() - 1000 * 60 * 60 * 24 * 7
+	) $.ajax({
 		url:'/gtfs/' + url + '/routes.txt',
 		dateType:'text',
 		success:function(data){
@@ -122,9 +138,15 @@ gtfs.loadGTFS = function(url) {
 					break;
 				}
 			})
+			localStorage.setItem('gtfs.' + url + '.routes.head', JSON.stringify(head))
+			localStorage.setItem('gtfs.' + url + '.routes.date', Date.now())
+			localStorage.setItem('gtfs.' + url + '.routes.array', JSON.stringify(gtfs.routes))
 			$(document).trigger($.Event('loaded', { file:'routes.txt' }))
 		}
-	})
+	}); else {
+		gtfs.routes = JSON.parse(localStorage['gtfs.' + url + '.routes.array'])
+		$(document).trigger($.Event('loaded', { file:'routes.txt' }))
+	}
 	$.ajax({
 		url:'/gtfs/' + url + '/trips.txt',
 		dateType:'text',
@@ -257,7 +279,7 @@ gtfs.loadGTFS = function(url) {
 						geodesic: true,
 						strokeColor: (typeof gtfs.poly[r.shape].color == 'string' ? gtfs.poly[r.shape].color : '#008800'),
 						strokeWeight: (gtfs.poly[r.shape].weight || 2),
-						opacity: gtfs.poly[i].opacity || .6,
+						opacity: gtfs.poly[r.shape].opacity || .6,
 						strokeOpacity: 1,
 						clickable: true
 					})
