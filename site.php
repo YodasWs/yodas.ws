@@ -163,6 +163,10 @@ class BlogSite {
 			'title','javascript'
 		))) return $this->$var;
 		if (preg_match("'^(world_?)?map$'", $var)) return $this->getWorldMap();
+		switch($var) {
+		case 'lang':
+			return 'en';
+		}
 	}
 }
 ?>

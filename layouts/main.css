@@ -66,6 +66,9 @@ main > * {
 	margin: 0.5rem 2%;
 	border: 1px solid black;
 }
+main > h1 {
+	border: 0 none;
+}
 
 .gm-style {
 	width: calc(100% - 1px) !important;
