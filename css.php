@@ -3,7 +3,7 @@ header("Content-Type: text/css; charset=UTF-8");
 date_default_timezone_set('America/Detroit');
 
 function etag($time) {
-	return date("YMdHT", $time);
+	return date("YMdHiT", $time);
 }
 
 $file = trim($_SERVER['REQUEST_URI'], '/');
