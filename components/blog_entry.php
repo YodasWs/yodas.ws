@@ -6,6 +6,7 @@ class BlogEntry implements Component {
 	private $img = array();
 	private $url;
 	private $xml;
+	private $lang;
 
 	public static function buildFromDate($date) {
 		if (is_string($date)) {

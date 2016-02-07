@@ -1,1 +1,1 @@
-<img src="<?=$this->src?>" alt="<?=$this->alt?>"/>
+<img src="<?=$this->xml['src']?>" alt="<?=$this->xml['alt']?>"/>

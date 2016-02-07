@@ -38,11 +38,16 @@ class WorldMap implements Component {
 		return false;
 	}
 
-	public static function getImages($location) {
-		$xml = self::grabLocation($location);
+	public static function grabImages($location) {
+		$wm = self::singleton();
+		return $wm->getImages($loc);
+	}
+	public function getImages($location) {
+		$xml = $this->getLocation($location);
 		if (empty($xml)) return array();
 		if (is_string($xml['img'])) $xml['img'] = array($xml['img']);
 		$img = array();
+		require_once("components/img/img.php");
 		foreach ($xml['img'] as $i) {
 			$img[] = new Img($i);
 		}

@@ -16,14 +16,28 @@ if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 			}
 			exit;
 		} else {
+			$content_loaded = false;
 			$gtfs_dir = strtolower("{$dir[0]}/{$dir[1]}");
+			$xml = $blog->world_map->getLocation($dir[1]);
+			if (!empty($xml)) {
+				$content_loaded = true;
+				echo "<h1>{$xml['name']}</h1>";
+			}
 			if (is_dir("gtfs/$gtfs_dir")) {
+				$content_loaded = true;
 				require_once("components/gtfs/gtfs.php");
 				$gtfs = new GTFS();
 				$gtfs->addLocation($gtfs_dir);
 				$gtfs->html();
-				exit;
 			}
+			$img = $blog->world_map->getImages($dir[1]);
+			if (count($img)) {
+				$content_loaded = true;
+				foreach ($img as $i) {
+					$i->html();
+				}
+			}
+			if ($content_loaded) exit;
 		}
 	}
 }
@@ -59,8 +73,9 @@ default:
 	if (strstr($uri, '/') === false) {
 		$xml = $blog->loc($uri);
 		if (!empty($xml)) {
+			header("HTTP/1.1 301 Found");
+			header("Location: {$xml['@attributes']['cc']}/" . BlogSite::urlencode($uri));
 			print "<h1>" . urldecode($uri) . "</h1>";
-			print '<pre>' . print_r($xml, true) . '</pre>';
 			exit;
 		}
 	}
