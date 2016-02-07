@@ -44,7 +44,6 @@ body > nav > ul li > a {
 }
 
 main {
-	outline: 1px solid black;
 	display: block;
 	margin: 0 auto;
 	width: 98%;
