@@ -9,7 +9,8 @@ define('bubbleNumPic',0);
 // Creates the text within the Info Window for given Google Maps Marker
 function loadGMarker($xml, $i) {
 	// Upgraded 8 Oct 2010 to HTML output in return $txt
-	$locale = ($xml->locale[$i]['area']) ? $xml->locale[$i]['area'] : $xml->locale[$i]->google; // Added Area Markers, 26 Jan 2009
+//	$locale = ($xml->locale[$i]['area']) ? $xml->locale[$i]['area'] : $xml->locale[$i]->google; // Added Area Markers, 26 Jan 2009
+	$locale = $xml->locale[$i]->google;
 	// Add Click Event to display Info Window, 15 Jul 2008
 	$txt = "<div class=\"gMarker\">";
 	if (count($xml->locale[$i]->date) == 1) { // If one date for locale, link directly to it, 1 Oct 2008
@@ -76,19 +77,21 @@ for ($i=0; $i<count($worldxml->locale); $i++) { // Load Area Zoom Levels, 26 Jan
 }
 echo "\ti=0;";
 for ($i=0; $i<count($worldxml->locale); $i++) { // Load Locale Markers
-	$locale = ($worldxml->locale[$i]->google) ? $worldxml->locale[$i]->google : $worldxml->locale[$i]['area'];
+	if (empty($worldxml->locale[$i]->google)) continue;
+	$locale = $worldxml->locale[$i]->google;
 	$locale = preg_replace("|'|", "\\'", $locale);
 	$win = loadGMarker($worldxml, $i);
+	if ($worldxml->locale[$i]['home']) $zed = 500;
+	else if ($worldxml->locale[$i]['zed']) $zed = $worldxml->locale[$i]['zed'];
+	else $zed = 400;
 	if (!$worldxml->locale[$i]['lat'] or !$worldxml->locale[$i]['lng']) {
-		if ($worldxml->locale[$i]['home']) $zed = 500;
-		else if ($worldxml->locale[$i]['zed']) $zed = $worldxml->locale[$i]['zed'];
 		echo <<<gMap
 markers[$i]=false; geocode.geocode({'address': "$locale"}, function(point, status) {
 if (status == google.maps.GeocoderStatus.OK) try {
 	markers[$i] = new google.maps.Marker({ position: point[0].geometry.location, map: map, title: "$locale", zIndex: $zed });
 	win[$i] = new google.maps.InfoWindow({content: '$win'});
 	google.maps.event.addListener(markers[$i], 'click', function() {
-		$(win).each(function(i, ele) { ele.close(); });
+		win.forEach(function(e){e.close()})
 		win[$i].open(map, markers[$i]);
 	});
 	document.getElementById('hiddenLatLng').innerHTML += "$locale: " + point[0].geometry.location.lat() + ', ' + point[0].geometry.location.lng() + "<br/>\\n";
@@ -98,14 +101,12 @@ if (status == google.maps.GeocoderStatus.OK) try {
 } });\n
 gMap;
 	} else { // Use LatLng coords if available, 9 Oct 2010
-		if ($worldxml->locale[$i]['home']) $zed = 500;
-		else if ($worldxml->locale[$i]['zed']) $zed = $worldxml->locale[$i]['zed'];
 		echo <<<gMap
 	pnt = new google.maps.LatLng({$worldxml->locale[$i]['lat']}, {$worldxml->locale[$i]['lng']});
 	markers[$i] = new google.maps.Marker({ position: pnt, map: map, title: "$locale", zIndex: $zed });
 	win[$i] = new google.maps.InfoWindow({content: '$win'});
 	google.maps.event.addListener(markers[$i], 'click', function() {
-		$(win).each(function(i, ele) { ele.close(); });
+		win.forEach(function(e){e.close()})
 		win[$i].open(map, markers[$i]);
 	});
 	markers[$i].setMap(map);\n

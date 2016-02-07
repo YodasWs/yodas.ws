@@ -1,10 +1,12 @@
 <?php
 require_once("components/component.php");
+require_once("components/img/img.php");
 class BlogEntry implements Component {
 	private $title;
 	private $img = array();
 	private $url;
 	private $xml;
+	private $lang;
 
 	public static function buildFromDate($date) {
 		if (is_string($date)) {
@@ -16,23 +18,23 @@ class BlogEntry implements Component {
 	public function __construct() {
 		global $blog;
 		$args = func_get_args();
-		if (gettype($args[0]) == 'array') {
-			$args = $args[0];
-		}
-		if (gettype($args[0]) == 'object') {
+		if (is_array($args[0])) $args = $args[0];
+		if (is_object($args[0])) {
 			return false;
-		} else if (gettype($args[0]) == 'string' and preg_match("'^/\d{4}(/\d\d(/\d\d)?)?'", $arg[0])) {
+		} else if (is_string($args[0]) and preg_match("'^/?\d{4}(/\d\d(/\d\d)?)?'", $arg[0])) {
 			// TODO: Is Date, Load Entry(-ies)
 			$date = BlogSite::getDate($arg[0]);
 			return false;
-		} else if (gettype($args[0]) == 'array') {
+		} else if (is_array($args[0])) {
 			// If World Map XML, take it
 			if (!empty($args[0]['locale'])) {
 				$this->xml = $args[0]['locale'];
-			} else if (!empty($args[0]['google'])) {
-				$this->xml = $args[0];
+			} else if (!empty($args[0]['name'])) {
+				$this->xml = count($args) == 1 ? $args[0] : $args;
 			// TODO: Is this a Date?
-			} else return false;
+			} else {
+				return false;
+			}
 		} else if (gettype($args[0]) == 'string') {
 			// Not Date, Check world.xml
 			$wm = $blog->getWorldMap();
@@ -41,8 +43,8 @@ class BlogEntry implements Component {
 				$this->xml = $loc;
 			} else return false;
 		}
-		if (!empty($this->xml['google'])) {
-			$this->title = (string) $this->xml['google'];
+		if (!empty($this->xml['name'])) {
+			$this->title = (string) $this->xml['name'];
 			if (empty($this->url)) {
 				$this->url = BlogSite::urlencode($this->title);
 			}
@@ -60,13 +62,10 @@ class BlogEntry implements Component {
 		case 'img':
 			if (!empty($this->img)) return $this->img;
 			if (empty($this->xml['img'])) return array();
-			if (!empty($this->xml['img']) and empty($this->xml['img'][0])) {
+			if (is_string($this->xml['img'])) {
 				$this->xml['img'] = array($this->xml['img']);
 			}
 			foreach ($this->xml['img'] as $i) {
-				if (strpos($i['@attributes']['src'], 'http') === false) {
-					$i['@attributes']['src'] = "http://yodas.ws/{$i['@attributes']['src']}";
-				}
 				$this->img[] = $i;
 			}
 			shuffle($this->img);

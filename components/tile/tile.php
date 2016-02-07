@@ -4,6 +4,7 @@ class Tile extends BlogEntry {
 
 	public function __construct() {
 		$args = func_get_args();
+		$this->xml = count($args) == 1 ? $args[0] : $args;
 		parent::__construct($args);
 	}
 

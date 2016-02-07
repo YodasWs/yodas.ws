@@ -7,7 +7,10 @@
 <script src="/components/upgrdr/"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <?php foreach ($this->javascript as $js) {
-	echo "<script src=\"/components/{$js}/\" async></script>";
+	if (strpos($js, 'http://') === 0 || strpos($js, 'https://') === 0)
+		echo "<script src=\"{$js}/\" async></script>";
+	else
+		echo "<script src=\"/components/{$js}/\" async></script>";
 } ?>
 </head>
 <body>

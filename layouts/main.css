@@ -44,7 +44,6 @@ body > nav > ul li > a {
 }
 
 main {
-	outline: 1px solid black;
 	display: block;
 	margin: 0 auto;
 	width: 98%;
@@ -62,8 +61,15 @@ main > h1, main > h2, main > h3, main > h4, main > h5, main > h6 {
 main > h1:first-child, main > h2:first-child, main > h3:first-child, main > h4:first-child, main > h5:first-child, main > h6:first-child {
 	margin-top: 0.5rem;
 }
-main > article, main > section, main > div {
+main > * {
 	display: block;
 	margin: 0.5rem 2%;
-	outline: 1px solid black;
+	border: 1px solid black;
+}
+main > h1 {
+	border: 0 none;
+}
+
+.gm-style {
+	width: calc(100% - 1px) !important;
 }

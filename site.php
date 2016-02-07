@@ -12,6 +12,7 @@ class BlogSite {
 	private $fileHeader = "header.php";
 	private $fileFooter = "footer.php";
 	private $javascript = array();
+	private $page_wrap = true;
 	private $world_map;
 	private $lang;
 
@@ -19,9 +20,10 @@ class BlogSite {
 		ob_flush();
 	}
 
-	public function __construct() {
+	public function __construct($wrap=true) {
 		ob_start();
 
+		$this->page_wrap = $wrap;
 		$this->date = self::getDate($_SERVER['REQUEST_URI']);
 
 		// Set Preferred Language
@@ -134,9 +136,9 @@ class BlogSite {
 	public function __destruct() {
 		$content = ob_get_clean();
 
-		include_once($this->dirLayouts.$this->fileHeader);
+		if ($this->page_wrap) include_once($this->dirLayouts.$this->fileHeader);
 		echo $content;
-		include_once($this->dirLayouts.$this->fileFooter);
+		if ($this->page_wrap) include_once($this->dirLayouts.$this->fileFooter);
 	}
 
 	public function __set($var, $val) {
@@ -154,7 +156,10 @@ class BlogSite {
 			break;
 		case 'javascript':
 			if (!in_array($val, $this->javascript) && (
-				file_exists("components\\{$val}\\{$val}.js") || file_exists("components\\{$val}\\js.php")
+				strpos($val, 'http://') === 0 ||
+				strpos($val, 'https://') === 0 ||
+				file_exists("components\\{$val}\\js.php") ||
+				file_exists("components\\{$val}\\{$val}.js")
 			)) $this->javascript[] = $val;
 			break;
 		}
@@ -165,6 +170,10 @@ class BlogSite {
 			'lang','title','javascript'
 		))) return $this->$var;
 		if (preg_match("'^(world_?)?map$'", $var)) return $this->getWorldMap();
+		switch($var) {
+		case 'lang':
+			return 'en';
+		}
 	}
 }
 ?>
