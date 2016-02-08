@@ -90,12 +90,43 @@ gtfs.listAgencies = function(data) {
 	$('main section.agency').remove()
 	$a.appendTo('main')
 }
+gtfs.parseStops = function(data) {
+	data = data.split("\n")
+	var head = gtfs.parseHeader(data.shift())
+	data.forEach(function(r){
+		r = csv.splitRow(r)
+		if (!r || r[0] == '') return
+		// Save Pertinent Stop Information for easy retrieval
+		gtfs.stops[r[head.stop_id]] = {
+			lat: Number.parseFloat(r[head.stop_lat]),
+			lng: Number.parseFloat(r[head.stop_lon]),
+			name: r[head.stop_name],
+			// Place Google Maps Marker
+			Marker: new google.maps.Marker({
+				position:{
+					lat: Number.parseFloat(r[head.stop_lat]),
+					lng: Number.parseFloat(r[head.stop_lon]),
+				},
+				icon:{
+					url:'http://chart.apis.google.com/chart?chst=d_map_xpin_letter&chld=pin%7C%20%7CFE7569',
+					anchor:new google.maps.Point(11,34),
+					origin:new google.maps.Point(0,0),
+					size:new google.maps.Size(21,34)
+				},
+				title: r[head.stop_name],
+				visible: false,
+				map: gtfs.map
+			})
+		}
+	})
+	$(document).trigger($.Event('loaded', { file:'stops.txt' }))
+}
 // Load and Draw GTFS Shapes
 gtfs.loadGTFS = function(url) {
 	if (
 		!localStorage.getItem('gtfs.' + url + '.agency.txt') ||
 		!localStorage.getItem('gtfs.' + url + '.agency.date') ||
-		Number.parseInt(localStorage.getItem('gtfs.agency.date'), 10) < Date.now() - 1000 * 60 * 60 * 24 * 7
+		Number.parseInt(localStorage.getItem('gtfs.' + url + '.agency.date'), 10) < Date.now() - 1000 * 60 * 60 * 24 * 7
 	) $.ajax({
 		url:'/gtfs/' + url + '/agency.txt',
 		dateType:'text',
@@ -109,7 +140,7 @@ gtfs.loadGTFS = function(url) {
 		!localStorage.getItem('gtfs.' + url + '.routes.date') ||
 		!localStorage.getItem('gtfs.' + url + '.routes.head') ||
 		!localStorage.getItem('gtfs.' + url + '.routes.array') ||
-		Number.parseInt(localStorage.getItem('gtfs.routes.date'), 10) < Date.now() - 1000 * 60 * 60 * 24 * 7
+		Number.parseInt(localStorage.getItem('gtfs.' + url + '.routes.date'), 10) < Date.now() - 1000 * 60 * 60 * 24 * 7
 	) $.ajax({
 		url:'/gtfs/' + url + '/routes.txt',
 		dateType:'text',
@@ -200,48 +231,17 @@ gtfs.loadGTFS = function(url) {
 	})
 	if (
 		!localStorage.getItem('gtfs.' + url + '.stops.date') ||
-		!localStorage.getItem('gtfs.' + url + '.stops.head') ||
-		!localStorage.getItem('gtfs.' + url + '.stops.array') ||
-		Number.parseInt(localStorage.getItem('gtfs.stops.date'), 10) < Date.now() - 1000 * 60 * 60 * 24 * 7
+		!localStorage.getItem('gtfs.' + url + '.stops.text') ||
+		Number.parseInt(localStorage.getItem('gtfs.' + url + '.stops.date'), 10) < Date.now() - 1000 * 60 * 60 * 24 * 7
 	) $.ajax({
 		url:'/gtfs/' + url + '/stops.txt',
 		success:function(data){
-			data = data.split("\n")
-			var head = gtfs.parseHeader(data.shift())
-			data.forEach(function(r){
-				r = csv.splitRow(r)
-				if (!r || r[0] == '') return
-				// Save Pertinent Stop Information for easy retrieval
-				gtfs.stops[r[head.stop_id]] = {
-					lat: Number.parseFloat(r[head.stop_lat]),
-					lng: Number.parseFloat(r[head.stop_lon]),
-					name: r[head.stop_name],
-					// Place Google Maps Marker
-					Marker: new google.maps.Marker({
-						position:{
-							lat: Number.parseFloat(r[head.stop_lat]),
-							lng: Number.parseFloat(r[head.stop_lon]),
-						},
-						icon:{
-							url:'http://chart.apis.google.com/chart?chst=d_map_xpin_letter&chld=pin%7C%20%7CFE7569',
-							anchor:new google.maps.Point(11,33),
-							origin:new google.maps.Point(0,0),
-							size:new google.maps.Size(21,33)
-						},
-						title: r[head.stop_name],
-						visible: false,
-						map: gtfs.map
-					})
-				}
-			})
+			gtfs.parseStops(data)
 			localStorage.setItem('gtfs.' + url + '.stops.date', Date.now())
-			localStorage.setItem('gtfs.' + url + '.stops.head', JSON.stringify(head))
-			localStorage.setItem('gtfs.' + url + '.stops.array', JSON.stringify(gtfs.stops))
-			$(document).trigger($.Event('loaded', { file:'stops.txt' }))
+			localStorage.setItem('gtfs.' + url + '.stops.text', data)
 		}
 	}); else {
-		gtfs.stops = JSON.parse(localStorage['gtfs.' + url + '.stops.array'])
-		$(document).trigger($.Event('loaded', { file:'stops.txt' }))
+		gtfs.parseStops(localStorage.getItem('gtfs.' + url + '.stops.text'))
 	}
 	$.ajax({
 		url:'/gtfs/' + url + '/stop_times.txt',
@@ -254,9 +254,10 @@ gtfs.loadGTFS = function(url) {
 					stop_id = r[head.stop_id],
 					route_id = gtfs.tripRoute[trip_id]
 				if (!r[head.stop_id]) return
-				// TODO: If the same as the last stop, don't add
-				if (gtfs.routes[route_id] && gtfs.routes[route_id].stops)
-					gtfs.routes[route_id].stops.push(stop_id)
+				if (
+					gtfs.routes[route_id] && gtfs.routes[route_id].stops &&
+					gtfs.routes[route_id].stops[gtfs.routes[route_id].stops.length - 1] != stop_id
+				) gtfs.routes[route_id].stops.push(stop_id)
 				if (!gtfs.routes[route_id].shape) gtfs.routes[route_id].shape = trip_id
 			})
 			// Build Lists of Route Stations
@@ -388,6 +389,7 @@ $(document).on('loaded', function(e) {
 			if (!isOpen) {
 				$('li[data-stop-id="' + id + '"]').addClass('active').parents('section[data-route-id]').addClass('highlighted')
 				gtfs.stops[id].Marker.setVisible(true)
+				gtfs.map.panTo(gtfs.stops[id].Marker.getPosition())
 			}
 		}
 	})
