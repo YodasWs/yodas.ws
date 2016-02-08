@@ -9,6 +9,6 @@ class GoogleMaps implements Component {
 
 	public static function url($lat, $lng, $z, $w=150, $h=null) {
 		if (empty($h)) $h = $w;
-		return "http://maps.google.com/maps/api/staticmap?markers={$lat},{$lng}&size={$w}x{$h}&format=png32&zoom=$z";
+		return "http://maps.google.com/maps/api/staticmap?markers={$lat},{$lng}&size={$w}x{$h}&format=png32&scale=2&zoom=$z";
 	}
 }

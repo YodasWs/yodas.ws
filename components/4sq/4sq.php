@@ -18,6 +18,7 @@ class Foursquare implements Component {
 
 	// Add Map of Foursquare Venue for PicBanner
 	public function venueMap($venue, $zoom=11) {
+		// TODO: Need to use a custom Google Static Maps Component
 		$venue = $this->getVenue($venue)
 		$url = "http://maps.google.com/maps/api/staticmap?";
 		$url .= "markers={$venue['location']['lat']},{$venue['location']['lng']}";
