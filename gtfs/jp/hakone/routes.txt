@@ -1,8 +1,11 @@
-route_id,agency_id,route_short_name,route_long_name,route_type,route_url,route_color,route_text_color
-tozan_rail,tozan_rail,,Hakone Tozan Train,2,,FF0000,
-tozan_cable,tozan_rail,,Hakone Tozan Cable Car,7,,DEB887,
-hakone_ropeway,tozan_ropeway,,Hakone Ropeway,5,,000000,ffffff
-tozan_T,tozan_bus,T,Togendai Line,3,,165CC3,
-tozan_H,tozan_bus,H,Hakone-machi Line,3,,d8273c,
-tozan_S,tozan_bus,S,Tourist Attraction Sightseeing Bus (via Kozuka-rindo),3,,65007b,ffffff
-tozan_R,tozan_bus,R,Hakone-shindo Line,3,,a587bd,
+route_id,agency_id,route_short_name,route_long_name,route_type,x-route-icon,route_url,route_color,route_text_color
+tozan_rail,tozan_rail,,Hakone Tozan Train,2,9e,,FF0000,
+tozan_cable,tozan_rail,,Hakone Tozan Cable Car,7,9e,,DEB887,
+hakone_ropeway,tozan_ropeway,,Hakone Ropeway,5,a1,,000000,ffffff
+tozan_T,tozan_bus,T,Togendai Line,3,8c,,165CC3,
+tozan_H,tozan_bus,H,Hakone-machi Line,3,8c,,d8273c,
+tozan_S,tozan_bus,S,Tourist Attraction Sightseeing Bus (via Kozuka-rindo),3,8c,,65007b,ffffff
+tozan_R,tozan_bus,R,Hakone-shindo Line,3,8c,,a587bd,
+tozan_K,tozan_bus,K,Hakone-kyukaido Line,3,8c,,803b00,
+tozan_W,tozan_bus,W,Shunjuku Hakone Line,3,8c,,e3bb00,
+tozan_Y,tozan_bus,Y,Gora Line,3,8c,,73b5e3,
