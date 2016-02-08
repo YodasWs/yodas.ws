@@ -148,7 +148,7 @@ gtfs.loadGTFS = function(url) {
 			data = data.split("\n")
 			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
-				r = csv.splitRow(r)
+				r = r.split(',')
 				if (!r || r[0] == '') return
 				// Save Pertinent Route Data
 				gtfs.routes[r[head.route_id]] = gtfs.routes[r[head.route_id]] || {}
@@ -258,7 +258,7 @@ gtfs.loadGTFS = function(url) {
 					gtfs.routes[route_id] && gtfs.routes[route_id].stops &&
 					gtfs.routes[route_id].stops[gtfs.routes[route_id].stops.length - 1] != stop_id
 				) gtfs.routes[route_id].stops.push(stop_id)
-				if (!gtfs.routes[route_id].shape) gtfs.routes[route_id].shape = trip_id
+				if (gtfs.routes[route_id] && !gtfs.routes[route_id].shape) gtfs.routes[route_id].shape = trip_id
 			})
 			// Build Lists of Route Stations
 			for (i in gtfs.routes) {
@@ -308,7 +308,7 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 		scrollWheel: true,
 		zoomControl: true,
 		maxZoom: 18,
-		minZoom: 10
+		minZoom: 9
 	})
 <?php
 foreach ($_SESSION['gtfs_locs'] as $loc) {
