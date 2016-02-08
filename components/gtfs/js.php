@@ -24,7 +24,6 @@ gtfs.setShapeRoute = function(shape, route) {
 		case 2: // Rail
 			gtfs.poly[shape].opacity = 1
 			gtfs.poly[shape].weight = 3
-			gtfs.poly[shape].label = '🚆'
 			break;
 		case 3: // Bus
 			gtfs.poly[shape].weight = 2
@@ -128,23 +127,6 @@ gtfs.loadGTFS = function(url) {
 				gtfs.routes[r[head.route_id]].type = r[head.route_type]
 				gtfs.routes[r[head.route_id]].num = r[head.route_short_name]
 				gtfs.routes[r[head.route_id]].stops = []
-				switch (Number.parseInt(gtfs.routes[r[head.route_id]].type, 10)) {
-				case 2: // Rail
-					gtfs.routes[r[head.route_id]].label = '🚆'
-					break;
-				case 3: // Bus
-					gtfs.routes[r[head.route_id]].label = '🚏'
-					break;
-				case 5: // Cable Car
-					gtfs.routes[r[head.route_id]].label = '🚞'
-					break;
-				case 6: // Gondola
-					gtfs.routes[r[head.route_id]].label = '🚡'
-					break;
-				case 7: // Funicular
-					gtfs.routes[r[head.route_id]].label = '🚞'
-					break;
-				}
 			})
 			localStorage.setItem('gtfs.' + url + '.routes.head', JSON.stringify(head))
 			localStorage.setItem('gtfs.' + url + '.routes.date', Date.now())
@@ -388,7 +370,6 @@ $(document).on('loaded', function(e) {
 			$('section[data-route-id].highlighted').removeClass('highlighted')
 			if (!isOpen) {
 				$('li[data-stop-id="' + id + '"]').addClass('active').parents('section[data-route-id]').addClass('highlighted')
-				gtfs.stops[id].Marker.setLabel(gtfs.routes[route_id].label || '')
 				gtfs.stops[id].Marker.setVisible(true)
 			}
 		}

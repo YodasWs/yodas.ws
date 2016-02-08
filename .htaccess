@@ -1,5 +1,10 @@
 RewriteEngine on
 
+#### Map Markers ####
+
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule \.svg$ - [END]
+
 #### Layouts Folder ####
 RewriteRule ^layouts/.+ /layouts/ [R=301,END]
 RewriteRule ^layouts/ layouts/index.php [END]

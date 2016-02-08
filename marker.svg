@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="147" height="128" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<style>
+text { font-size: 11px; }
+</style>
+<script><![CDATA[
+var marker = {
+	icon: '&#x1f68d;',
+	star: '000000',
+	chld: 'pin',
+	height: 30,
+	width: 21,
+	x:5,
+	y:13
+}
+var q = window.location.search.substr(1).split('&')
+q.forEach(function(i) {
+	i = i.split('=')
+	switch (i[0]) {
+	case 'icon':
+		marker.icon = '&#x1f6' + i[1].substr(0,2) + ';'
+		break;
+	case 'pin':
+		marker.chld = i[1]
+		switch (i[1]) {
+		case 'left':
+			marker.chld = 'pin_s' + i[1]
+			marker.height = 33
+			marker.width = 23
+			marker.y += 2
+			break;
+		case 'right':
+			marker.chld = 'pin_s' + i[1]
+			marker.height = 33
+			marker.width = 23
+			marker.x += 2
+			marker.y += 2
+			break;
+		case 'star':
+			marker.chld = 'pin_' + i[1]
+			marker.height = 39
+			marker.width = 23
+			marker.y += 7
+			break;
+		}
+		break;
+	case 'star':
+		switch (i[1]) {
+		case 'red':
+			marker.star = 'ff0000'
+			break;
+		case 'green':
+			marker.star = '00ff00'
+			break;
+		case 'yellow':
+			marker.star = 'ffff00'
+			break;
+		default:
+			marker.star = i[1].substr(0,6)
+		}
+		break;
+	}
+})
+var txt = document.createElementNS('http://www.w3.org/2000/svg', 'text')
+txt.setAttribute('x', marker.x)
+txt.setAttribute('y', marker.y)
+txt.innerHTML = marker.icon
+var img = document.createElementNS('http://www.w3.org/2000/svg', 'image')
+img.setAttributeNS('http://www.w3.org/1999/xlink', 'xlink:href', 'http://chart.apis.google.com/chart?chst=d_map_xpin_letter&chld=' + marker.chld + '%7C%20%7CFE7569%7C000000%7C' + marker.star)
+img.setAttribute('x', 0)
+img.setAttribute('y', 0)
+img.setAttribute('width', marker.width)
+img.setAttribute('height', marker.height)
+svg = document.getElementsByTagName('svg')[0]
+svg.appendChild(img)
+svg.appendChild(txt)
+svg.setAttribute('width', marker.width)
+svg.setAttribute('height', marker.height)
+]]></script>
+
+<!--
+<image xlink:href="http://chart.apis.google.com/chart?chst=d_map_xpin_letter&amp;chld=pin%7C%20%7CFE7569" x="0" y="40" height="30" width="21" />
+<image xlink:href="http://chart.apis.google.com/chart?chst=d_map_xpin_letter&amp;chld=pin_sleft%7C%20%7CFE7569" x="22" y="40" height="33" width="23" />
+<image xlink:href="http://chart.apis.google.com/chart?chst=d_map_xpin_letter&amp;chld=pin_sright%7C%20%7CFE7569" x="46" y="40" height="33" width="23" />
+<image xlink:href="http://chart.apis.google.com/chart?chst=d_map_xpin_letter&amp;chld=pin_star%7C%20%7CFE7569%7C000000%7Cff0000" x="70" y="40" height="39" width="23" />
+<image xlink:href="http://chart.apis.google.com/chart?chst=d_map_xpin_letter&amp;chld=pin_star%7C%20%7CFE7569%7C000000%7Cffff00" x="94" y="40" height="39" width="23" />
+<image xlink:href="http://chart.apis.google.com/chart?chst=d_map_xpin_letter&amp;chld=pin_star%7C%20%7CFE7569%7C000000%7C00ff00" x="118" y="40" height="39" width="23" />
+
+<text y="43" x="5" id="tram">&#x1f68a;</text>
+<text y="43" x="26" id="tram2">&#x1f68b;</text>
+<text y="43" x="47" id="lightrail">&#x1f688;</text>
+
+<text y="43" x="68" id="metro">&#x1f687;</text>
+
+<text y="43" x="89" id="train">&#x1f686;</text>
+
+<text y="43" x="110" id="bus">&#x1f68d;</text>
+<text y="43" x="131" id="bus2">&#x1f68c;</text>
+
+<text y="73" x="5" id="ferry">&#x1f6a2;</text>
+
+<text y="73" x="26" id="monorail">&#x1f69d;</text>
+
+<text y="73" x="47" id="suspendedrail">&#x1f69f;</text>
+<text y="73" x="68" id="mtn-cableway">&#x1f6a0;</text>
+<text y="73" x="89" id="gondola">&#x1f6a1;</text>
+
+<text y="73" x="110" id="mtn-railway">&#x1f69e;</text>
+
+<text y="73" x="131" id="trolleybus">&#x1f68e;</text>
+-->
+</svg>
