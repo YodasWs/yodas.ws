@@ -128,8 +128,8 @@ gtfs.loadGTFS = function(url) {
 				gtfs.routes[r[head.route_id]].num = r[head.route_short_name]
 				gtfs.routes[r[head.route_id]].stops = []
 			})
-			localStorage.setItem('gtfs.' + url + '.routes.head', JSON.stringify(head))
 			localStorage.setItem('gtfs.' + url + '.routes.date', Date.now())
+			localStorage.setItem('gtfs.' + url + '.routes.head', JSON.stringify(head))
 			localStorage.setItem('gtfs.' + url + '.routes.array', JSON.stringify(gtfs.routes))
 			$(document).trigger($.Event('loaded', { file:'routes.txt' }))
 		}
@@ -198,7 +198,12 @@ gtfs.loadGTFS = function(url) {
 			$(document).trigger($.Event('loaded', { file:'shapes.txt' }))
 		}
 	})
-	$.ajax({
+	if (
+		!localStorage.getItem('gtfs.' + url + '.stops.date') ||
+		!localStorage.getItem('gtfs.' + url + '.stops.head') ||
+		!localStorage.getItem('gtfs.' + url + '.stops.array') ||
+		Number.parseInt(localStorage.getItem('gtfs.stops.date'), 10) < Date.now() - 1000 * 60 * 60 * 24 * 7
+	) $.ajax({
 		url:'/gtfs/' + url + '/stops.txt',
 		success:function(data){
 			data = data.split("\n")
@@ -217,15 +222,27 @@ gtfs.loadGTFS = function(url) {
 							lat: Number.parseFloat(r[head.stop_lat]),
 							lng: Number.parseFloat(r[head.stop_lon]),
 						},
+						icon:{
+							url:'http://chart.apis.google.com/chart?chst=d_map_xpin_letter&chld=pin%7C%20%7CFE7569',
+							anchor:new google.maps.Point(11,33),
+							origin:new google.maps.Point(0,0),
+							size:new google.maps.Size(21,33)
+						},
 						title: r[head.stop_name],
 						visible: false,
 						map: gtfs.map
 					})
 				}
 			})
+			localStorage.setItem('gtfs.' + url + '.stops.date', Date.now())
+			localStorage.setItem('gtfs.' + url + '.stops.head', JSON.stringify(head))
+			localStorage.setItem('gtfs.' + url + '.stops.array', JSON.stringify(gtfs.stops))
 			$(document).trigger($.Event('loaded', { file:'stops.txt' }))
 		}
-	})
+	}); else {
+		gtfs.stops = JSON.parse(localStorage['gtfs.' + url + '.stops.array'])
+		$(document).trigger($.Event('loaded', { file:'stops.txt' }))
+	}
 	$.ajax({
 		url:'/gtfs/' + url + '/stop_times.txt',
 		success:function(data){
