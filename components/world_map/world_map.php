@@ -63,6 +63,10 @@ class WorldMap implements Component {
 			if (count($a) == count($b)) return 0;
 			return (count($a) < count($b)) ? 1 : -1;
 		});
+		foreach ($list as $cc => &$l) {
+			$l['name'] = $this->getCountryName($cc);
+			$l['cc'] = $cc;
+		}
 		return $list;
 	}
 
@@ -73,13 +77,18 @@ class WorldMap implements Component {
 	}
 
 	public function getCountryName($cc, $lang='en') {
-		$names = simplexml_load_file("lang/cc.{$lang}.xml");
+		foreach ($this->xml['country'] as $c) {
+			if ($c['@attributes']['cc'] == $cc) return $c['name'];
+		}
 	}
 
 	public function __construct() {
+		global $blog;
 		$this->xml = json_decode(json_encode(simplexml_load_file('world2.xml')), true);
 		if (!empty($this->xml['locale']['@attributes']))
 			$this->xml['locale'] = array($this->xml['locale']);
+		$lang_xml = json_decode(json_encode(simplexml_load_file("world.{$blog->lang}.xml")), true);
+		$this->xml = array_merge($this->xml, $lang_xml);
 	}
 
 	public function __get($var) {
