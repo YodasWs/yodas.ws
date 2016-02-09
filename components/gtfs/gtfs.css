@@ -7,18 +7,11 @@
 	order: 0;
 }
 
-main > section {
-	transition: flex-basis 300ms, margin 300ms;
-	margin: .5rem;
-}
-main > section > h1 {
-	text-align: center;
-	margin: 0;
-}
-
 main > section[data-route-id] {
+	transition: flex-basis 300ms, margin 300ms;
 	flex-basis: auto;
 	max-width: 500px;
+	margin: .5rem;
 	order: 3;
 }
 main > section[data-route-id].highlighted {
@@ -33,9 +26,23 @@ main > section[data-route-id].active {
 main > section[data-route-id] li:not(:last-of-type) {
 	border-bottom: 1px solid black;
 }
-main > section[data-route-id] > h1 {
+main > section[data-route-id] > h1,
+main > section[data-route-id] > h2 {
+	text-align: center;
 	cursor: pointer;
+	margin: 0;
+}
+main > section[data-route-id] > h1 {
+	font-size: 1.5em;
 	padding: 2px 5px;
+}
+main > section[data-route-id] > h2 {
+	font-size: 1.2em;
+	padding: 0 5px 5px;
+}
+main > section[data-route-id] > h1 + h2 {
+	position: relative;
+	top: -1px;
 }
 main > section[data-route-id] > ol {
 	margin: 0;
@@ -53,10 +60,15 @@ main > section[data-route-id] li[data-stop-id].active {
 
 main > section.agency {
 	padding: 2px 1rem 1rem;
+	margin: .5rem;
 	order: 10;
 }
 main > section.agency > * {
 	display: block;
+}
+main > section.agency > h1 {
+	text-align: center;
+	margin: 0;
 }
 main > section.agency > h1:not(:first-of-type) {
 	margin-top: 1rem;

@@ -83,7 +83,7 @@ gtfs.listAgencies = function(data) {
 		$a = $('<section class="agency">')
 	data.forEach(function(r){
 		r = csv.splitRow(r)
-		if (!r || r[0] == '') return
+		if (!r || r[head.agency_id] == '') return
 		$a.append('<h1>' + r[head.agency_name])
 		if (r[head.agency_url]) $a.append('<a href="' + r[head.agency_url] + '" target="_blank">Agency Website</a>')
 	})
@@ -95,7 +95,7 @@ gtfs.parseStops = function(data) {
 	var head = gtfs.parseHeader(data.shift())
 	data.forEach(function(r){
 		r = csv.splitRow(r)
-		if (!r || r[0] == '') return
+		if (!r || r[head.stop_id] == '') return
 		// Save Pertinent Stop Information for easy retrieval
 		gtfs.stops[r[head.stop_id]] = {
 			lat: Number.parseFloat(r[head.stop_lat]),
@@ -149,11 +149,12 @@ gtfs.loadGTFS = function(url) {
 			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
 				r = r.split(',')
-				if (!r || r[0] == '') return
+				if (!r || r[head.route_id] == '') return
 				// Save Pertinent Route Data
 				gtfs.routes[r[head.route_id]] = gtfs.routes[r[head.route_id]] || {}
 				gtfs.routes[r[head.route_id]].txtColor = '#' + (r[head.route_text_color] || '000000')
 				gtfs.routes[r[head.route_id]].color = '#' + (r[head.route_color] || 'ffffff')
+				gtfs.routes[r[head.route_id]].icon = '&#x1f6' + (r[head.x_route_icon] || '8d') + ';'
 				gtfs.routes[r[head.route_id]].name = r[head.route_long_name]
 				gtfs.routes[r[head.route_id]].type = r[head.route_type]
 				gtfs.routes[r[head.route_id]].num = r[head.route_short_name]
@@ -177,7 +178,7 @@ gtfs.loadGTFS = function(url) {
 			if (head.shape_id || head.shape_id === 0)
 			data.forEach(function(r){
 				r = r.split(',')
-				if (!r || r[0] == '') return
+				if (!r || r[head.trip_id] == '') return
 				route = r[head.route_id]
 				shape = r[head.shape_id]
 				// Associate Shape to Route
@@ -196,7 +197,7 @@ gtfs.loadGTFS = function(url) {
 			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
 				r = csv.splitRow(r)
-				if (!r || r[0] == '') return
+				if (!r || r[head.shape_id] == '') return
 				// Save Shape Point
 				gtfs.poly[r[head.shape_id]] = gtfs.poly[r[head.shape_id]] || {}
 				gtfs.poly[r[head.shape_id]].path = gtfs.poly[r[head.shape_id]].path || []
@@ -264,7 +265,12 @@ gtfs.loadGTFS = function(url) {
 			for (i in gtfs.routes) {
 				var r = gtfs.routes[i], $l = $('<ol>')
 					$t = $('<section data-route-id="' + i + '">')
-				$t.append('<h1 style="background:' + r.color + ';color:' + r.txtColor + '">' + (r.num ? r.num + ' ' : '') + r.name)
+				if (r.num) {
+					$t.append('<h1 style="background:' + r.color + ';color:' + r.txtColor + '">' + r.icon + ' ' + r.num)
+					$t.append('<h2 style="background:' + r.color + ';color:' + r.txtColor + '">' + r.name)
+				} else {
+					$t.append('<h1 style="background:' + r.color + ';color:' + r.txtColor + '">' + r.icon + ' ' + r.name)
+				}
 				r.stops.forEach(function(s){
 					if (!gtfs.stops[s] || !gtfs.stops[s].name) {
 						console.error('Stop ' + s + ' not found!')
