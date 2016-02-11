@@ -19,13 +19,20 @@ class Img implements Component {
 		$this->date['mon'] = BlogSite::str_mon($this->date[1]);
 		$filename = implode('.', $filename);
 		if (!file_exists($filename)) {
-			throw new Exception("Could not find $filename");
+			error_log("Could not find $filename");
+			return false;
 		}
 		$this->xml = json_decode(json_encode(simplexml_load_file($filename)), true);
 	}
 
-	public function html() {
+	public function html($delay_load = false) {
+		global $blog;
+		$blog->javascript = 'img';
 		require("html.php");
+	}
+
+	private function date_toString() {
+		return "{$this->date[2]} {$this->date['mon']} {$this->date[0]}";
 	}
 
 	public function __get($var) {
@@ -34,7 +41,7 @@ class Img implements Component {
 		))) return $this->xml[$var];
 		switch ($var) {
 		case 'date':
-			return "{$this->date[2]} {$this->date['mon']} {$this->date[0]}";
+			return $this->date_toString();
 		}
 	}
 	public function __isset($var) {

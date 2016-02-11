@@ -53,8 +53,6 @@ case '':
 	$countries = array_slice($countries, 0, 5);
 	foreach ($countries as $c) {
 		$c = new Tile($c);
-		// TODO: Add Country Information to Tile
-		// TODO: Set Title to Country Name
 		$tile[] = $c;
 	}
 
