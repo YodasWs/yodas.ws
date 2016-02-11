@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<world xml:lang="en">
+	<country cc="be">
+		<name>Belgium</name>
+	</country>
+	<country cc="ca">
+		<name>Canada</name>
+	</country>
+	<country cc="cn">
+		<name>China</name>
+	</country>
+	<country cc="de">
+		<name>Germany</name>
+	</country>
+	<country cc="fr">
+		<name>France</name>
+	</country>
+	<country cc="ie">
+		<name>Ireland</name>
+	</country>
+	<country cc="jp">
+		<name>Japan</name>
+	</country>
+	<country cc="kr">
+		<name>Korea</name>
+		<long>South Korea</long>
+	</country>
+	<country cc="ru">
+		<name>Russia</name>
+	</country>
+	<country cc="uk">
+		<name>United Kingdom</name>
+	</country>
+	<country cc="us">
+		<name>United States</name>
+		<long>United States of America</long>
+	</country>
+</world>
