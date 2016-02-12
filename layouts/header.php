@@ -18,7 +18,9 @@
 <header>
 	<a href="/" rel="home"><h1><?=$this->title?></h1></a>
 </header>
-<nav><ul>
-	<li><a href="/">Home</a></li>
-</ul></nav>
+<nav>
+	<a href="/">Home</a>
+	<li>By Country</li>
+	<li>By Date</li>
+</nav>
 <main>
