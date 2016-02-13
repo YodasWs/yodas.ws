@@ -72,26 +72,19 @@ class WorldMap implements Component {
 		return array();
 	}
 
-	public function getCountryName($cc, $lang='') {
+	public function getCountryName($cc, $lang=null) {
 		global $blog;
-		if (!$lang) $lang = $blog->lang;
-		if (file_exists("lang/cc.{$lang}.xml")) {
-			$xml = json_decode(json_encode(simplexml_load_file("lang/cc.{$lang}.xml")), true);
-		}
-		$xml = array(
-			'country' => array(
-				0 => array(
-					'@attributes' => array('cc' => 'kr'),
-					'name' => 'Korea',
-				),
-				1 => array(
-					'@attributes' => array('cc' => 'jp'),
-					'name' => 'Japan',
-				),
-			),
-		);
-		foreach ($xml['country'] as $c) {
-			if ($c['@attributes']['cc'] == $cc) return $c['name'];
+		$xml = false;
+		if (empty($lang)) $lang = $blog->lang;
+		if (!is_array($lang)) $lang = array($lang);
+		foreach ($lang as $l) {
+			if (!file_exists("world.{$l}.xml")) $l = substr($l, 0, 2);
+			if (file_exists("world.{$l}.xml")) {
+				$xml = json_decode(json_encode(simplexml_load_file("world.{$l}.xml")), true);
+				if (!empty($xml)) foreach ($xml['country'] as $c) {
+					if ($c['@attributes']['cc'] == $cc) return $c['name'];
+				}
+			}
 		}
 		return false;
 	}

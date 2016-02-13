@@ -31,6 +31,7 @@ class BlogSite {
 		foreach ($this->lang as &$l) {
 			if (strstr($l, ';')) $l = substr($l, 0, strpos($l, ';'));
 		}
+		if (empty($this->lang)) $this->lang = array('en');
 	}
 
 	public static function getDate($str) {
@@ -171,8 +172,6 @@ class BlogSite {
 		))) return $this->$var;
 		if (preg_match("'^(world_?)?map$'", $var)) return $this->getWorldMap();
 		switch($var) {
-		case 'lang':
-			return 'en';
 		}
 	}
 }
