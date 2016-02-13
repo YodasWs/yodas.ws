@@ -16,5 +16,3 @@ Number.parseInt=Number.parseInt||parseInt;
 Number.isNaN=Number.isNaN||function(x){return typeof x==='number'&&isNaN(x)};
 Math.log10=Math.log10||function(x){return Math.log(x)/Math.log(10)};
 Math.sign=Math.sign||function(x){x=+x;if(x===0||Number.isNaN(x))return x;return x>0?1:-1};
-// Load JavaScript File
-;(function(s,a,m){m=s.getElementsByTagName(a)[0];window.loadJS=function(j,x){x=s.createElement(a);x.async=1;x.src=j;m.parentNode.appendChild(x)}})(document,'script');
