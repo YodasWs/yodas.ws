@@ -33,11 +33,36 @@ body > nav a:link {
 	color: #222222;
 }
 body > nav a:visited:hover,
-body > nav > a:link:hover,
-body > nav > *:hover {
+body > nav a:link:hover,
+body > nav > *:hover,
+body > nav > .active {
 	background: rgba(255, 255, 255, .2);
 	text-decoration: none;
 	color: black;
 }
 body > nav a:link {
+}
+
+body > nav > li {
+	position: relative;
+}
+body > nav > li > ul {
+	position: absolute;
+	list-style: none;
+	display: none;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	left: 0;
+}
+body > nav > li.active > ul,
+body > nav > li:hover > ul {
+	background: cornflowerblue;
+	display: block;
+}
+body > nav li > a:link {
+	padding: 2px 5px;
+	display: block;
+	height: 100%;
+	width: 100%;
 }
