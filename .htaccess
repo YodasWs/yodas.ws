@@ -1,5 +1,7 @@
 RewriteEngine on
 
+ExpiresActive On
+
 #### Map Markers ####
 
 RewriteCond %{REQUEST_FILENAME} -f
@@ -14,6 +16,7 @@ RewriteCond %{REQUEST_FILENAME} -f
 RewriteCond %{HTTP_REFERER} yodas.ws
 RewriteRule ^gtfs/.*/(agency|routes|shapes|stop(s|_times)|trips).txt$ - [END]
 RewriteRule ^gtfs/ - [F]
+ExpiresByType text/plain "access plus 1 week"
 
 #### Country Code URLs, Location Search ####
 #RewriteMap lc int:tolower
@@ -43,9 +46,11 @@ RewriteRule ^components/([^/\.]*)(/|\.js)?$ components/$1.js
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^components/ - [END]
 RewriteRule ^components/ - [F]
+
 <FilesMatch "(\.js$|js\.php)">
 	Header set Content-type application/javascript
 </FilesMatch>
+ExpiresByType application/javascript "access plus 1 week"
 
 #### Dates in URL ####
 RewriteRule ^(\d{4})/01 $1/Jan/ [R=301]
@@ -85,24 +90,33 @@ RewriteCond %{DOCUMENT_ROOT}/$1 -d
 RewriteRule ^(\d{4})/$ year.php [END]
 
 #### CSS Files ####
-<Files css.php>
-	Header set Content-type text/css
-</Files>
 
 RewriteCond %{HTTP_ACCEPT} text/css
 RewriteRule .+ / [R=301]
 
 RewriteCond %{HTTP_ACCEPT} text/css
 RewriteRule ^$ css.php [END]
+<Files css.php>
+	Header set Content-type text/css
+</Files>
+ExpiresByType text/css "access plus 1 week"
 
 RewriteCond %{REQUEST_URI} \.css$
 RewriteCond %{REQUEST_URI} !^/main\.css$
 RewriteRule .* main.css [R=301]
 RewriteRule ^main.css$ css.php [END]
 
+#### XML Files ####
+RewriteCond %{HTTP_HOST} test.yodas.ws
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^world(.\w\w)?.xml$ - [END]
+
 #### Language Files and World Map ####
 
-RewriteRule ^world/ world/index.php [END]
+LanguagePriority en-us en-gb en
+ForceLanguagePriority Prefer Fallback
+
+RewriteRule ^world/$ world/index.php [END]
 RewriteRule ^world /world/ [R=301,END]
 
 #### Catch All ####

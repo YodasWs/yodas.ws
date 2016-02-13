@@ -1,0 +1,68 @@
+body > header {
+	background: cornflowerblue;
+	text-align: center;
+	flex: 0 0 20%;
+}
+body > header h1 {
+	padding: 10px 1em 15px;
+	display: inline-block;
+	margin: 0;
+	color: black;
+}
+
+body > nav {
+	flex: 1 0 auto;
+	background: cornflowerblue;
+	padding: 1.5rem 0 1rem;
+	padding: 0;
+	color: #222222;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-around;
+	align-items: flex-end;
+}
+body > nav > * {
+	display: block;
+	padding: 0px 10px;
+	line-height: 2em;
+	cursor: default;
+}
+body > nav a:visited,
+body > nav a:link {
+	cursor: pointer;
+	color: #222222;
+}
+body > nav a:visited:hover,
+body > nav a:link:hover,
+body > nav > *:hover,
+body > nav > .active {
+	background: rgba(255, 255, 255, .2);
+	text-decoration: none;
+	color: black;
+}
+body > nav a:link {
+}
+
+body > nav > li {
+	position: relative;
+}
+body > nav > li > ul {
+	position: absolute;
+	list-style: none;
+	display: none;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	left: 0;
+}
+body > nav > li.active > ul,
+body > nav > li:hover > ul {
+	background: cornflowerblue;
+	display: block;
+}
+body > nav li > a:link {
+	padding: 2px 5px;
+	display: block;
+	height: 100%;
+	width: 100%;
+}
