@@ -10,7 +10,7 @@
 main > section[data-route-id] {
 	transition: flex-basis 300ms, margin 300ms;
 	flex-basis: auto;
-	max-width: 500px;
+	max-width: 300px;
 	margin: .5rem;
 	order: 3;
 }
@@ -101,10 +101,7 @@ main > small > p {
 		margin-right: 0;
 	}
 	main > section[data-route-id]:first-of-type,
-	main > section[data-route-id].active {
-		flex-basis: 100%;
-		max-width: none;
-	}
+	main > section[data-route-id].active,
 	main > section[data-route-id] {
 		flex-basis: 100%;
 		max-width: none;
