@@ -1,9 +1,11 @@
 RewriteEngine on
 
-LanguagePriority en-us en-gb en
-ForceLanguagePriority Prefer Fallback
-
 ExpiresActive On
+
+#### Map Markers ####
+
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule \.svg$ - [END]
 
 #### Layouts Folder ####
 RewriteRule ^layouts/.+ /layouts/ [R=301,END]
@@ -110,6 +112,9 @@ RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^world(.\w\w)?.xml$ - [END]
 
 #### Language Files and World Map ####
+
+LanguagePriority en-us en-gb en
+ForceLanguagePriority Prefer Fallback
 
 RewriteRule ^world/$ world/index.php [END]
 RewriteRule ^world /world/ [R=301,END]
