@@ -7,6 +7,7 @@
 <link rel="stylesheet" href="/main.css"/>
 <script src="/components/upgrdr/"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script>if(!window.jQuery)document.write('<script src="/components/jquery.2-1-4.min.js"><\/script>')</script>
 <?php foreach ($this->javascript as $js) {
 	if (strpos($js, 'http://') === 0 || strpos($js, 'https://') === 0)
 		echo "<script src=\"{$js}/\" async></script>";
