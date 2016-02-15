@@ -92,10 +92,11 @@ RewriteRule ^(\d{4})/$ year.php [END]
 #### CSS Files ####
 
 RewriteCond %{HTTP_ACCEPT} text/css
-RewriteRule .+ / [R=301]
+RewriteCond %{REQUEST_URI} !^/main\.css$
+RewriteRule .* /main.css [R=301,END]
 
 RewriteCond %{HTTP_ACCEPT} text/css
-RewriteRule ^$ css.php [END]
+RewriteRule ^main.css$ css.php [END]
 <Files css.php>
 	Header set Content-type text/css
 </Files>
@@ -103,7 +104,7 @@ ExpiresByType text/css "access plus 1 week"
 
 RewriteCond %{REQUEST_URI} \.css$
 RewriteCond %{REQUEST_URI} !^/main\.css$
-RewriteRule .* main.css [R=301]
+RewriteRule .* /main.css [R=301,END]
 RewriteRule ^main.css$ css.php [END]
 
 #### XML Files ####
