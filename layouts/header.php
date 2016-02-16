@@ -30,6 +30,7 @@ $(document).ready(function(){
 <nav>
 	<a href="/">Home</a>
 	<li>Countries<ul><?php
+		if (empty($this->world_map)) $this->getWorldMap();
 		$locs = $this->world_map->locationsByCountry();
 		foreach (array_keys($locs) as $cc) {
 			echo "<li><a href=\"/$cc/\">" . $this->world_map->getCountryName($cc, $this->lang[0]) . '</a></li>';
