@@ -3,7 +3,7 @@
 $img = array(
 	$delay_load ? "\t<load-img" : "\t<img",
 	"src=\"{$this->src}\"",
-	"data-date=\"{$this->date_toString()}\""
+	"data-date=\"" . BlogSite::date_toString($this->date) . '"'
 );
 if (!empty($this->alt)) $img[] = "alt=\"{$this->alt}\"";
 $img[] = $delay_load ? "></load-img>" : "/>\n";

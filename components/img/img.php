@@ -8,21 +8,27 @@ class Img implements Component {
 	public function __construct($filename) {
 		global $blog;
 		$filename = explode('.', $filename);
+		$this->date = BlogSite::getDate($filename[0]);
 		if (end($filename) != 'xml') {
-			$filename[] = $blog->lang;
 			$filename[] = 'xml';
 		}
-		$this->date = explode('/', $filename[0]);
-		foreach ($this->date as &$d) {
-			$d = (int) $d;
+		$lang_i = count($filename) - 2;
+		if (!preg_match("'^[a-z]{2}$'", $filename[$lang_i])) {
+			array_splice($filename, -1, 0, $blog->lang[0]);
+			$lang_i = count($filename) - 2;
 		}
-		$this->date['mon'] = BlogSite::str_mon($this->date[1]);
-		$filename = implode('.', $filename);
-		if (!file_exists($filename)) {
-			error_log("Could not find $filename");
+		for ($i=0; $i<count($blog->lang); $i++) {
+			$filename[$lang_i] = $blog->lang[$i];
+			$fn = implode('.', $filename);
+			if (file_exists($fn)) {
+				break;
+			}
+		}
+		if (!file_exists($fn)) {
+			error_log("Could not find $fn");
 			return false;
 		}
-		$this->xml = json_decode(json_encode(simplexml_load_file($filename)), true);
+		$this->xml = json_decode(json_encode(simplexml_load_file($fn)), true);
 	}
 
 	public function html($delay_load = false) {
@@ -31,17 +37,13 @@ class Img implements Component {
 		require("html.php");
 	}
 
-	private function date_toString() {
-		return "{$this->date[2]} {$this->date['mon']} {$this->date[0]}";
-	}
-
 	public function __get($var) {
 		if (in_array($var, array(
 			'alt','src'
 		))) return $this->xml[$var];
 		switch ($var) {
 		case 'date':
-			return $this->date_toString();
+			return BlogSite::date_toString($this->date);
 		}
 	}
 	public function __isset($var) {
