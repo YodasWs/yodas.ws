@@ -35,6 +35,8 @@ if (strpos($_SERVER['HTTP_HOST'], 'test') === 0 or !file_exists($minfile) or tim
 	usort($files, function($a, $b) {
 		if ($a == 'layouts/main.css') return -1;
 		if ($b == 'layouts/main.css') return 1;
+		if (strpos($a, 'layouts/') === 0 and strpos($b, 'layouts/') !== 0) return -1;
+		if (strpos($a, 'layouts/') !== 0 and strpos($b, 'layouts/') === 0) return 1;
 		return 0;
 	});
 	foreach($files as $file) {

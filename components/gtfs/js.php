@@ -1,6 +1,15 @@
 <?php session_start(); ?>
+window.csv = {}
+csv.splitRow = function(r) {
+	r = r.match(/((?!,)|(?=^))("[^"]*"|[^,]*)(?=,|$)/g)
+	if (r && r.length) r = r.map(function(t) {
+		return t.trim('"')
+	})
+	return r
+}
 window.gtfs = gtfs || {}
 gtfs.extremes = { north:-90, south:180, east:-180, west:180 }
+gtfs.loadedFiles = []
 gtfs.tripRoute = {}
 gtfs.routes = {}
 gtfs.stops = {}
@@ -15,7 +24,6 @@ gtfs.setShapeRoute = function(shape, route) {
 		case 2: // Rail
 			gtfs.poly[shape].opacity = 1
 			gtfs.poly[shape].weight = 3
-			gtfs.poly[shape].label = '🚆'
 			break;
 		case 3: // Bus
 			gtfs.poly[shape].weight = 2
@@ -41,7 +49,7 @@ gtfs.setShapeRoute = function(shape, route) {
 }
 gtfs.parseHeader = function(h) {
 	var r = {}
-	h.split(',').forEach(function(h, i) {
+	csv.splitRow(h).forEach(function(h, i) {
 		r[h.trim()] = i
 	})
 	return r
@@ -69,25 +77,71 @@ gtfs.saveShapePoint = function(shape, lat, lng) {
 		lat: lat, lng: lng
 	})
 }
-// Load and Draw GTFS Shapes
-gtfs.loadGTFS = function(url) {
-	$.ajax({
-		url:'/gtfs/' + url + '/agency.txt',
-		dateType:'text',
-		success:function(data){
-			data = data.split("\n")
-			var head = gtfs.parseHeader(data.shift())
-			data.forEach(function(r){
-				r = r.split(',')
-				if (r[0] == '') return
-				var $a = $('<section class="agency">')
-				$a.append('<h1>' + r[head.agency_name])
-				if (r[head.agency_url]) $a.append('<a href="' + r[head.agency_url] + '" target="_blank">Agency Website</a>')
-				$a.appendTo('main')
+gtfs.listAgencies = function(data) {
+	data = data.split("\n")
+	var head = gtfs.parseHeader(data.shift()),
+		$a = $('<section class="agency">')
+	data.forEach(function(r){
+		r = csv.splitRow(r)
+		if (!r || r[head.agency_id] == '') return
+		$a.append('<h1>' + r[head.agency_name])
+		if (r[head.agency_url]) $a.append('<a href="' + r[head.agency_url] + '" target="_blank">Agency Website</a>')
+	})
+	$('main section.agency').remove()
+	$a.appendTo('main')
+}
+gtfs.parseStops = function(data) {
+	data = data.split("\n")
+	var head = gtfs.parseHeader(data.shift())
+	data.forEach(function(r){
+		r = csv.splitRow(r)
+		if (!r || r[head.stop_id] == '') return
+		// Save Pertinent Stop Information for easy retrieval
+		gtfs.stops[r[head.stop_id]] = {
+			lat: Number.parseFloat(r[head.stop_lat]),
+			lng: Number.parseFloat(r[head.stop_lon]),
+			name: r[head.stop_name],
+			// Place Google Maps Marker
+			Marker: new google.maps.Marker({
+				position:{
+					lat: Number.parseFloat(r[head.stop_lat]),
+					lng: Number.parseFloat(r[head.stop_lon]),
+				},
+				icon:{
+					url:'http://chart.apis.google.com/chart?chst=d_map_xpin_letter&chld=pin%7C%20%7CFE7569',
+					anchor:new google.maps.Point(11,34),
+					origin:new google.maps.Point(0,0),
+					size:new google.maps.Size(21,34)
+				},
+				title: r[head.stop_name],
+				visible: false,
+				map: gtfs.map
 			})
 		}
 	})
-	$.ajax({
+	$(document).trigger($.Event('loaded', { file:'stops.txt' }))
+}
+// Load and Draw GTFS Shapes
+gtfs.loadGTFS = function(url) {
+	if (
+		!localStorage.getItem('gtfs.' + url + '.agency.txt') ||
+		!localStorage.getItem('gtfs.' + url + '.agency.date') ||
+		Number.parseInt(localStorage.getItem('gtfs.' + url + '.agency.date'), 10) < Date.now() - 1000 * 60 * 60 * 24 * 7
+	) $.ajax({
+		url:'/gtfs/' + url + '/agency.txt',
+		dateType:'text',
+		success:function(data){
+			localStorage.setItem('gtfs.' + url + '.agency.date', Date.now())
+			localStorage.setItem('gtfs.' + url + '.agency.txt', data)
+			gtfs.listAgencies(data)
+		}
+	}); else gtfs.listAgencies(localStorage.getItem('gtfs.' + url + '.agency.txt'))
+	if (
+		!localStorage.getItem('gtfs.' + url + '.routes.date') ||
+		!localStorage.getItem('gtfs.' + url + '.routes.head') ||
+		!localStorage.getItem('gtfs.' + url + '.routes.array') ||
+		Number.parseInt(localStorage.getItem('gtfs.' + url + '.routes.date'), 10) < Date.now() - 1000 * 60 * 60 * 24 * 7
+	) $.ajax({
 		url:'/gtfs/' + url + '/routes.txt',
 		dateType:'text',
 		success:function(data){
@@ -95,46 +149,36 @@ gtfs.loadGTFS = function(url) {
 			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
 				r = r.split(',')
-				if (r[0] == '') return
+				if (!r || r[head.route_id] == '') return
 				// Save Pertinent Route Data
 				gtfs.routes[r[head.route_id]] = gtfs.routes[r[head.route_id]] || {}
 				gtfs.routes[r[head.route_id]].txtColor = '#' + (r[head.route_text_color] || '000000')
 				gtfs.routes[r[head.route_id]].color = '#' + (r[head.route_color] || 'ffffff')
+				gtfs.routes[r[head.route_id]].icon = '&#x1f6' + (r[head.x_route_icon] || '8d') + ';'
 				gtfs.routes[r[head.route_id]].name = r[head.route_long_name]
 				gtfs.routes[r[head.route_id]].type = r[head.route_type]
 				gtfs.routes[r[head.route_id]].num = r[head.route_short_name]
 				gtfs.routes[r[head.route_id]].stops = []
-				switch (Number.parseInt(gtfs.routes[r[head.route_id]].type, 10)) {
-				case 2: // Rail
-					gtfs.routes[r[head.route_id]].label = '🚆'
-					break;
-				case 3: // Bus
-					gtfs.routes[r[head.route_id]].label = '🚏'
-					break;
-				case 5: // Cable Car
-					gtfs.routes[r[head.route_id]].label = '🚞'
-					break;
-				case 6: // Gondola
-					gtfs.routes[r[head.route_id]].label = '🚡'
-					break;
-				case 7: // Funicular
-					gtfs.routes[r[head.route_id]].label = '🚞'
-					break;
-				}
 			})
+			localStorage.setItem('gtfs.' + url + '.routes.date', Date.now())
+			localStorage.setItem('gtfs.' + url + '.routes.head', JSON.stringify(head))
+			localStorage.setItem('gtfs.' + url + '.routes.array', JSON.stringify(gtfs.routes))
 			$(document).trigger($.Event('loaded', { file:'routes.txt' }))
 		}
-	})
+	}); else {
+		gtfs.routes = JSON.parse(localStorage['gtfs.' + url + '.routes.array'])
+		$(document).trigger($.Event('loaded', { file:'routes.txt' }))
+	}
 	$.ajax({
 		url:'/gtfs/' + url + '/trips.txt',
 		dateType:'text',
 		success:function(data){
 			data = data.split("\n")
 			var head = gtfs.parseHeader(data.shift())
+			if (head.shape_id || head.shape_id === 0)
 			data.forEach(function(r){
 				r = r.split(',')
-				if (!head.shape_id) return
-				if (r[0] == '') return
+				if (!r || r[head.trip_id] == '') return
 				route = r[head.route_id]
 				shape = r[head.shape_id]
 				// Associate Shape to Route
@@ -152,8 +196,8 @@ gtfs.loadGTFS = function(url) {
 			data = data.split("\n")
 			var head = gtfs.parseHeader(data.shift())
 			data.forEach(function(r){
-				r = r.split(',')
-				if (r[0] == '') return
+				r = csv.splitRow(r)
+				if (!r || r[head.shape_id] == '') return
 				// Save Shape Point
 				gtfs.poly[r[head.shape_id]] = gtfs.poly[r[head.shape_id]] || {}
 				gtfs.poly[r[head.shape_id]].path = gtfs.poly[r[head.shape_id]].path || []
@@ -186,34 +230,20 @@ gtfs.loadGTFS = function(url) {
 			$(document).trigger($.Event('loaded', { file:'shapes.txt' }))
 		}
 	})
-	$.ajax({
+	if (
+		!localStorage.getItem('gtfs.' + url + '.stops.date') ||
+		!localStorage.getItem('gtfs.' + url + '.stops.text') ||
+		Number.parseInt(localStorage.getItem('gtfs.' + url + '.stops.date'), 10) < Date.now() - 1000 * 60 * 60 * 24 * 7
+	) $.ajax({
 		url:'/gtfs/' + url + '/stops.txt',
 		success:function(data){
-			data = data.split("\n")
-			var head = gtfs.parseHeader(data.shift())
-			data.forEach(function(r){
-				r = r.split(',')
-				if (r[0] == '') return
-				// Save Pertinent Stop Information for easy retrieval
-				gtfs.stops[r[head.stop_id]] = {
-					lat: Number.parseFloat(r[head.stop_lat]),
-					lng: Number.parseFloat(r[head.stop_lon]),
-					name: r[head.stop_name],
-					// Place Google Maps Marker
-					Marker: new google.maps.Marker({
-						position:{
-							lat: Number.parseFloat(r[head.stop_lat]),
-							lng: Number.parseFloat(r[head.stop_lon]),
-						},
-						title: r[head.stop_name],
-						visible: false,
-						map: gtfs.map
-					})
-				}
-			})
-			$(document).trigger($.Event('loaded', { file:'stops.txt' }))
+			gtfs.parseStops(data)
+			localStorage.setItem('gtfs.' + url + '.stops.date', Date.now())
+			localStorage.setItem('gtfs.' + url + '.stops.text', data)
 		}
-	})
+	}); else {
+		gtfs.parseStops(localStorage.getItem('gtfs.' + url + '.stops.text'))
+	}
 	$.ajax({
 		url:'/gtfs/' + url + '/stop_times.txt',
 		success:function(data){
@@ -225,16 +255,22 @@ gtfs.loadGTFS = function(url) {
 					stop_id = r[head.stop_id],
 					route_id = gtfs.tripRoute[trip_id]
 				if (!r[head.stop_id]) return
-				// TODO: If the same as the last stop, don't add
-				if (gtfs.routes[route_id] && gtfs.routes[route_id].stops)
-					gtfs.routes[route_id].stops.push(stop_id)
-				if (!gtfs.routes[route_id].shape) gtfs.routes[route_id].shape = trip_id
+				if (
+					gtfs.routes[route_id] && gtfs.routes[route_id].stops &&
+					gtfs.routes[route_id].stops[gtfs.routes[route_id].stops.length - 1] != stop_id
+				) gtfs.routes[route_id].stops.push(stop_id)
+				if (gtfs.routes[route_id] && !gtfs.routes[route_id].shape) gtfs.routes[route_id].shape = trip_id
 			})
 			// Build Lists of Route Stations
 			for (i in gtfs.routes) {
 				var r = gtfs.routes[i], $l = $('<ol>')
 					$t = $('<section data-route-id="' + i + '">')
-				$t.append('<h1 style="background:' + r.color + ';color:' + r.txtColor + '">' + (r.num ? r.num + ' ' : '') + r.name)
+				if (r.num) {
+					$t.append('<h1 style="background:' + r.color + ';color:' + r.txtColor + '">' + r.icon + ' ' + r.num)
+					$t.append('<h2 style="background:' + r.color + ';color:' + r.txtColor + '">' + r.name)
+				} else {
+					$t.append('<h1 style="background:' + r.color + ';color:' + r.txtColor + '">' + r.icon + ' ' + r.name)
+				}
 				r.stops.forEach(function(s){
 					if (!gtfs.stops[s] || !gtfs.stops[s].name) {
 						console.error('Stop ' + s + ' not found!')
@@ -257,7 +293,7 @@ gtfs.loadGTFS = function(url) {
 						geodesic: true,
 						strokeColor: (typeof gtfs.poly[r.shape].color == 'string' ? gtfs.poly[r.shape].color : '#008800'),
 						strokeWeight: (gtfs.poly[r.shape].weight || 2),
-						opacity: gtfs.poly[i].opacity || .6,
+						opacity: gtfs.poly[r.shape].opacity || .6,
 						strokeOpacity: 1,
 						clickable: true
 					})
@@ -278,13 +314,26 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 		scrollWheel: true,
 		zoomControl: true,
 		maxZoom: 18,
-		minZoom: 10
+		minZoom: 9
 	})
 <?php
 foreach ($_SESSION['gtfs_locs'] as $loc) {
 	echo "\tgtfs.loadGTFS('$loc')\n";
 }
 ?>
+	gtfs.map.zoom = gtfs.map.getZoom()
+	gtfs.map.addListener('idle', function(e) {
+		var zoom = gtfs.map.getZoom()
+		if (Number.isNaN(zoom)) return
+		if (zoom == gtfs.map.zoom) return
+		gtfs.map.zoom = zoom
+		console.log('Zoom: ' + zoom)
+		for (var i in gtfs.poly) {
+			gtfs.poly[i].Polyline.setOptions({
+				strokeWeight: gtfs.poly[i].weight + (zoom >= 14 ? zoom - 13: 0)
+			})
+		}
+	})
 })
 $(document).on('loaded', function(e) {
 	gtfs.loadedFiles.push(e.file)
@@ -329,7 +378,7 @@ $(document).on('loaded', function(e) {
 		if (!shape || !gtfs.poly[shape]) return
 		gtfs.poly[shape].Polyline.setOptions({
 			strokeWeight: gtfs.poly[shape].weight,
-			opacity: gtfs.poly[i].opacity || .6,
+			opacity: gtfs.poly[shape].opacity || .6,
 			zIndex: 0
 		})
 	})
@@ -345,8 +394,8 @@ $(document).on('loaded', function(e) {
 			$('section[data-route-id].highlighted').removeClass('highlighted')
 			if (!isOpen) {
 				$('li[data-stop-id="' + id + '"]').addClass('active').parents('section[data-route-id]').addClass('highlighted')
-				gtfs.stops[id].Marker.setLabel(gtfs.routes[route_id].label || '')
 				gtfs.stops[id].Marker.setVisible(true)
+				gtfs.map.panTo(gtfs.stops[id].Marker.getPosition())
 			}
 		}
 	})

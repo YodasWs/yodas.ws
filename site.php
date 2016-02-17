@@ -14,6 +14,7 @@ class BlogSite {
 	private $javascript = array();
 	private $page_wrap = true;
 	private $world_map;
+	private $lang;
 
 	public function flush() {
 		ob_flush();
@@ -24,6 +25,14 @@ class BlogSite {
 
 		$this->page_wrap = $wrap;
 		$this->date = self::getDate($_SERVER['REQUEST_URI']);
+
+		// Set Preferred Language
+		$this->lang = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
+		foreach ($this->lang as &$l) {
+			if (strstr($l, ';')) $l = substr($l, 0, strpos($l, ';'));
+			$l = substr($l, 0, 2);
+		}
+		if (empty($this->lang)) $this->lang = array('en');
 	}
 
 	public static function getDate($str) {
@@ -33,7 +42,7 @@ class BlogSite {
 			$date['year'] = $arr[0];
 			if (!empty($arr[1]) and self::is_mon($arr[1])) {
 				$date['mon'] = self::int_mon($arr[1]);
-				if (!empty($arr[2]) and is_numerical($arr[2])) {
+				if (!empty($arr[2]) and (is_int($arr[2]) or is_float($arr[2]) or preg_match("'^\d+'", $arr[2]))) {
 					if (checkdate($date['mon'], (int) $arr[2], $date['year'])) {
 						$date['day'] = (int) $arr[2];
 					}
@@ -41,6 +50,11 @@ class BlogSite {
 			}
 		}
 		return $date;
+	}
+
+	public static function date_toString($date) {
+		if (is_string($date)) $date = self::getDate($date);
+		return trim("{$date['day']} {$date['mon']} {$date['year']}");
 	}
 
 	public static function int_mon($str) {
@@ -160,12 +174,10 @@ class BlogSite {
 
 	public function __get($var) {
 		if (in_array($var, array(
-			'title','javascript'
+			'lang','title','javascript'
 		))) return $this->$var;
 		if (preg_match("'^(world_?)?map$'", $var)) return $this->getWorldMap();
 		switch($var) {
-		case 'lang':
-			return 'en';
 		}
 	}
 }

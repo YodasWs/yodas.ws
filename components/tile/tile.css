@@ -9,9 +9,12 @@ article.tile {
 	flex-grow: 1;
 	text-shadow: 0px 0px 3px white;
 	text-shadow: 1px 1px 1px white;
+	text-shadow: 2px 1px 0px white;
+	text-shadow: 1px 2px 0px white;
 	overflow: hidden;
 	position: relative;
 	transition: background 1s, flex-basis 750ms, max-width 750ms, min-height 1s;
+	cursor: pointer;
 }
 @media (min-width: 700px) {
 	article.tile {
@@ -53,4 +56,5 @@ article.tile.expanded {
 	min-height: 400px;
 	max-width: 98%;
 	flex-basis: 98%;
+	cursor: auto;
 }
