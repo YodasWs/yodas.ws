@@ -17,6 +17,7 @@ RewriteCond %{HTTP_REFERER} yodas.ws
 RewriteRule ^gtfs/.*/(agency|routes|shapes|stop(s|_times)|trips).txt$ - [END]
 ExpiresByType text/plain "access plus 1 week"
 
+RewriteCond %{HTTP_HOST} ^test.yodas.ws$
 RewriteCond %{DOCUMENT_ROOT}/gtfs/$1/$2/routes.txt -f
 RewriteRule ^([a-z]{2})/([^/]+)/edit/?$ gtfs/edit.php [END]
 
@@ -37,6 +38,9 @@ RewriteCond %{HTTP_ACCEPT} text/html
 RewriteRule ^components/ components/index.php [END]
 
 # JavaScript Files
+
+RewriteCond %{HTTP_REFERER} yodas.ws
+RewriteRule ^gtfs/edit.js$ - [END]
 
 RewriteCond %{DOCUMENT_ROOT}/components/$1/js.php -f
 RewriteRule ^components/([^/\.]+)(/|\.js)?$ components/$1/js.php
