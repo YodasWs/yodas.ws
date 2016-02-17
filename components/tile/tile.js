@@ -4,7 +4,7 @@ Math.randInt = function(min, max) {
 window.Tile = function(){}
 Tile.prototype.changeImage = function() {
 	var $a = $(this),
-		$i = $a.children('img'),
+		$i = $a.children('img,load-img'),
 		n = $a.is('.expanded') ? 2 : 1,
 		i = Number.parseInt(this.bg_i, 10) + 1 || 0,
 		bg = [],
@@ -37,7 +37,7 @@ $(document).ready(function(){
 		// Expand/Collapse Tiles
 		if (!$(this).is('.expanded')) {
 			this.bg_i = this.bg_i - 1
-			if (this.bg_i < 0) this.bg_i = $(this).children('img').length - 1
+			if (this.bg_i < 0) this.bg_i = $(this).children('img,load-img').length - 1
 		}
 		$(this).toggleClass('expanded').siblings('.tile.expanded').removeClass('expanded')
 		this.tile.changeImage.call(this)

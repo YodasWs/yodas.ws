@@ -1,8 +1,20 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
-<world>
+<world xml:lang="en">
 	<locale lat="37.566535" lng="126.9779692" cc="kr">
 		<name>Seoul</name>
+		<img>2009/08/15_seoul2.jpg</img>
+		<img>2009/08/15_sejongno2.jpg</img>
+		<img>2009/08/14_heroes1.jpg</img>
+		<img>2009/08/15_gyeongbokgung5.jpg</img>
+		<img>2009/08/15_cheonggyecheon1.jpg</img>
+		<img>2009/08/15_seoul3.jpg</img>
 		<img>2009/08/16_seoulPlaza.jpg</img>
+		<img>2009/08/16_seoul7.jpg</img>
+		<img>2009/08/23_dongdaemun3.jpg</img>
+		<img>2009/08/23_deoksugung2.jpg</img>
+		<img>2009/08/23_yeouido1.jpg</img>
+		<img>2010/04/25_changdeokgung1.jpg</img>
+		<img>2010/05/08_hanriver1.jpg</img>
 	</locale>
 	<locale lat="35.6894875" lng="139.6917064" cc="jp">
 		<name>Tokyo</name>

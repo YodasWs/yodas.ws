@@ -66,9 +66,8 @@ class BlogEntry implements Component {
 				$this->xml['img'] = array($this->xml['img']);
 			}
 			foreach ($this->xml['img'] as $i) {
-				$this->img[] = $i;
+				$this->img[] = new Img($i);
 			}
-			shuffle($this->img);
 			return $this->img;
 		}
 	}
