@@ -63,6 +63,10 @@ class WorldMap implements Component {
 			if (count($a) == count($b)) return 0;
 			return (count($a) < count($b)) ? 1 : -1;
 		});
+		foreach ($list as $cc => &$l) {
+			$l['name'] = $this->getCountryName($cc);
+			$l['cc'] = $cc;
+		}
 		return $list;
 	}
 
@@ -72,8 +76,7 @@ class WorldMap implements Component {
 		return array();
 	}
 
-	public function getCountryName($cc, $lang=null) {
-		global $blog;
+	private function getLocalWorldMap($lang = null) {
 		$xml = false;
 		if (empty($lang)) $lang = $blog->lang;
 		if (!is_array($lang)) $lang = array($lang);
@@ -81,18 +84,29 @@ class WorldMap implements Component {
 			if (!file_exists("world.{$l}.xml")) $l = substr($l, 0, 2);
 			if (file_exists("world.{$l}.xml")) {
 				$xml = json_decode(json_encode(simplexml_load_file("world.{$l}.xml")), true);
-				if (!empty($xml)) foreach ($xml['country'] as $c) {
-					if ($c['@attributes']['cc'] == $cc) return $c['name'];
-				}
+				break;
 			}
+		}
+	}
+
+	public function getCountryName($cc, $lang=null) {
+		global $blog;
+		$xml = $this->getLocalWorldMap($lang);
+		if (!empty($xml)) foreach ($xml['country'] as $c) {
+			if ($c['@attributes']['cc'] == $cc) return $c['name'];
 		}
 		return false;
 	}
 
 	public function __construct() {
+		global $blog;
 		$this->xml = json_decode(json_encode(simplexml_load_file('world2.xml')), true);
 		if (!empty($this->xml['locale']['@attributes']))
 			$this->xml['locale'] = array($this->xml['locale']);
+		$lang_xml = $this->getLocalWorldMap($blog->lang);
+		if (is_array($lang_xml)) {
+			$this->xml = array_merge($this->xml, $lang_xml);
+		}
 	}
 
 	public function __get($var) {
