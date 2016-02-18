@@ -1,11 +1,11 @@
 <?php
-#echo '<pre>' . print_r($this, true) . '</pre>';
-$img = array(
-	$delay_load ? "\t<load-img" : "\t<img",
-	"src=\"{$this->src}\"",
-	"data-date=\"" . BlogSite::date_toString($this->date) . '"'
-);
-if (!empty($this->alt)) $img[] = "alt=\"{$this->alt}\"";
-$img[] = $delay_load ? "></load-img>" : "/>\n";
-echo join(' ', $img);
+if ($delay_load) echo "<template id=\"{$this->fn}\">";
+switch ($tag) {
+case 'figure':
+	echo "<figure>";
+	break;
+}
+$this->html();
+echo "</$tag>";
+if ($delay_load) echo '</template>';
 ?>

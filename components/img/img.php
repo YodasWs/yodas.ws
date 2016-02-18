@@ -4,6 +4,7 @@ require_once("components/component.php");
 class Img implements Component {
 	private $date;
 	private $xml;
+	private $fn;
 
 	public function __construct($filename) {
 		global $blog;
@@ -19,22 +20,34 @@ class Img implements Component {
 		}
 		for ($i=0; $i<count($blog->lang); $i++) {
 			$filename[$lang_i] = $blog->lang[$i];
-			$fn = implode('.', $filename);
-			if (file_exists($fn)) {
+			$this->fn = implode('.', $filename);
+			if (file_exists($this->fn)) {
 				break;
 			}
 		}
-		if (!file_exists($fn)) {
-			error_log("Could not find $fn");
+		if (!file_exists($this->fn)) {
+			error_log("Could not find $this->fn");
 			return false;
 		}
-		$this->xml = json_decode(json_encode(simplexml_load_file($fn)), true);
+		$this->xml = json_decode(json_encode(simplexml_load_file($this->fn)), true);
+	}
+
+	public function print_figure($delay_load = false) {
+		$tag = 'figure';
+		require('html.php');
 	}
 
 	public function html($delay_load = false) {
 		global $blog;
 		$blog->javascript = 'img';
-		require("html.php");
+		$img = array(
+			$delay_load ? "\t<load-img" : "\t<img",
+			"src=\"{$this->src}\"",
+			"data-date=\"" . BlogSite::date_toString($this->date) . '"'
+		);
+		if (!empty($this->alt)) $img[] = "alt=\"{$this->alt}\"";
+		$img[] = $delay_load ? "></load-img>" : "/>\n";
+		echo join(' ', $img);
 	}
 
 	public function __get($var) {
