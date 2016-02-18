@@ -30,9 +30,10 @@ $(document).ready(function(){
 <nav>
 	<a href="/">Home</a>
 	<li>Countries<ul><?php
-		$locs = $this->world_map->locationsByCountry();
+		$wm = $this->getWorldMap();
+		$locs = $wm->locationsByCountry();
 		foreach (array_keys($locs) as $cc) {
-			echo "<li><a href=\"/$cc/\">" . $this->world_map->getCountryName($cc, $this->lang[0]) . '</a></li>';
+			echo "<li><a href=\"/$cc/\">" . $wm->getCountryName($cc, $this->lang[0]) . '</a></li>';
 		}
 	?></ul></li>
 	<li>By Date<ul><?php

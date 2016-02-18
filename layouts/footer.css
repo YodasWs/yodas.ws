@@ -1,6 +1,7 @@
 body > footer {
 	padding-bottom: 5px;
 	flex: 0 0 480px;
+	max-width: 100%;
 }
 body > footer > small {
 	display: block;
