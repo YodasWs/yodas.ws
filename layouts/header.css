@@ -13,13 +13,13 @@ body > header h1 {
 body > nav {
 	flex: 1 0 auto;
 	background: cornflowerblue;
-	padding: 1.5rem 0 1rem;
 	padding: 0;
 	color: #222222;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-around;
 	align-items: flex-end;
+	position: relative;
 	z-index: 100;
 }
 body > nav > * {

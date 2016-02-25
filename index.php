@@ -34,7 +34,7 @@ if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 			if (count($img)) {
 				$content_loaded = true;
 				foreach ($img as $i) {
-					$i->html();
+					$i->print_figure();
 				}
 			}
 			if ($content_loaded) exit;

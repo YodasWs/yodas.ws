@@ -127,9 +127,9 @@ bus_W_1,,,sengoku,35,,0
 bus_W_1,,,sengoku-kogen,40,,0
 bus_W_1,,,togendai,50,,0
 bus_W_1,,,yama-no-hotel,60,,0
-bus_V_1,,,stn-haneda-intl-bus,1,0
-bus_V_1,,,stn-haneda-t1,2,0
-bus_V_1,,,stn-haneda-t2,3,0
+bus_V_1,,,stn-haneda-intl-bus,1,,0
+bus_V_1,,,stn-haneda-t1,2,,0
+bus_V_1,,,stn-haneda-t2,3,,0
 bus_V_1,,,stn-yokohama-west,4,,0
 bus_V_1,,,tomei-oi,5,,0
 bus_V_1,,,stn-gotemba,10,,0
@@ -138,9 +138,9 @@ bus_V_1,,,togendai,30,,0
 cruise_1,,,motohakone-ko,1,,0
 cruise_1,,,hakonemachi,2,,0
 cruise_1,,,togendai,3,,0
-bus_D_1,,,stn-haneda-intl-bus,1,0
-bus_D_1,,,stn-haneda-t1,2,0
-bus_D_1,,,stn-haneda-t2,3,0
+bus_D_1,,,stn-haneda-intl-bus,1,,0
+bus_D_1,,,stn-haneda-t1,2,,0
+bus_D_1,,,stn-haneda-t2,3,,0
 bus_D_1,,,stn-yokohama-west,4,,0
 bus_D_1,,,stn-hakone-yumoto,5,,0
 bus_D_1,,,hotel-hatsuhana,6,,0
