@@ -3,9 +3,15 @@ div#worldmap {
 	min-width: 400px;
 	flex: 1 0 50%;
 	margin: 0 auto;
+	transition: height 500ms;
 }
 div#worldmap + * {
 	align-self: stretch;
+}
+
+div#worldmap.expanded {
+	height: 500px;
+	max-height: 90%;
 }
 
 .gm-style-iw {
