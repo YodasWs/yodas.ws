@@ -100,20 +100,20 @@ RewriteRule ^(\d{4})/$ year.php [END]
 #### CSS Files ####
 
 RewriteCond %{HTTP_ACCEPT} text/css
-RewriteCond %{REQUEST_URI} !^/main\.css$
-RewriteRule .* /main.css [R=301,END]
+RewriteCond %{REQUEST_URI} !^/css/$
+RewriteRule .* /css/ [R=301,END]
 
 RewriteCond %{HTTP_ACCEPT} text/css
-RewriteRule ^main.css$ css.php [END]
+RewriteRule ^css/$ css.php [END]
 <Files css.php>
 	Header set Content-type text/css
 </Files>
 ExpiresByType text/css "access plus 1 week"
 
-RewriteCond %{REQUEST_URI} \.css$
-RewriteCond %{REQUEST_URI} !^/main\.css$
-RewriteRule .* /main.css [R=301,END]
-RewriteRule ^main.css$ css.php [END]
+RewriteCond %{REQUEST_URI} css
+RewriteCond %{REQUEST_URI} !^/css/$
+RewriteRule .* /css/ [R=301,END]
+RewriteRule ^css/$ css.php [END]
 
 #### XML Files ####
 RewriteCond %{HTTP_HOST} test.yodas.ws

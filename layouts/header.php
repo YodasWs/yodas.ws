@@ -4,7 +4,7 @@
 <meta charset="utf-8"/>
 <title><?=$this->title?></title>
 <base href="/" target="_top" />
-<link rel="stylesheet" href="/main.css"/>
+<link rel="stylesheet" href="/css"/>
 <script src="/components/upgrdr/"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>if(!window.jQuery)document.write('<script src="/components/jquery.2-1-4.min.js"><\/script>')</script>
