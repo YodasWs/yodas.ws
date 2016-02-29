@@ -140,6 +140,11 @@ class BlogSite {
 		return $xml;
 	}
 
+	public static function etag($time) {
+		if (!$time) $time = new Date();
+		return date("YMdHiT", $time);
+	}
+
 	public function __destruct() {
 		$content = ob_get_clean();
 
@@ -154,21 +159,27 @@ class BlogSite {
 			// Does Directory Exist?
 			if (is_dir($val))
 				$this->$var = $val;
-			break;
+			return;
 		case 'fileHeader':
 		case 'fileFooter':
 			// Does File Exist?
 			if (is_file($this->dirLayouts.$val))
 				$this->$var = $val;
-			break;
+			return;
 		case 'javascript':
-			if (!in_array($val, $this->javascript) && (
+			if (in_array($val, $this->javascript)) return;
+			if (
 				strpos($val, 'http://') === 0 ||
-				strpos($val, 'https://') === 0 ||
-				file_exists("components\\{$val}\\js.php") ||
-				file_exists("components\\{$val}\\{$val}.js")
-			)) $this->javascript[] = $val;
-			break;
+				strpos($val, 'https://') === 0
+			) $this->javascript[] = $val;
+			else {
+				preg_match_all("'-(\d+)(\.\d+)?'", $val, $file);
+				if (
+					file_exists("components\\{$val}\\js.php") ||
+					file_exists("components\\{$val}\\{$val}.js")
+				) $this->javascript[] = $val;
+			}
+			return;
 		}
 	}
 

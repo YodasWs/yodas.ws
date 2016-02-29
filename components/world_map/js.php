@@ -2,8 +2,20 @@
 chdir($_SERVER['DOCUMENT_ROOT']);
 require_once("site.php");
 require_once("components/world_map/world_map.php");
-$worldxml = simplexml_load_file('world.xml');
-define('bubbleNumPic',0);
+$fmt = filemtime('world2.xml');
+$worldxml = simplexml_load_file('world2.xml');
+
+if (
+	strpos($_SERVER['HTTP_HOST'], 'test') !== 0 and
+	time() - $fmt < 60 * 24 * 60 * 60 and
+	!empty($_SERVER['HTTP_IF_NONE_MATCH']) and
+	$_SERVER['HTTP_IF_NONE_MATCH'] === BlogSite::etag($fmt)
+) {
+	header("HTTP/1.1 304 Not Modified");
+	exit;
+}
+header("Last-Modified: " . date('r'));
+header("ETag: " . BlogSite::etag(time()));
 ?>
 
 yodasws = window.yodasws || {}
@@ -101,11 +113,11 @@ function loadGMarker($xml, $i) {
 #		$txt .= "<br/><small>Last Visit: <a class=\"map\" href=\"http://yodas.ws/{$date[0]}/" . BlogSite::str_mon($date[1]) . "/{$date[2]}\">{$date[2]} " . BlogSite::str_mon($date[1]) . " {$date[0]}</a></small>";
 	}
 	// Display Pics in Info Bubbles, 29 Sep 2008
-	if (count($xml->locale[$i]->img) > 0 and count($xml->locale[$i]->img) <= bubbleNumPic) {
+	if (count($xml->locale[$i]->img) > 0 and count($xml->locale[$i]->img) <= 0) {
 		foreach ($xml->locale[$i]->img as $img) $txt .= "<img src=\"http://yodas.ws/{$img['src']}\" height=\"100\" alt=\"$locale\" />";
-	} else if (count($xml->locale[$i]->img) > bubbleNumPic) {
-		$k = randArray(bubbleNumPic, 0, count($xml->locale[$i]->img)-1);
-		for ($j=0; $j<bubbleNumPic; $j++) {
+	} else if (count($xml->locale[$i]->img) > 0) {
+		$k = randArray(0, 0, count($xml->locale[$i]->img)-1);
+		for ($j=0; $j<0; $j++) {
 			$num = $k[$j];
 			$txt .= "<img src=\"http://yodas.ws/{$xml->locale[$i]->img[$num]['src']}\" height=\"100\" alt=\"$locale\" />";
 		}
