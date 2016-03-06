@@ -77,16 +77,17 @@ class WorldMap implements Component {
 	}
 
 	private function getLocalWorldMap($lang = null) {
+		global $blog;
 		$xml = false;
 		if (empty($lang)) $lang = $blog->lang;
 		if (!is_array($lang)) $lang = array($lang);
 		foreach ($lang as $l) {
 			if (!file_exists("world.{$l}.xml")) $l = substr($l, 0, 2);
 			if (file_exists("world.{$l}.xml")) {
-				$xml = json_decode(json_encode(simplexml_load_file("world.{$l}.xml")), true);
-				break;
+				return json_decode(json_encode(simplexml_load_file("world.{$l}.xml")), true);
 			}
 		}
+		return false;
 	}
 
 	public function getCountryName($cc, $lang=null) {
