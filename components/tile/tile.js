@@ -33,13 +33,29 @@ $(document).ready(function(){
 		// Instantiate Tile Objects
 		this.tile = new Tile()
 		this.tile.changeImage.call(this)
-	}).on('click', function(){
+	}).on('click', function(e){
+		var $t = $(this)
 		// Expand/Collapse Tiles
-		if (!$(this).is('.expanded')) {
+		if (!$t.is('.expanded')) {
+			// Adjust Background Image
 			this.bg_i = this.bg_i - 1
-			if (this.bg_i < 0) this.bg_i = $(this).children('img,load-img').length - 1
+			if (this.bg_i < 0) this.bg_i = $t.children('img,load-img').length - 1
+			// Scroll
+			setTimeout(function() {
+				$('html,body').animate({
+					scrollTop: $t.offset().top - yodasws.stickyHeight()
+				}, 500, 'swing')
+			}, 500)
 		}
-		$(this).toggleClass('expanded').siblings('.tile.expanded').removeClass('expanded')
+		$t.toggleClass('expanded').siblings('.tile.expanded').removeClass('expanded')
 		this.tile.changeImage.call(this)
+		$(window).trigger('resize')
+	})
+	// Close Tiles on Click
+	$(document).on('click', function(e) {
+		if (!$(e.target).closest('.tile').length) {
+			$('.tile').removeClass('expanded')
+			$(window).trigger('resize')
+		}
 	})
 })

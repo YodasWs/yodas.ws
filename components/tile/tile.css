@@ -7,10 +7,7 @@ article.tile {
 	max-width: 300px;
 	align-self: center;
 	flex-grow: 1;
-	text-shadow: 0px 0px 3px white;
-	text-shadow: 1px 1px 1px white;
-	text-shadow: 2px 1px 0px white;
-	text-shadow: 1px 2px 0px white;
+	text-shadow: 1px 1px 3px white;
 	overflow: hidden;
 	position: relative;
 	transition: background 1s, flex-basis 750ms, max-width 750ms, min-height 1s;
@@ -33,6 +30,7 @@ article.tile > h1 {
 	font-family: Calibri, sans-serif;
 	font-weight: bold;
 	margin: 0.5rem 0 1rem;
+	text-shadow: 1px 1px 0px white, -1px 0px 0px white;
 }
 article.tile > h1 > a:visited,
 article.tile > h1 > a:link {

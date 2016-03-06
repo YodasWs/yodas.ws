@@ -15,6 +15,9 @@
 	<country cc="fr">
 		<name>France</name>
 	</country>
+	<country cc="gb">
+		<name>United Kingdom</name>
+	</country>
 	<country cc="ie">
 		<name>Ireland</name>
 	</country>
@@ -24,6 +27,10 @@
 	<country cc="kr">
 		<name>Korea</name>
 		<long>South Korea</long>
+	</country>
+	<country cc="nl">
+		<name>Netherlands</name>
+		<long>The Netherlands</long>
 	</country>
 	<country cc="ru">
 		<name>Russia</name>

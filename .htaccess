@@ -15,7 +15,7 @@ RewriteRule ^layouts/ layouts/index.php [END]
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteCond %{HTTP_REFERER} yodas.ws
 RewriteRule ^gtfs/.*/(agency|routes|shapes|stop(s|_times)|trips).txt$ - [END]
-ExpiresByType text/plain "access plus 1 week"
+ExpiresByType text/plain "access plus 60 days"
 
 RewriteCond %{HTTP_HOST} ^test.yodas.ws$
 RewriteCond %{DOCUMENT_ROOT}/gtfs/$1/$2/routes.txt -f
@@ -34,6 +34,7 @@ RewriteRule ^[a-z]{2}/ index.php [END]
 #### Components Folder ####
 
 # Component Library
+RewriteCond %{REQUEST_URI} !.js$
 RewriteCond %{HTTP_ACCEPT} text/html
 RewriteRule ^components/ components/index.php [END]
 
@@ -58,7 +59,7 @@ RewriteRule ^components/ - [F]
 <FilesMatch "(\.js$|js\.php)">
 	Header set Content-type application/javascript
 </FilesMatch>
-ExpiresByType application/javascript "access plus 1 week"
+ExpiresByType application/javascript "access plus 60 days"
 
 #### Dates in URL ####
 RewriteRule ^(\d{4})/01 $1/Jan/ [R=301]
@@ -100,20 +101,20 @@ RewriteRule ^(\d{4})/$ year.php [END]
 #### CSS Files ####
 
 RewriteCond %{HTTP_ACCEPT} text/css
-RewriteCond %{REQUEST_URI} !^/main\.css$
-RewriteRule .* /main.css [R=301,END]
+RewriteCond %{REQUEST_URI} !^/css/$
+RewriteRule .* /css/ [R=301,END]
 
 RewriteCond %{HTTP_ACCEPT} text/css
-RewriteRule ^main.css$ css.php [END]
+RewriteRule ^css/$ css.php [END]
 <Files css.php>
 	Header set Content-type text/css
 </Files>
-ExpiresByType text/css "access plus 1 week"
+ExpiresByType text/css "access plus 60 days"
 
-RewriteCond %{REQUEST_URI} \.css$
-RewriteCond %{REQUEST_URI} !^/main\.css$
-RewriteRule .* /main.css [R=301,END]
-RewriteRule ^main.css$ css.php [END]
+RewriteCond %{REQUEST_URI} css
+RewriteCond %{REQUEST_URI} !^/css/$
+RewriteRule .* /css/ [R=301,END]
+RewriteRule ^css/$ css.php [END]
 
 #### XML Files ####
 RewriteCond %{HTTP_HOST} test.yodas.ws

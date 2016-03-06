@@ -14,19 +14,17 @@ if (end($minfile) != 'css') $minfile[] = 'css';
 array_splice($minfile, -1, 0, 'min');
 $minfile = implode('.', $minfile);
 
-// Internet Explorer Style Sheet
-$isIE = (strpos($file, 'ie') === 0);
-
-// List CSS Files to Combine
-$files = array();
-$glob = glob("{{layouts,gtfs,components/*}/*.css,components/*/css.php}", GLOB_BRACE) or array();
-foreach ($glob as $css) {
-	if (strpos($css, 'ie') !== 0 || $isIE)
-		$files[] = $css;
-}
-
 // If not minified in past week, minify now
-if (strpos($_SERVER['HTTP_HOST'], 'test') === 0 or !file_exists($minfile) or time() - filemtime($minfile) > 7 * 24 * 60 * 60) {
+if (strpos($_SERVER['HTTP_HOST'], 'test') === 0 or !file_exists($minfile) or time() - filemtime($minfile) > 60 * 24 * 60 * 60) {
+	// Internet Explorer Style Sheet
+	$isIE = (strpos($file, '.ie.') === 0);
+	// List CSS Files to Combine
+	$files = array();
+	$glob = glob("{{layouts,gtfs,components/*}/*.css,components/*/css.php}", GLOB_BRACE) or array();
+	foreach ($glob as $css) {
+		if (strpos($css, '.ie.') !== 0 || $isIE)
+			$files[] = $css;
+	}
 	// Require CSSTidy
 	require_once('csstidy/class.csstidy.php');
 	$tidy = new csstidy();

@@ -63,7 +63,6 @@ case '':
 
 	WorldMap::html();
 	foreach ($tile as $t) {
-#		echo '<pre>' . print_r($t,1) . '</pre>';
 		$t->html();
 	}
 	break;
