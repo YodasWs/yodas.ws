@@ -26,7 +26,7 @@ Tile.prototype.changeImage = function() {
 		backgroundImage: bg.join(',')
 	})
 	this.bg_i = i
-//	this.bgto = setTimeout(this.tile.changeImage.bind(this), Math.randInt(5, 20) * 1000)
+	this.bgto = setTimeout(this.tile.changeImage.bind(this), Math.randInt(5, 20) * 1000)
 }
 $(document).ready(function(){
 	$('article.tile').each(function(){
