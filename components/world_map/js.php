@@ -27,6 +27,7 @@ yodasws.worldMap = {
 	markers: [],
 	options: {},
 	panTimer: 0,
+	oldCenter: false,
 	panRandom: function() {
 		var marker,
 			end = (new Date()).getTime() + 1000 * 60
@@ -69,7 +70,9 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 	}).on('mouseleave', function() {
 		yodasws.worldMap.panTimer = setTimeout(yodasws.worldMap.panRandom, 10000)
 	}).on('click', function() {
-		$(this).addClass('expanded')
+		$t = $(this)
+		yodasws.worldMap.oldCenter = $t.is('.expanded') ? false : yodasws.worldMap.map.getCenter()
+		$t.addClass('expanded')
 		setTimeout(function(){
 			$(window).trigger('resize')
 		}, 500)
@@ -77,6 +80,7 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 	// Collapse World Map on Click
 	$(document).on('click', function(e) {
 		if (!$(e.target).closest('#worldmap').length || $(e.target).is('#worldmap + *')) {
+			yodasws.worldMap.oldCenter = yodasws.worldMap.map.getCenter()
 			$('#worldmap').removeClass('expanded')
 			setTimeout(function(){
 				$(window).trigger('resize')
@@ -87,6 +91,8 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 		if (c) clearTimeout(c)
 		c = setTimeout(function(m) {
 			google.maps.event.trigger(m, 'resize')
+			if (yodasws.worldMap.oldCenter)
+				yodasws.worldMap.map.setCenter(yodasws.worldMap.oldCenter)
 			c = 0
 		}, 100, yodasws.worldMap.map)
 	})
