@@ -48,7 +48,7 @@ class WorldMap implements Component {
 		if (is_string($xml['img'])) $xml['img'] = array($xml['img']);
 		$img = array();
 		require_once("components/img/img.php");
-		foreach ($xml['img'] as $i) {
+		if (!empty($xml['img'])) foreach ($xml['img'] as $i) {
 			$img[] = new Img($i);
 		}
 		return $img;

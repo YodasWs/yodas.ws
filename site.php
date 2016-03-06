@@ -124,7 +124,7 @@ class BlogSite {
 	}
 
 	public static function urlencode($str) {
-		return preg_replace("'%(a-f0-9){2}'i", '', $str);
+		return preg_replace("'%(a-f0-9){2}'i", '', urlencode($str));
 	}
 
 	public function getWorldMap() {

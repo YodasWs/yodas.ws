@@ -34,6 +34,7 @@ RewriteRule ^[a-z]{2}/ index.php [END]
 #### Components Folder ####
 
 # Component Library
+RewriteCond %{REQUEST_URI} !.js$
 RewriteCond %{HTTP_ACCEPT} text/html
 RewriteRule ^components/ components/index.php [END]
 
