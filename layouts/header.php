@@ -4,6 +4,7 @@
 <meta charset="utf-8"/>
 <title><?=$this->title?></title>
 <base href="/" target="_top" />
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="stylesheet" href="/css"/>
 <script src="/components/upgrdr/"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>

@@ -1,7 +1,12 @@
 body > header {
 	background: cornflowerblue;
 	text-align: center;
-	flex: 0 0 20%;
+	flex: 0 0 100%;
+}
+@media (min-width: 460px) {
+	body > header {
+		flex: 0 0 20%;
+	}
 }
 body > header h1 {
 	padding: 10px 1em 15px;

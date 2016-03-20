@@ -12,16 +12,17 @@ article.tile {
 	position: relative;
 	transition: background 1s, flex-basis 750ms, max-width 750ms, min-height 1s;
 	cursor: pointer;
+	flex-basis: 98%;
+}
+@media (min-width: 400px) {
+	article.tile {
+		flex-basis: 45%;
+	}
 }
 @media (min-width: 700px) {
 	article.tile {
 		flex-basis: 25%;
 		margin: 0.5rem;
-	}
-}
-@media (max-width: 699px) {
-	article.tile {
-		flex-basis: 45%;
 	}
 }
 article.tile > h1 {
