@@ -24,6 +24,7 @@ RewriteRule ^([a-z]{2})/([^/]+)/edit/?$ gtfs/edit.php [END]
 RewriteRule ^gtfs/ - [F]
 
 #### Country Code URLs, Location Search ####
+
 #RewriteMap lc int:tolower
 RewriteRule ^([A-Z][a-zA-Z])/?$ "/${lc:$1}/" [END]
 
@@ -62,18 +63,39 @@ RewriteRule ^components/ - [F]
 ExpiresByType application/javascript "access plus 60 days"
 
 #### Dates in URL ####
-RewriteRule ^(\d{4})/01 $1/Jan/ [R=301]
-RewriteRule ^(\d{4})/02 $1/Feb/ [R=301]
-RewriteRule ^(\d{4})/03 $1/Mar/ [R=301]
-RewriteRule ^(\d{4})/04 $1/Apr/ [R=301]
-RewriteRule ^(\d{4})/05 $1/May/ [R=301]
-RewriteRule ^(\d{4})/06 $1/Jun/ [R=301]
-RewriteRule ^(\d{4})/07 $1/Jul/ [R=301]
-RewriteRule ^(\d{4})/08 $1/Aug/ [R=301]
-RewriteRule ^(\d{4})/09 $1/Sep/ [R=301]
-RewriteRule ^(\d{4})/10 $1/Oct/ [R=301]
-RewriteRule ^(\d{4})/11 $1/Nov/ [R=301]
-RewriteRule ^(\d{4})/12 $1/Dec/ [R=301]
+
+# Stringify Month
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/01 /$1/Jan/ [R=301,END]
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/02 /$1/Feb/ [R=301,END]
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/03 /$1/Mar/ [R=301,END]
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/04 /$1/Apr/ [R=301,END]
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/05 /$1/May/ [R=301,END]
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/06 /$1/Jun/ [R=301,END]
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/07 /$1/Jul/ [R=301,END]
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/08 /$1/Aug/ [R=301,END]
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/09 /$1/Sep/ [R=301,END]
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/10 /$1/Oct/ [R=301,END]
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/11 /$1/Nov/ [R=301,END]
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/12 /$1/Dec/ [R=301,END]
+
+RewriteCond %{HTTP_ACCEPT} !image
+RewriteRule ^(\d{4})/\d+ - [R=404]
+
+# Make Dates Directories
+RewriteRule ^(\d{4}/\w{3}/\d{2})$ $1/ [R=302]
+
 #RewriteRule ^(\d{4})/Jan/ $1/01/
 #RewriteRule ^(\d{4})/Feb/ $1/02/
 #RewriteRule ^(\d{4})/Mar/ $1/03/

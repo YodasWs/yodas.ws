@@ -19,34 +19,49 @@
 		<name>Washington, DC</name>
 	</locale>
 	<locale lat="51.5001524" lng="-0.1262362" zed="400" cc="uk">
-		<name area="England, UK">London, England</name>
+		<name>London</name>
 	</locale>
 	<locale lat="48.8566667" lng="2.3509871" zed="400" cc="fr">
-		<name>Paris, France</name>
+		<name>Paris</name>
 	</locale>
 	<locale lat="50.8462807" lng="4.3547273" zed="400" cc="be">
-		<name>Brussels, Belgium</name>
+		<name>Brussels</name>
 	</locale>
 	<locale lat="39.904667" lng="116.408198" zed="400" cc="cn">
 		<name>Beijing</name>
+		<img>2009/12/28_tiananmen1.jpg</img>
+		<img>2009/12/28_palace.jpg</img>
+		<img>2009/12/28_olympics.JPG</img>
+		<img>2009/12/30_greatwall.JPG</img>
 	</locale>
 	<locale lat="55.755786" lng="37.617633" zed="400" cc="ru">
 		<name>Moscow</name>
+		<img>2004/05/14_moscow1.jpg</img>
+		<img>2004/05/15_cathedral1.jpg</img>
+		<img>2004/05/15_redsquare.jpg</img>
+		<img>2004/05/15_theatre.jpg</img>
+		<img>2004/05/19_cathedral2.jpg</img>
 	</locale>
 	<locale lat="52.5234051" lng="13.4113999" zed="400" cc="de">
-		<name>Berlin, Germany</name>
+		<name>Berlin</name>
+		<img>2008/04/02_tower2.jpg</img>
 	</locale>
 	<locale lat="52.3738007" lng="4.8909347" zed="399" cc="nl">
-		<name>Amsterdam, Netherlands</name>
+		<name>Amsterdam</name>
+		<img>2008/03/31_amsterdam9.jpg</img>
+		<img>2008/03/31_amsterdam12.jpg</img>
+		<img>2008/03/31_amsterdam5.jpg</img>
+		<img>2008/03/31_canal1.jpg</img>
 	</locale>
 	<locale lat="53.344104" lng="-6.2674937" zed="399" cc="ie">
-		<name>Dublin, Ireland</name>
+		<name>Dublin</name>
 	</locale>
 	<locale lat="45.767299" lng="4.8343287" cc="fr">
-		<name>Lyon, France</name>
+		<name>Lyon</name>
 	</locale>
 	<locale lat="40.7143528" lng="-74.0059731" zed="300" cc="us">
 		<name>New York</name>
+		<img>2002/07/06_downtown.jpg</img>
 	</locale>
 	<locale lat="37.566535" lng="126.9779692" cc="kr">
 		<name>Seoul</name>
