@@ -8,6 +8,10 @@ class Img implements Component {
 
 	public function __construct($filename) {
 		global $blog;
+		if (!is_string($filename) or empty($filename)) {
+			error_log("String not given to Img::__construct()");
+			return false;
+		}
 		$filename = explode('.', $filename);
 		$this->date = BlogSite::getDate($filename[0]);
 		if (end($filename) != 'xml') {
