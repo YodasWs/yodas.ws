@@ -24,7 +24,9 @@ class BlogEntry implements Component {
 		} else if (is_string($args[0]) and preg_match("'^/?\d{4}(/\d\d(/\d\d)?)?'", $arg[0])) {
 			// TODO: Is Date, Load Entry(-ies)
 			$date = BlogSite::getDate($arg[0]);
-			return false;
+
+			$this->xml = BlogSite::getXMLFile("{$date['year']}/{$date['mon']}/{$date['day']}", $lang);
+#			echo "<pre>" . print_r($this->xml, true) . "</pre>";
 		} else if (is_array($args[0])) {
 			// If World Map XML, take it
 			if (!empty($args[0]['locale'])) {
