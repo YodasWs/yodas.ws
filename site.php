@@ -188,7 +188,11 @@ class BlogSite {
 				strpos($val, 'https://') === 0
 			) $this->javascript[] = $val;
 			else {
-				preg_match_all("'-(\d+)(\.\d+)?'", $val, $file);
+				switch ($val) {
+				case "google-maps":
+					$this->javascript[] = "http://maps.google.com/maps/api/js?v=3&region=US&signed_in=true";
+					break;
+				}
 				if (
 					file_exists("components\\{$val}\\js.php") ||
 					file_exists("components\\{$val}\\{$val}.js")
