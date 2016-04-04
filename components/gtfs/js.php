@@ -322,15 +322,12 @@ foreach ($_SESSION['gtfs_locs'] as $loc) {
 }
 ?>
 	gtfs.map.zoom = gtfs.map.getZoom()
-	gtfs.map.addListener('idle', function(e) {
-		var zoom = gtfs.map.getZoom()
-		if (Number.isNaN(zoom)) return
-		if (zoom == gtfs.map.zoom) return
-		gtfs.map.zoom = zoom
-		console.log('Zoom: ' + zoom)
+	gtfs.map.addListener('zoom_changed', function(e) {
+		// Make Lines Thicker for Easier Reading
+		var weightAdjust = (gtfs.map.zoom >= 14 ? gtfs.map.zoom - 13 : 6 - Math.floor((gtfs.map.zoom - 1) / 2))
 		for (var i in gtfs.poly) {
 			gtfs.poly[i].Polyline.setOptions({
-				strokeWeight: gtfs.poly[i].weight + (zoom >= 14 ? zoom - 13: 0)
+				strokeWeight: gtfs.poly[i].weight + weightAdjust
 			})
 		}
 	})
