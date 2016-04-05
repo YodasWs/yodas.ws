@@ -1,5 +1,5 @@
 <?php session_start(); ?>
-window.csv = {}
+window.csv = window.csv || {}
 csv.splitRow = function(r) {
 	r = r.match(/((?!,)|(?=^))("[^"]*"|[^,]*)(?=,|$)/g)
 	if (r && r.length) r = r.map(function(t) {
@@ -366,18 +366,23 @@ $(document).on('loaded', function(e) {
 		} else if (!switching) {
 			// Reset Map
 			$('section[data-route-id].active').trigger('unfocus')
-			gtfs.map.fitBounds(gtfs.extremes)
 		}
 	}).on('unfocus', function(e) {
 		var $s = $(e.target).closest('section[data-route-id]').removeClass('active'),
 			route = $s.data('route-id'),
 			shape = gtfs.routes[route].shape
 		if (!shape || !gtfs.poly[shape]) return
+		gtfs.map.fitBounds(gtfs.extremes)
 		gtfs.poly[shape].Polyline.setOptions({
 			strokeWeight: gtfs.poly[shape].weight,
 			opacity: gtfs.poly[shape].opacity || .6,
 			zIndex: 0
 		})
+	})
+	$(document).on('click', function(e) {
+		if (!$(e.target).closest('section[data-route-id]').length && !$(e.target).closest('#gtfs').length) {
+			$('section[data-route-id].active').trigger('unfocus')
+		}
 	})
 	// Show Station/Stop on Map
 	$('main').on('click', 'li[data-stop-id]', function(e) {
