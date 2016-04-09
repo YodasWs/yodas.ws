@@ -305,6 +305,7 @@ gtfs.loadGTFS = function(url) {
 	})
 }
 $('script[src*="maps.google.com/maps/api/js"]').load(function(){
+	$('#gtfs, .gtfs').show()
 	// Load Google Maps
 	gtfs.map = new google.maps.Map(document.getElementById('gtfs'), {
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
