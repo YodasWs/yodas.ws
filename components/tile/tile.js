@@ -40,13 +40,13 @@ $(document).ready(function(){
 			// Adjust Background Image
 			this.bg_i = this.bg_i - 1
 			if (this.bg_i < 0) this.bg_i = $t.children('img,load-img').length - 1
-			// Scroll
-			setTimeout(function() {
-				$('html,body').animate({
-					scrollTop: $t.offset().top - yodasws.stickyHeight()
-				}, 500, 'swing')
-			}, 500)
 		}
+		// Scroll
+		setTimeout(function() {
+			$('html,body').animate({
+				scrollTop: $t.offset().top - yodasws.stickyHeight()
+			}, 500, 'swing')
+		}, 500)
 		$t.toggleClass('expanded').siblings('.tile.expanded').removeClass('expanded')
 		this.tile.changeImage.call(this)
 		$(window).trigger('resize')

@@ -45,7 +45,14 @@ yodasws.worldMap = {
 }
 
 $('script[src*="maps.google.com/maps/api/js"]').load(function(){
-	var c = 0
+	var c = 0,
+		$wm = $('#worldmap')
+		fnScroll = function() {
+			// Scroll into view
+			$('html,body').animate({
+				scrollTop: $wm.offset().top - yodasws.stickyHeight()
+			}, 500, 'swing')
+		}
 	if (!document.getElementById("worldmap")) return false;
 	yodasws.worldMap.geocoder = new google.maps.Geocoder();
 	yodasws.worldMap.options = {
@@ -62,16 +69,18 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 		minZoom: 1,
 		maxZoom: 10
 	};
-	if ($('#worldmap').width() < 670) yodasws.worldMap.options.zoom--
+	if ($wm.width() < 670) yodasws.worldMap.options.zoom--
 	yodasws.worldMap.map = new google.maps.Map(document.getElementById("worldmap"), yodasws.worldMap.options)
 	yodasws.worldMap.panTimer = setTimeout(yodasws.worldMap.panRandom, 30000)
-	$('#worldmap').on('mouseenter', function() {
+	$wm.on('mouseenter', function() {
 		clearTimeout(yodasws.worldMap.panTimer)
 	}).on('mouseleave', function() {
 		yodasws.worldMap.panTimer = setTimeout(yodasws.worldMap.panRandom, 10000)
 	}).on('click', function() {
 		$t = $(this)
-		yodasws.worldMap.oldCenter = $t.is('.expanded') ? false : yodasws.worldMap.map.getCenter()
+		if ($t.is('.expanded')) return
+		yodasws.worldMap.oldCenter = yodasws.worldMap.map.getCenter()
+		fnScroll()
 		$t.addClass('expanded')
 		setTimeout(function(){
 			$(window).trigger('resize')
@@ -81,7 +90,7 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 	$(document).on('click', function(e) {
 		if (!$(e.target).closest('#worldmap').length || $(e.target).is('#worldmap + *')) {
 			yodasws.worldMap.oldCenter = yodasws.worldMap.map.getCenter()
-			$('#worldmap').removeClass('expanded')
+			$wm.removeClass('expanded')
 			setTimeout(function(){
 				$(window).trigger('resize')
 			}, 500)
@@ -91,8 +100,10 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 		if (c) clearTimeout(c)
 		c = setTimeout(function(m) {
 			google.maps.event.trigger(m, 'resize')
-			if (yodasws.worldMap.oldCenter)
+			if (yodasws.worldMap.oldCenter) {
 				yodasws.worldMap.map.setCenter(yodasws.worldMap.oldCenter)
+				yodasws.worldMap.oldCenter = false
+			}
 			c = 0
 		}, 100, yodasws.worldMap.map)
 	})
