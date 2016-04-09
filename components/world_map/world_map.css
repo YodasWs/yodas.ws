@@ -1,4 +1,5 @@
 div#worldmap {
+	display: none;
 	height: 300px;
 	min-width: 400px;
 	flex: 1 0 50%;
