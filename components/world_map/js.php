@@ -46,7 +46,7 @@ yodasws.worldMap = {
 
 $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 	var c = 0,
-		$wm = $('#worldmap')
+		$wm = $('#worldmap').show()
 		fnScroll = function() {
 			// Scroll into view
 			$('html,body').animate({
