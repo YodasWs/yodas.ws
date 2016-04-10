@@ -20,18 +20,24 @@ Tile.prototype.changeImage = function() {
 		$i = $a.children('img'),
 		n = $a.is('.expanded') ? 2 : 1,
 		i = Number.parseInt(this.bg_i, 10) + 1 || 0,
+		fadeTime = 0,
 		bg = [],
 		img,k
 	clearTimeout(this.bgto)
 	if (!$i.length) return
-	$a.find('.alt').remove()
+	if ($a.find('.alt').length) {
+		fadeTime = 300
+		$a.find('.alt').fadeOut(300, function() {
+			$(this).remove()
+		})
+	}
 	if (i >= $i.length) i -= $i.length
 	for (var j=0; j<n; j++) {
 		k = i + j
 		while (k >= $i.length) k -= $i.length
 		img = $($i[k])
 		if (img.attr('alt')) {
-			$('<div class="alt">').text(img.attr('alt')).appendTo($a)
+			$('<div class="alt">').text(img.attr('alt')).appendTo($a).delay(fadeTime).fadeIn(300)
 		}
 		bg.push('url(' + img.attr('src') + ')')
 	}

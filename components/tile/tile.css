@@ -7,7 +7,9 @@ article.tile {
 	max-width: 300px;
 	align-self: center;
 	flex-grow: 1;
-	text-shadow: 1px 1px 3px white;
+	text-shadow: 1px 2px 0px whitesmoke, 0px -1px 0px whitesmoke, -1px 0px 0px whitesmoke, 1px 0px 0px whitesmoke;
+	letter-spacing: 2px;
+	text-rendering: optimizeLegibility;
 	overflow: hidden;
 	position: relative;
 	transition: background 1s, flex-basis 750ms, max-width 750ms, min-height 1s;
