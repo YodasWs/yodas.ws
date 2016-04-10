@@ -35,6 +35,21 @@ class BlogSite {
 		if (empty($this->lang)) $this->lang = array('en');
 	}
 
+	public static function getXMLFile($file, $lang=null) {
+		global $blog;
+		$xml = array();
+		if (empty($lang) and !empty($blog)) $lang = $blog->lang;
+		if (empty($lang)) $lang = array('en');
+		if (!is_array($lang)) $lang = array($lang);
+		foreach ($lang as $l) {
+			if (!file_exists("{$file}.{$l}.xml")) $l = substr($l, 0, 2);
+			if (file_exists("{$file}.{$l}.xml")) {
+				array_merge_recursive($xml, json_decode(json_encode(simplexml_load_file("{$file}.{$l}.xml")), true));
+			}
+		}
+		return $xml;
+	}
+
 	public static function getDate($str) {
 		$date = array();
 		$arr = explode('/', trim($str, '/'));
@@ -42,6 +57,7 @@ class BlogSite {
 			$date['year'] = $arr[0];
 			if (!empty($arr[1]) and self::is_mon($arr[1])) {
 				$date['mon'] = self::int_mon($arr[1]);
+				$date['Mon'] = self::str_mon($arr[1]);
 				if (!empty($arr[2]) and (is_int($arr[2]) or is_float($arr[2]) or preg_match("'^\d+'", $arr[2]))) {
 					if (checkdate($date['mon'], (int) $arr[2], $date['year'])) {
 						$date['day'] = (int) $arr[2];
@@ -54,7 +70,7 @@ class BlogSite {
 
 	public static function date_toString($date) {
 		if (is_string($date)) $date = self::getDate($date);
-		return trim("{$date['day']} {$date['mon']} {$date['year']}");
+		return trim("{$date['day']} {$date['Mon']} {$date['year']}");
 	}
 
 	public static function int_mon($str) {
@@ -124,7 +140,7 @@ class BlogSite {
 	}
 
 	public static function urlencode($str) {
-		return preg_replace("'%(a-f0-9)'i", '', $str);
+		return preg_replace("'%(a-f0-9){2}'i", '', urlencode($str));
 	}
 
 	public function getWorldMap() {
@@ -138,6 +154,11 @@ class BlogSite {
 		$xml = $this->world_map->getLocation($loc);
 		if (gettype($xml) != 'array') return false;
 		return $xml;
+	}
+
+	public static function etag($time) {
+		if (!$time) $time = new Date();
+		return date("YMdHiT", $time);
 	}
 
 	public function __destruct() {
@@ -154,21 +175,27 @@ class BlogSite {
 			// Does Directory Exist?
 			if (is_dir($val))
 				$this->$var = $val;
-			break;
+			return;
 		case 'fileHeader':
 		case 'fileFooter':
 			// Does File Exist?
 			if (is_file($this->dirLayouts.$val))
 				$this->$var = $val;
-			break;
+			return;
 		case 'javascript':
-			if (!in_array($val, $this->javascript) && (
+			if (in_array($val, $this->javascript)) return;
+			if (
 				strpos($val, 'http://') === 0 ||
-				strpos($val, 'https://') === 0 ||
-				file_exists("components\\{$val}\\js.php") ||
-				file_exists("components\\{$val}\\{$val}.js")
-			)) $this->javascript[] = $val;
-			break;
+				strpos($val, 'https://') === 0
+			) $this->javascript[] = $val;
+			else {
+				preg_match_all("'-(\d+)(\.\d+)?'", $val, $file);
+				if (
+					file_exists("components\\{$val}\\js.php") ||
+					file_exists("components\\{$val}\\{$val}.js")
+				) $this->javascript[] = $val;
+			}
+			return;
 		}
 	}
 

@@ -9,8 +9,8 @@ class WorldMap implements Component {
 
 	public static function html() {
 		global $blog;
-#		$blog->javascript = "world_map";
-#		$blog->javascript = "http://maps.google.com/maps/api/js?v=3&region=US";
+		$blog->javascript = "world_map";
+		$blog->javascript = "http://maps.google.com/maps/api/js?v=3&region=US";
 		require_once("components/world_map/html.php");
 	}
 
@@ -48,7 +48,7 @@ class WorldMap implements Component {
 		if (is_string($xml['img'])) $xml['img'] = array($xml['img']);
 		$img = array();
 		require_once("components/img/img.php");
-		foreach ($xml['img'] as $i) {
+		if (!empty($xml['img'])) foreach ($xml['img'] as $i) {
 			$img[] = new Img($i);
 		}
 		return $img;
@@ -77,16 +77,7 @@ class WorldMap implements Component {
 	}
 
 	private function getLocalWorldMap($lang = null) {
-		$xml = false;
-		if (empty($lang)) $lang = $blog->lang;
-		if (!is_array($lang)) $lang = array($lang);
-		foreach ($lang as $l) {
-			if (!file_exists("world.{$l}.xml")) $l = substr($l, 0, 2);
-			if (file_exists("world.{$l}.xml")) {
-				$xml = json_decode(json_encode(simplexml_load_file("world.{$l}.xml")), true);
-				break;
-			}
-		}
+		return BlogSite::getXMLFile('world', $lang);
 	}
 
 	public function getCountryName($cc, $lang=null) {

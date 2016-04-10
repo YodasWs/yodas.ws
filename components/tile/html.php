@@ -5,5 +5,4 @@ if (!empty($this->img)) foreach ($this->img as $k => $i) {
 }
 ?>
 	<h1><?=$this->title?></h1>
-	<?php #echo '<pre>'.print_r($this->xml, true).'</pre>';?>
 </article>

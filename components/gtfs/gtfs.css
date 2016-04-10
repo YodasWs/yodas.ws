@@ -1,5 +1,5 @@
 #gtfs {
-	display: block;
+	display: none;
 	min-height: 400px;
 	margin: 0;
 	flex-basis: 100%;
@@ -78,7 +78,8 @@ main > section.agency > a[href] {
 	font-size: smaller;
 }
 
-main > small {
+main > small.gtfs {
+	display: none;
 	order: 100;
 	overflow: auto;
 	padding: 2px 5px;
@@ -86,7 +87,7 @@ main > small {
 	height: 100px;
 	font-size: .6em;
 }
-main > small > p {
+main > small.gtfs > p {
 	margin-top: 0;
 }
 
