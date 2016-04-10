@@ -4,7 +4,6 @@ article.tile {
 	background-size: cover;
 	display: inline-block;
 	min-height: 200px;
-	max-width: 300px;
 	align-self: center;
 	flex-grow: 1;
 	text-shadow: 1px 2px 0px whitesmoke, 0px -1px 0px whitesmoke, -1px 0px 0px whitesmoke, 1px 0px 0px whitesmoke;
@@ -25,6 +24,7 @@ article.tile {
 	article.tile {
 		flex-basis: 25%;
 		margin: 0.5rem;
+		max-width: 300px;
 	}
 }
 article.tile > h1 {
