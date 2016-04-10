@@ -35,9 +35,15 @@ class BlogSite {
 		if (empty($this->lang)) $this->lang = array('en');
 	}
 
-	public static function getXMLFile($file, $lang=null) {
+	public function date_as_dir() {
+		return "{$this->date['year']}/" .  self::str_num($this->date['mon']) . '/' . self::str_num($this->date['day']);
+	}
+
+	public static function getXMLFile($file=null, $lang=null) {
 		global $blog;
 		$xml = array();
+		if (empty($file)) $file = $blog->date_as_dir();
+		if (empty($file)) return array();
 		if (empty($lang) and !empty($blog)) $lang = $blog->lang;
 		if (empty($lang)) $lang = array('en');
 		if (!is_array($lang)) $lang = array($lang);
@@ -75,7 +81,7 @@ class BlogSite {
 
 	public static function int_mon($str) {
 		if (!self::is_mon($str)) return false;
-		if (is_numeric) $str = (int) $str;
+		if (is_numeric($str)) $str = (int) $str;
 		if (is_int($str)) {
 			if ($str >= 1 and $str <= 12) return $str;
 			return false;
@@ -97,7 +103,7 @@ class BlogSite {
 	}
 
 	public static function is_mon($str) {
-		if (is_numeric) $str = (int) $str;
+		if (is_numeric($str)) $str = (int) $str;
 		if (is_int($str)) {
 			return ($str >= 1 and $str <= 12);
 		} else if (!is_string($str)) {
