@@ -20,12 +20,14 @@ class BlogEntry implements Component {
 		if (is_array($args[0])) $args = $args[0];
 		if (is_object($args[0])) {
 			return false;
-		} else if (is_string($args[0]) and preg_match("'^/?\d{4}(/\d\d(/\d\d)?)?/?'", $arg[0])) {
+		} else if (is_string($args[0]) and preg_match("'^/?\d{4}(/(\d\d|[JFMASOND][aepuco][nbrylgptvc])(/\d\d)?)?/?'", $args[0])) {
 			// TODO: Is Date, Load Entry(-ies)
-			$date = BlogSite::getDate($arg[0]);
+			$date = BlogSite::getDate($args[0]);
 
-			$this->xml = $blog->getXMLFile("{$date['year']}/{$date['mon']}/{$date['day']}");
-			echo "<pre>" . print_r($this->xml, true) . "</pre>";
+			$this->xml = $blog->getXMLFile(
+				"/{$date['year']}/" . BlogSite::str_num($date['mon']) . "/{$date['day']}"
+			);
+			echo "<h2>{$args[0]}</h2><pre>" . print_r($date, true) . "</pre><pre>" . print_r($this->xml, true) . "</pre>";
 		} else if (is_array($args[0])) {
 			// If World Map XML, take it
 			if (!empty($args[0]['locale'])) {

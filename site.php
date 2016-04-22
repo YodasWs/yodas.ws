@@ -88,6 +88,7 @@ class BlogSite {
 			if ($str >= 1 and $str <= 12) return $str;
 			return false;
 		}
+		echo "<h3>" . strtolower(substr($str, 0, 3)) . "</h3>";
 		switch (strtolower(substr($str, 0, 3))) {
 			case 'jan': return 1;
 			case 'feb': return 2;
