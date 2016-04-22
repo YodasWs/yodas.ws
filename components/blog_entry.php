@@ -6,7 +6,6 @@ class BlogEntry implements Component {
 	private $img = array();
 	private $url;
 	private $xml;
-	private $lang;
 
 	public static function buildFromDate($date) {
 		if (is_string($date)) {
@@ -21,12 +20,12 @@ class BlogEntry implements Component {
 		if (is_array($args[0])) $args = $args[0];
 		if (is_object($args[0])) {
 			return false;
-		} else if (is_string($args[0]) and preg_match("'^/?\d{4}(/\d\d(/\d\d)?)?'", $arg[0])) {
+		} else if (is_string($args[0]) and preg_match("'^/?\d{4}(/\d\d(/\d\d)?)?/?'", $arg[0])) {
 			// TODO: Is Date, Load Entry(-ies)
 			$date = BlogSite::getDate($arg[0]);
 
-			$this->xml = BlogSite::getXMLFile("{$date['year']}/{$date['mon']}/{$date['day']}", $lang);
-#			echo "<pre>" . print_r($this->xml, true) . "</pre>";
+			$this->xml = $blog->getXMLFile("{$date['year']}/{$date['mon']}/{$date['day']}");
+			echo "<pre>" . print_r($this->xml, true) . "</pre>";
 		} else if (is_array($args[0])) {
 			// If World Map XML, take it
 			if (!empty($args[0]['locale'])) {
@@ -64,7 +63,7 @@ class BlogEntry implements Component {
 		case 'img':
 			if (!empty($this->img)) return $this->img;
 			if (empty($this->xml['img'])) return array();
-			if (is_string($this->xml['img'])) {
+			if (!is_array($this->xml['img'])) {
 				$this->xml['img'] = array($this->xml['img']);
 			}
 			foreach ($this->xml['img'] as $i) {

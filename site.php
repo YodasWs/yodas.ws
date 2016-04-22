@@ -47,10 +47,12 @@ class BlogSite {
 		if (empty($lang) and !empty($blog)) $lang = $blog->lang;
 		if (empty($lang)) $lang = array('en');
 		if (!is_array($lang)) $lang = array($lang);
+		$lang = array_unique($lang);
 		foreach ($lang as $l) {
 			if (!file_exists("{$file}.{$l}.xml")) $l = substr($l, 0, 2);
 			if (file_exists("{$file}.{$l}.xml")) {
-				array_merge_recursive($xml, json_decode(json_encode(simplexml_load_file("{$file}.{$l}.xml")), true));
+				$xml = array_merge_recursive($xml, json_decode(json_encode(simplexml_load_file("{$file}.{$l}.xml")), true));
+				$xml = array_unique($xml);
 			}
 		}
 		return $xml;

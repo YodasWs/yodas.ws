@@ -53,3 +53,8 @@ main > section.wide > h2 {
 .gm-style {
 	width: calc(100% - 1px) !important;
 }
+
+pre {
+	white-space: pre-wrap;
+	max-width: 100%;
+}
