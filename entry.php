@@ -22,7 +22,7 @@ foreach ($xml as $name => $child) {
 	case 'img':
 		foreach ($child as $img) {
 			$img = new Img($img);
-			echo $img->html();
+			$img->print_figure();
 		}
 		break;
 	}
