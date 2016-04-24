@@ -1,6 +1,3 @@
-Math.randInt = function(min, max) {
-	return Math.floor(Math.random() * (max - min + 1)) + min
-}
 window.Tile = function(){}
 Tile.prototype.loadImage = function() {
 	var self = this,

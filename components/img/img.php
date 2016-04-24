@@ -50,7 +50,7 @@ class Img implements Component {
 			"data-date=\"" . BlogSite::date_toString($this->date) . '"'
 		);
 		if (!empty($this->alt)) $img[] = "alt=\"{$this->alt}\"";
-		$img[] = $delay_load ? "></load-img>" : "/>\n";
+		$img[] = $delay_load ? "></load-img>" : "/>";
 		echo join(' ', $img);
 	}
 
