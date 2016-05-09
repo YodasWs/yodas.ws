@@ -50,13 +50,17 @@ class Img implements Component {
 			"data-date=\"" . BlogSite::date_toString($this->date) . '"'
 		);
 		if (!empty($this->alt)) $img[] = "alt=\"{$this->alt}\"";
+		if (!empty($this->height)) $img[] = "data-height=\"{$this->height}\"";
+		$style = array();
+		if (!empty($this->height)) $style[] = "max-height:{$this->height}px";
+		$img[] = 'style="' . join(';', $style) . '"';
 		$img[] = $delay_load ? "></load-img>" : "/>";
 		echo join(' ', $img);
 	}
 
 	public function __get($var) {
 		if (in_array($var, array(
-			'alt','src'
+			'alt','src','height'
 		))) return $this->xml[$var];
 		switch ($var) {
 		case 'date':
@@ -65,7 +69,7 @@ class Img implements Component {
 	}
 	public function __isset($var) {
 		if (in_array($var, array(
-			'alt','src'
+			'alt','src','height'
 		))) return !empty($this->xml[$var]);
 	}
 }

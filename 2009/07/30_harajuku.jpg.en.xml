@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <image xml:lang="en">
-	<src height="310">http://yodas.ws/2009/07/harajuku.JPG</src>
+	<height>310</height>
+	<src>http://yodas.ws/2009/07/harajuku.JPG</src>
 	<alt></alt>
-	<geo lat="" lng="" cc="jp" />
+	<geo>
+		<lat></lat>
+		<lng></lng>
+		<cc>jp</cc>
+	</geo>
 	<foursquare></foursquare>
 </image>

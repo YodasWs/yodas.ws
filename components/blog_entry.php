@@ -4,14 +4,15 @@ require_once("components/img/img.php");
 class BlogEntry implements Component {
 	private $title;
 	private $img = array();
+	private $date;
 	private $url;
 	private $xml;
 
 	public static function buildFromDate($date) {
 		if (is_string($date)) {
-			$date = BlogSite::getDate($date);
+			$this->date = BlogSite::getDate($date);
 		} else throw Exception("Invalid date given");
-		return new BlogEntry("{$date['year']}/{$date['mon']}/{$date['day']}");
+		return new BlogEntry("{$this->date['year']}/{$this->date['mon']}/{$this->date['day']}");
 	}
 
 	public function __construct() {
@@ -22,12 +23,11 @@ class BlogEntry implements Component {
 			return false;
 		} else if (is_string($args[0]) and preg_match("'^/?\d{4}(/(\d\d|[JFMASOND][aepuco][nbrylgptvc])(/\d\d)?)?/?'", $args[0])) {
 			// TODO: Is Date, Load Entry(-ies)
-			$date = BlogSite::getDate($args[0]);
+			$this->date = BlogSite::getDate($args[0]);
 
 			$this->xml = $blog->getXMLFile(
-				"/{$date['year']}/" . BlogSite::str_num($date['mon']) . "/{$date['day']}"
+				$this->date['year'] . '/' . BlogSite::str_num($this->date['mon']) . '/' . $this->date['day']
 			);
-			echo "<h2>{$args[0]}</h2><pre>" . print_r($date, true) . "</pre><pre>" . print_r($this->xml, true) . "</pre>";
 		} else if (is_array($args[0])) {
 			// If World Map XML, take it
 			if (!empty($args[0]['locale'])) {
@@ -46,12 +46,6 @@ class BlogEntry implements Component {
 				$this->xml = $loc;
 			} else return false;
 		}
-		if (!empty($this->xml['name'])) {
-			$this->title = (string) $this->xml['name'];
-			if (empty($this->url)) {
-				$this->url = BlogSite::urlencode($this->title);
-			}
-		}
 	}
 
 	public function __destruct() {
@@ -59,9 +53,22 @@ class BlogEntry implements Component {
 
 	public function __get($var) {
 		if (in_array($var, array(
-			'xml','title',
+			'xml',
 		))) return $this->$var;
 		switch ($var) {
+		case 'url':
+			if (!empty($this->url)) return $this->url;
+			if (empty($this->title)) $this->__get('title');
+			$this->url = BlogSite::urlencode($this->title);
+			break;
+		case 'title':
+			if (!empty($this->title)) return $this->title;
+			if (!empty($this->xml['name'])) {
+				$this->title = (string) $this->xml['name'];
+			} else if (!empty($this->date)) {
+				$this->title = BlogSite::date_toString($this->date);
+			}
+			return $this->title;
 		case 'img':
 			if (!empty($this->img)) return $this->img;
 			if (empty($this->xml['img'])) return array();
