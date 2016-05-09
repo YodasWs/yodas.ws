@@ -141,7 +141,7 @@ RewriteRule ^(\d{4})/(\d{2}) $1/ [R=302,END]
 # Load Appropriate Calendar Script
 RewriteCond %{DOCUMENT_ROOT}/$1 -d
 RewriteCond %{DOCUMENT_ROOT}/$1/$2.en.xml -f
-RewriteRule ^(\d{4}/\d{2})/(\d{2})/$ entry.php [END]
+RewriteRule ^(\d{4}/\d{2})/(\d{2})/$ components/blog_entry.html.php [END]
 
 RewriteCond %{DOCUMENT_ROOT}/$1 -d
 RewriteRule ^(\d{4}/\d{2})/$ month.php [END]

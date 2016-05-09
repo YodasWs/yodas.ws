@@ -1,5 +1,5 @@
 <?php
-require_once("site.php");
+require_once("../site.php");
 require_once("components/blog_entry.php");
 $blog = new BlogSite();
 $xml = $blog->getXMLFile();
@@ -12,18 +12,16 @@ if (empty($xml)) {
 }
 ?>
 <?php
-echo "<pre>" . print_r($_SERVER, true) . "</pre>";
-echo "<pre>" . print_r($entry, true) . "</pre>";
+echo "<h1>{$entry->title}</h1>";
+#echo "<pre>" . print_r($_SERVER, true) . "</pre>";
+foreach ($entry->img as $img) {
+	$img->print_figure();
+}
 foreach ($xml as $name => $child) {
 	if (!is_array($child)) {
 		$child = array($child);
 	}
 	switch ($name) {
-	case 'img':
-		foreach ($child as $img) {
-			$img = new Img($img);
-			$img->print_figure();
-		}
-		break;
 	}
 }
+echo "<pre>" . print_r($entry, true) . "</pre>";
