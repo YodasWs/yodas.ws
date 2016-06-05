@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <image xml:lang="en">
-	<src height="270">http://yodas.ws/2009/08/heroes1.JPG</src>
+	<height>270</height>
+	<src>http://yodas.ws/2009/08/heroes1.JPG</src>
 	<alt></alt>
-	<geo lat="" lng="" cc="kr" />
-	<foursquare></foursquare>
+	<geo>
+		<lat></lat>
+		<lng></lng>
+		<cc>kr</cc>
+	</geo>
+	<foursquare>4bd2763fcaff9521f203d3f0</foursquare>
 </image>

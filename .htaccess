@@ -10,15 +10,6 @@ RewriteRule ^(.*[^/])$ /$1/ [R=301,END]
 #### Image Files ####
 
 # Prevent Hyperlinking
-#RewriteCond %{HTTP_REFERER} !yodas.ws
-#RewriteCond %{HTTP_REFERER} !pinterest
-#RewriteCond %{HTTP_REFERER} !facebook
-#RewriteCond %{HTTP_REFERER} !twitter
-#RewriteCond %{HTTP_REFERER} !google
-#RewriteCond %{HTTP_REFERER} !bing
-#RewriteCond %{HTTP_ACCEPT} image
-#RewriteRule .* - [F]
-
 RewriteCond %{HTTP_REFERER} !yodas\.ws
 RewriteCond %{HTTP_REFERER} !pinterest\.com
 RewriteCond %{HTTP_REFERER} !facebook\.com
