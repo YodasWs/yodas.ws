@@ -1,5 +1,5 @@
 <?php session_start(); ?>
-window.csv = {}
+window.csv = window.csv || {}
 csv.splitRow = function(r) {
 	r = r.match(/((?!,)|(?=^))("[^"]*"|[^,]*)(?=,|$)/g)
 	if (r && r.length) r = r.map(function(t) {
@@ -323,15 +323,12 @@ foreach ($_SESSION['gtfs_locs'] as $loc) {
 }
 ?>
 	gtfs.map.zoom = gtfs.map.getZoom()
-	gtfs.map.addListener('idle', function(e) {
-		var zoom = gtfs.map.getZoom()
-		if (Number.isNaN(zoom)) return
-		if (zoom == gtfs.map.zoom) return
-		gtfs.map.zoom = zoom
-		console.log('Zoom: ' + zoom)
+	gtfs.map.addListener('zoom_changed', function(e) {
+		// Make Lines Thicker for Easier Reading
+		var weightAdjust = (gtfs.map.zoom >= 14 ? gtfs.map.zoom - 13 : 6 - Math.floor((gtfs.map.zoom - 1) / 2))
 		for (var i in gtfs.poly) {
 			gtfs.poly[i].Polyline.setOptions({
-				strokeWeight: gtfs.poly[i].weight + (zoom >= 14 ? zoom - 13: 0)
+				strokeWeight: gtfs.poly[i].weight + weightAdjust
 			})
 		}
 	})
@@ -370,18 +367,23 @@ $(document).on('loaded', function(e) {
 		} else if (!switching) {
 			// Reset Map
 			$('section[data-route-id].active').trigger('unfocus')
-			gtfs.map.fitBounds(gtfs.extremes)
 		}
 	}).on('unfocus', function(e) {
 		var $s = $(e.target).closest('section[data-route-id]').removeClass('active'),
 			route = $s.data('route-id'),
 			shape = gtfs.routes[route].shape
 		if (!shape || !gtfs.poly[shape]) return
+		gtfs.map.fitBounds(gtfs.extremes)
 		gtfs.poly[shape].Polyline.setOptions({
 			strokeWeight: gtfs.poly[shape].weight,
 			opacity: gtfs.poly[shape].opacity || .6,
 			zIndex: 0
 		})
+	})
+	$(document).on('click', function(e) {
+		if (!$(e.target).closest('section[data-route-id]').length && !$(e.target).closest('#gtfs').length) {
+			$('section[data-route-id].active').trigger('unfocus')
+		}
 	})
 	// Show Station/Stop on Map
 	$('main').on('click', 'li[data-stop-id]', function(e) {

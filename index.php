@@ -2,8 +2,17 @@
 require_once("site.php");
 $blog = new BlogSite();
 $uri = trim($_SERVER['REQUEST_URI'], '/');
-
 $dir = explode('/', $uri);
+
+// Convert Location Names to Lower Case
+if (preg_match("'^[a-z]{2}$'i", $dir[0]) and preg_match("'[A-Z]'", $uri)) {
+	header("HTTP/1.1 301 Found");
+	header("Location: /" . BlogSite::urlencode($uri)) . "/";
+	print "<h1>" . urldecode($uri) . "</h1>";
+	exit;
+}
+
+// First Level is Country Code
 if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 	// This is a country code
 	$locations = $blog->world_map->getByCountry($dir[0]);
@@ -16,6 +25,7 @@ if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 			}
 			exit;
 		} else {
+			// Load Location Data
 			$content_loaded = false;
 			$gtfs_dir = strtolower("{$dir[0]}/{$dir[1]}");
 			$xml = $blog->world_map->getLocation($dir[1]);
@@ -23,6 +33,7 @@ if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 				$content_loaded = true;
 				echo "<h1>{$xml['name']}</h1>";
 			}
+			// Load GTFS Component
 			if (is_dir("gtfs/$gtfs_dir")) {
 				$content_loaded = true;
 				require_once("components/gtfs/gtfs.php");
@@ -30,6 +41,7 @@ if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 				$gtfs->addLocation($gtfs_dir);
 				$gtfs->html();
 			}
+			// Load Location Images
 			$img = $blog->world_map->getImages($dir[1]);
 			if (count($img)) {
 				$content_loaded = true;
@@ -38,6 +50,7 @@ if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 				}
 			}
 			if ($content_loaded) exit;
+			// If nothing to display, drop through to 404
 		}
 	}
 }

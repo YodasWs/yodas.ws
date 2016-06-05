@@ -140,7 +140,7 @@ class BlogSite {
 	}
 
 	public static function urlencode($str) {
-		return preg_replace("'%(a-f0-9){2}'i", '', urlencode($str));
+		return preg_replace("'%(a-f0-9){2}'i", '', urlencode(strtolower($str)));
 	}
 
 	public function getWorldMap() {
@@ -189,7 +189,11 @@ class BlogSite {
 				strpos($val, 'https://') === 0
 			) $this->javascript[] = $val;
 			else {
-				preg_match_all("'-(\d+)(\.\d+)?'", $val, $file);
+				switch ($val) {
+				case "google-maps":
+					$this->javascript[] = "http://maps.google.com/maps/api/js?v=3&region=US&signed_in=true";
+					break;
+				}
 				if (
 					file_exists("components\\{$val}\\js.php") ||
 					file_exists("components\\{$val}\\{$val}.js")

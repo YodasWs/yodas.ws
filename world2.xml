@@ -88,4 +88,7 @@
 		<img>2009/07/31_torii.jpg</img>
 		<img>2009/07/31_shinjukuTower3.jpg</img>
 	</locale>
+	<locale cc="jp">
+		<name>Hakone</name>
+	</locale>
 </world>

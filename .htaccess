@@ -17,7 +17,7 @@ RewriteRule ^(.*[^/])$ /$1/ [R=301,END]
 #RewriteCond %{HTTP_REFERER} !google
 #RewriteCond %{HTTP_REFERER} !bing
 #RewriteCond %{HTTP_ACCEPT} image
-#RewriteRule .* - [F]
+#RewriteRule .* - [R=404,END]
 
 RewriteCond %{HTTP_REFERER} !yodas\.ws
 RewriteCond %{HTTP_REFERER} !pinterest\.com
@@ -42,11 +42,11 @@ RewriteCond %{HTTP_REFERER} yodas.ws
 RewriteRule ^gtfs/.*/(agency|routes|shapes|stop(s|_times)|trips).txt$ - [END]
 ExpiresByType text/plain "access plus 60 days"
 
-RewriteCond %{HTTP_HOST} ^test.yodas.ws$
+RewriteCond %{HTTP_HOST} ^dev.yodas.ws$
 RewriteCond %{DOCUMENT_ROOT}/gtfs/$1/$2/routes.txt -f
 RewriteRule ^([a-z]{2})/([^/]+)/edit/?$ gtfs/edit.php [END]
 
-RewriteRule ^gtfs/ - [F]
+RewriteRule ^gtfs/ - [R=404,END]
 
 #### Country Code URLs, Location Search ####
 
@@ -80,7 +80,7 @@ RewriteRule ^components/([^/\.]*)(/|\.js)?$ components/$1.js
 
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^components/ - [END]
-RewriteRule ^components/ - [F]
+RewriteRule ^components/ - [R=404,END]
 
 <FilesMatch "(\.js$|js\.php)">
 	Header set Content-type application/javascript
@@ -116,7 +116,7 @@ RewriteCond %{HTTP_ACCEPT} !image
 RewriteRule ^(\d{4})/12 /$1/Dec/ [R=301,END]
 
 RewriteCond %{HTTP_ACCEPT} !image
-RewriteRule ^(\d{4})/\d+ - [R=404]
+RewriteRule ^(\d{4})/\d+ - [R=404,END]
 
 # Make Dates Directories
 RewriteRule ^(\d{4}/\w{3}/\d{2})$ $1/ [R=302]
@@ -169,7 +169,7 @@ RewriteRule .* /css/ [R=301,END]
 RewriteRule ^css/$ css.php [END]
 
 #### XML Files ####
-RewriteCond %{HTTP_HOST} test.yodas.ws
+RewriteCond %{HTTP_HOST} dev.yodas.ws
 RewriteCond %{REQUEST_FILENAME} -f
 RewriteRule ^world(.\w\w)?.xml$ - [END]
 

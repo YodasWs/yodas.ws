@@ -6,8 +6,7 @@ class GTFS implements Component {
 	public function html() {
 		global $blog;
 		$blog->javascript = "gtfs";
-#		$blog->javascript = "google-maps";
-		$blog->javascript = "http://maps.google.com/maps/api/js?v=3&region=US";
+		$blog->javascript = "google-maps";
 		require_once("components/gtfs/html.php");
 	}
 

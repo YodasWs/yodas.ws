@@ -12,7 +12,7 @@
 <script src="/components/site.js"></script>
 <?php foreach ($this->javascript as $js) {
 	if (strpos($js, 'http://') === 0 || strpos($js, 'https://') === 0)
-		echo "<script src=\"{$js}/\" async></script>";
+		echo "<script src=\"{$js}\" async></script>";
 	else
 		echo "<script src=\"/components/{$js}/\" async></script>";
 } ?>
