@@ -45,7 +45,7 @@ class WorldMap implements Component {
 	public function getImages($location) {
 		$xml = $this->getLocation($location);
 		if (empty($xml)) return array();
-		if (is_string($xml['img'])) $xml['img'] = array($xml['img']);
+		if (!is_array($xml['img'])) $xml['img'] = array($xml['img']);
 		$img = array();
 		require_once("components/img/img.php");
 		if (!empty($xml['img'])) foreach ($xml['img'] as $i) {

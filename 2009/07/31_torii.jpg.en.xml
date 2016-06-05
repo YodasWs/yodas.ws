@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <image xml:lang="en">
-	<src height="330">http://yodas.ws/2009/07/torii.JPG</src>
+	<height>330</height>
+	<src>http://yodas.ws/2009/07/torii.JPG</src>
 	<alt></alt>
-	<geo lat="" lng="" cc="jp" />
-	<foursquare></foursquare>
+	<geo>
+		<lat></lat>
+		<lng></lng>
+		<cc>jp</cc>
+	</geo>
+	<foursquare>4c1a916a63750f475a7fb367</foursquare>
 </image>

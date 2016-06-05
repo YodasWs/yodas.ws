@@ -46,17 +46,22 @@ class Img implements Component {
 		$blog->javascript = 'img';
 		$img = array(
 			$delay_load ? "\t<load-img" : "\t<img",
+			"data-date=\"" . BlogSite::date_toString($this->date) . '"',
 			"src=\"{$this->src}\"",
-			"data-date=\"" . BlogSite::date_toString($this->date) . '"'
+			"itemprop=\"image\""
 		);
 		if (!empty($this->alt)) $img[] = "alt=\"{$this->alt}\"";
-		$img[] = $delay_load ? "></load-img>" : "/>\n";
+		if (!empty($this->height)) $img[] = "data-height=\"{$this->height}\"";
+		$style = array();
+		if (!empty($this->height)) $style[] = "max-height:{$this->height}px";
+		$img[] = 'style="' . join(';', $style) . '"';
+		$img[] = $delay_load ? "></load-img>" : "/>";
 		echo join(' ', $img);
 	}
 
 	public function __get($var) {
 		if (in_array($var, array(
-			'alt','src'
+			'alt','src','height'
 		))) return $this->xml[$var];
 		switch ($var) {
 		case 'date':
@@ -65,7 +70,7 @@ class Img implements Component {
 	}
 	public function __isset($var) {
 		if (in_array($var, array(
-			'alt','src'
+			'alt','src','height'
 		))) return !empty($this->xml[$var]);
 	}
 }

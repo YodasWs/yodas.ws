@@ -17,12 +17,12 @@
 		echo "<script src=\"/components/{$js}/\" async></script>";
 } ?>
 </head>
-<body>
+<body itemscope itemtype="http://schema.org/<?=$this->page_type?>">
 <?php include_once("google_analytics.php"); ?>
-<header>
+<header itemscope itmetype="http://schema.org/WPHeader">
 	<a href="/" rel="home"><h1><?=$this->title?></h1></a>
 </header>
-<nav>
+<nav itemscope itemtype="http://schema.org/SiteNavigationElement">
 	<a href="/">Home</a>
 	<li>Countries<ul><?php
 		$wm = $this->getWorldMap();

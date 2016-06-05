@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <image xml:lang="en">
-	<src height="340">http://yodas.ws/2009/07/tokyoLake.JPG</src>
+	<height>340</height>
+	<src>http://yodas.ws/2009/07/tokyoLake.JPG</src>
 	<alt></alt>
-	<geo lat="" lng="" cc="jp" />
-	<foursquare></foursquare>
+	<geo>
+		<lat></lat>
+		<lng></lng>
+		<cc>jp</cc>
+	</geo>
+	<foursquare>4cb2c0cacbab236aaff2b273</foursquare>
 </image>

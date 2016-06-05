@@ -11,6 +11,7 @@ class BlogSite {
 	private $dirLayouts = "layouts/";
 	private $fileHeader = "header.php";
 	private $fileFooter = "footer.php";
+	private $page_type = 'WebPage';
 	private $javascript = array();
 	private $page_wrap = true;
 	private $world_map;
@@ -35,16 +36,24 @@ class BlogSite {
 		if (empty($this->lang)) $this->lang = array('en');
 	}
 
-	public static function getXMLFile($file, $lang=null) {
+	public function date_as_dir() {
+		return "{$this->date['year']}/" .  self::str_num($this->date['mon']) . '/' . self::str_num($this->date['day']);
+	}
+
+	public static function getXMLFile($file=null, $lang=null) {
 		global $blog;
 		$xml = array();
+		if (empty($file)) $file = $blog->date_as_dir();
+		if (empty($file)) return array();
 		if (empty($lang) and !empty($blog)) $lang = $blog->lang;
 		if (empty($lang)) $lang = array('en');
 		if (!is_array($lang)) $lang = array($lang);
+		$lang = array_unique($lang);
 		foreach ($lang as $l) {
 			if (!file_exists("{$file}.{$l}.xml")) $l = substr($l, 0, 2);
 			if (file_exists("{$file}.{$l}.xml")) {
-				array_merge_recursive($xml, json_decode(json_encode(simplexml_load_file("{$file}.{$l}.xml")), true));
+				$xml = array_merge_recursive($xml, json_decode(json_encode(simplexml_load_file("{$file}.{$l}.xml")), true));
+				$xml = array_unique($xml);
 			}
 		}
 		return $xml;
@@ -55,9 +64,11 @@ class BlogSite {
 		$arr = explode('/', trim($str, '/'));
 		if (preg_match("'^\d{4}$'", $arr[0])) {
 			$date['year'] = $arr[0];
+			$date['dir'] = $date['year'];
 			if (!empty($arr[1]) and self::is_mon($arr[1])) {
 				$date['mon'] = self::int_mon($arr[1]);
 				$date['Mon'] = self::str_mon($arr[1]);
+				$date['dir'] .= "/" . self::str_num($date['mon']);
 				if (!empty($arr[2]) and (is_int($arr[2]) or is_float($arr[2]) or preg_match("'^\d+'", $arr[2]))) {
 					if (checkdate($date['mon'], (int) $arr[2], $date['year'])) {
 						$date['day'] = (int) $arr[2];
@@ -75,7 +86,7 @@ class BlogSite {
 
 	public static function int_mon($str) {
 		if (!self::is_mon($str)) return false;
-		if (is_numeric) $str = (int) $str;
+		if (is_numeric($str)) $str = (int) $str;
 		if (is_int($str)) {
 			if ($str >= 1 and $str <= 12) return $str;
 			return false;
@@ -97,7 +108,7 @@ class BlogSite {
 	}
 
 	public static function is_mon($str) {
-		if (is_numeric) $str = (int) $str;
+		if (is_numeric($str)) $str = (int) $str;
 		if (is_int($str)) {
 			return ($str >= 1 and $str <= 12);
 		} else if (!is_string($str)) {
@@ -181,6 +192,11 @@ class BlogSite {
 			// Does File Exist?
 			if (is_file($this->dirLayouts.$val))
 				$this->$var = $val;
+			return;
+		case 'page_type':
+			if (in_array($val, array(
+				'WebPage','ImageGallery','AboutPage','ItemPage','CollectionPage','SearchResultsPage'
+			))) $this->$var = $val;
 			return;
 		case 'javascript':
 			if (in_array($val, $this->javascript)) return;

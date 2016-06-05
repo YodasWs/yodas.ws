@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <image xml:lang="en">
-	<src height="390">http://yodas.ws/2009/08/sejongno2.JPG</src>
+	<height>390</height>
+	<src>http://yodas.ws/2009/08/sejongno2.JPG</src>
 	<alt></alt>
-	<geo lat="" lng="" cc="kr" />
-	<foursquare></foursquare>
+	<geo>
+		<lat></lat>
+		<lng></lng>
+		<cc>kr</cc>
+	</geo>
+	<foursquare>4bde77956198c9b6970d14ff</foursquare>
 </image>

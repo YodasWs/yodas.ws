@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <image xml:lang="en">
-	<src height="400">http://yodas.ws/2009/08/gyeongbokgung5.JPG</src>
+	<height>400</height>
+	<src>http://yodas.ws/2009/08/gyeongbokgung5.JPG</src>
 	<alt></alt>
-	<geo lat="" lng="" cc="kr" />
-	<foursquare></foursquare>
+	<geo>
+		<lat></lat>
+		<lng></lng>
+		<cc>kr</cc>
+	</geo>
+	<foursquare>4d5c8c905d153704532274e7</foursquare>
 </image>

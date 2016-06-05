@@ -2,7 +2,7 @@
 if ($delay_load) echo "<template id=\"{$this->fn}\">";
 switch ($tag) {
 case 'figure':
-	echo "<figure>";
+	echo "<figure itemscope itemtype=\"http://schema.org/Photograph\">";
 	break;
 }
 $this->html();
