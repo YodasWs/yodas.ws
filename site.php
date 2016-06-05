@@ -204,16 +204,21 @@ class BlogSite {
 				strpos($val, 'http://') === 0 ||
 				strpos($val, 'https://') === 0
 			) $this->javascript[] = $val;
+			else if (
+				substr($val, -3) == '.js' and
+				file_exists('components\\' . str_replace('/', '\\', $val))
+			) $this->javascript[] = $val;
+			else if (
+				file_exists("components\\{$val}.js") ||
+				file_exists("components\\{$val}\\js.php") ||
+				file_exists("components\\{$val}\\{$val}.js")
+			) $this->javascript[] = $val;
 			else {
 				switch ($val) {
 				case "google-maps":
 					$this->javascript[] = "http://maps.google.com/maps/api/js?v=3&region=US&signed_in=true";
 					break;
 				}
-				if (
-					file_exists("components\\{$val}\\js.php") ||
-					file_exists("components\\{$val}\\{$val}.js")
-				) $this->javascript[] = $val;
 			}
 			return;
 		}

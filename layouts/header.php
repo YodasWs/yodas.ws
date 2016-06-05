@@ -11,8 +11,10 @@
 <script>if(!window.jQuery)document.write('<script src="/components/jquery.2-1-4.min.js"><\/script>')</script>
 <script src="/components/site.js"></script>
 <?php foreach ($this->javascript as $js) {
-	if (strpos($js, 'http://') === 0 || strpos($js, 'https://') === 0)
+	if (strpos($js, 'http://') === 0 or strpos($js, 'https://') === 0)
 		echo "<script src=\"{$js}\" async></script>";
+	else if (substr($js, -3) == '.js' and file_exists($_SERVER['DOCUMENT_ROOT'] . '\\components\\' . str_replace('/', '\\', $js)))
+		echo "<script src=\"/components/{$js}\" async></script>";
 	else
 		echo "<script src=\"/components/{$js}/\" async></script>";
 } ?>
