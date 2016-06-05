@@ -46,8 +46,9 @@ class Img implements Component {
 		$blog->javascript = 'img';
 		$img = array(
 			$delay_load ? "\t<load-img" : "\t<img",
+			"data-date=\"" . BlogSite::date_toString($this->date) . '"',
 			"src=\"{$this->src}\"",
-			"data-date=\"" . BlogSite::date_toString($this->date) . '"'
+			"itemprop=\"image\""
 		);
 		if (!empty($this->alt)) $img[] = "alt=\"{$this->alt}\"";
 		if (!empty($this->height)) $img[] = "data-height=\"{$this->height}\"";

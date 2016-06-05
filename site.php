@@ -11,6 +11,7 @@ class BlogSite {
 	private $dirLayouts = "layouts/";
 	private $fileHeader = "header.php";
 	private $fileFooter = "footer.php";
+	private $page_type = 'WebPage';
 	private $javascript = array();
 	private $page_wrap = true;
 	private $world_map;
@@ -63,9 +64,11 @@ class BlogSite {
 		$arr = explode('/', trim($str, '/'));
 		if (preg_match("'^\d{4}$'", $arr[0])) {
 			$date['year'] = $arr[0];
+			$date['dir'] = $date['year'];
 			if (!empty($arr[1]) and self::is_mon($arr[1])) {
 				$date['mon'] = self::int_mon($arr[1]);
 				$date['Mon'] = self::str_mon($arr[1]);
+				$date['dir'] .= "/" . self::str_num($date['mon']);
 				if (!empty($arr[2]) and (is_int($arr[2]) or is_float($arr[2]) or preg_match("'^\d+'", $arr[2]))) {
 					if (checkdate($date['mon'], (int) $arr[2], $date['year'])) {
 						$date['day'] = (int) $arr[2];
@@ -189,6 +192,11 @@ class BlogSite {
 			// Does File Exist?
 			if (is_file($this->dirLayouts.$val))
 				$this->$var = $val;
+			return;
+		case 'page_type':
+			if (in_array($val, array(
+				'WebPage','ImageGallery','AboutPage','ItemPage','CollectionPage','SearchResultsPage'
+			))) $this->$var = $val;
 			return;
 		case 'javascript':
 			if (in_array($val, $this->javascript)) return;

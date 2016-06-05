@@ -2,6 +2,7 @@
 require_once("../site.php");
 require_once("components/blog_entry.php");
 $blog = new BlogSite();
+$blog->page_type = 'ImageGallery';
 $xml = $blog->getXMLFile();
 $entry = new BlogEntry($_SERVER['REQUEST_URI']);
 
