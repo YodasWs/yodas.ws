@@ -213,13 +213,12 @@ class BlogSite {
 				file_exists("components\\{$val}\\js.php") ||
 				file_exists("components\\{$val}\\{$val}.js")
 			) $this->javascript[] = $val;
-			else {
-				switch ($val) {
-				case "google-maps":
-					$this->javascript[] = "http://maps.google.com/maps/api/js?v=3&region=US&signed_in=true";
-					break;
-				}
+			switch ($val) {
+			case "google-maps":
+				$this->javascript[] = "http://maps.google.com/maps/api/js?v=3&region=US&signed_in=true";
+				break;
 			}
+#			preg_match_all("'-(\d+)(\.\d+)?'", $val, $file);
 			return;
 		}
 	}
