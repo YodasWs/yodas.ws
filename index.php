@@ -68,7 +68,6 @@ case '':
 		$c = new Tile($c);
 		$tile[] = $c;
 	}
-	$blog->javascript = 'google-maps/markerclusterer.js';
 
 	$tp = array_slice($wm->top_places, 0, min(24, count($wm->top_places)));
 	foreach ($tp as $p) {

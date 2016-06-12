@@ -214,8 +214,11 @@ class BlogSite {
 				file_exists("components\\{$val}\\{$val}.js")
 			) $this->javascript[] = $val;
 			switch ($val) {
+			case "world_map":
+				$this->javascript[] = "google-maps/markerclusterer.js";
+				break;
 			case "google-maps":
-				$this->javascript[] = "http://maps.google.com/maps/api/js?v=3&region=US&signed_in=true";
+				$this->javascript[] = "http://maps.google.com/maps/api/js?key=AIzaSyBeRM7BDdB6UzJ-z_IJftYP6lMx3e4u5H4&v=3&region=US&signed_in=true";
 				break;
 			}
 #			preg_match_all("'-(\d+)(\.\d+)?'", $val, $file);

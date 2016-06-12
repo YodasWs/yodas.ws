@@ -27,6 +27,7 @@ yodasws.worldMap = {
 	markers: [],
 	options: {},
 	panTimer: 0,
+	clusterer: {},
 	oldCenter: false,
 	panRandom: function() {
 		var marker,
@@ -71,6 +72,11 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 	};
 	if ($wm.width() < 670) yodasws.worldMap.options.zoom--
 	yodasws.worldMap.map = new google.maps.Map(document.getElementById("worldmap"), yodasws.worldMap.options)
+	yodasws.worldMap.clusterer = new MarkerClusterer(yodasws.worldMap.map, [], {
+		imagePath: 'components/google-maps/m',
+		gridSize: 40,
+		maxZoom: 15
+	})
 	yodasws.worldMap.panTimer = setTimeout(yodasws.worldMap.panRandom, 30000)
 	$wm.on('mouseenter', function() {
 		clearTimeout(yodasws.worldMap.panTimer)
@@ -162,20 +168,29 @@ for ($i=0; $i<count($worldmap['locale']); $i++) { // Load Locale Markers
 	else $zed = 400;
 	if (!$worldmap['locale'][$i]['@attributes']['lat'] or !$worldmap['locale'][$i]['@attributes']['lng']) {
 		echo <<<gMap
-yodasws.worldMap.markers[$i]=false
-yodasws.worldMap.geocoder.geocode({'address': "$locale"}, function(point, status) {
-if (status == google.maps.GeocoderStatus.OK) try {
-	yodasws.worldMap.markers[$i] = new google.maps.Marker({ position: point[0].geometry.location, map: yodasws.worldMap.map, title: "$locale", zIndex: $zed });
-	yodasws.worldMap.infoWindows[$i] = new google.maps.InfoWindow({content: '$win'});
-	google.maps.event.addListener(yodasws.worldMap.markers[$i], 'click', function() {
-		yodasws.worldMap.infoWindows.forEach(function(e){e.close()})
-		yodasws.worldMap.infoWindows[$i].open(yodasws.worldMap.map, yodasws.worldMap.markers[$i]);
+	yodasws.worldMap.markers[$i]=false
+	yodasws.worldMap.geocoder.geocode({'address': "$locale"}, function(point, status) {
+		if (status == google.maps.GeocoderStatus.OK) try {
+			yodasws.worldMap.markers[$i] = new google.maps.Marker({
+				position: {
+					lat: point[0].geometry.location.lat(),
+					lng: point[0].geometry.location.lng()
+				},
+				map: yodasws.worldMap.map,
+				title: "$locale",
+				zIndex: $zed
+			});
+			yodasws.worldMap.infoWindows[$i] = new google.maps.InfoWindow({content: '$win'});
+			google.maps.event.addListener(yodasws.worldMap.markers[$i], 'click', function() {
+				yodasws.worldMap.infoWindows.forEach(function(e){e.close()})
+				yodasws.worldMap.infoWindows[$i].open(yodasws.worldMap.map, yodasws.worldMap.markers[$i]);
+			});
+			yodasws.worldMap.markers[$i].setMap(yodasws.worldMap.map);
+			yodasws.worldMap.clusterer.addMarker(yodasws.worldMap.markers[$i])
+		} catch (e) {
+			yodasws.worldMap.markers[$i] = false;
+		}
 	});
-	document.getElementById('hiddenLatLng').innerHTML += "$locale: " + point[0].geometry.location.lat() + ', ' + point[0].geometry.location.lng() + "<br/>";
-	yodasws.worldMap.markers[$i].setMap(yodasws.worldMap.map);
-} catch (e) {
-	yodasws.worldMap.markers[$i] = false;
-} });
 gMap;
 	} else { // Use LatLng coords if available, 9 Oct 2010
 		echo <<<gMap
@@ -187,10 +202,13 @@ gMap;
 		yodasws.worldMap.infoWindows[$i].open(yodasws.worldMap.map, yodasws.worldMap.markers[$i]);
 	});
 	yodasws.worldMap.markers[$i].setMap(yodasws.worldMap.map);
+	yodasws.worldMap.clusterer.addMarker(yodasws.worldMap.markers[$i]);
 gMap;
 	}
 }
 echo <<<EndWorldMap
+})
+$('script[src*="markerclusterer"]').load(function(){
 })
 EndWorldMap;
 ?>
