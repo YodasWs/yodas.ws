@@ -37,7 +37,17 @@ class BlogSite {
 	}
 
 	public function date_as_dir() {
-		return "{$this->date['year']}/" .  self::str_num($this->date['mon']) . '/' . self::str_num($this->date['day']);
+		$dir = '';
+		if (!empty($this->date['year'])) {
+			$dir .= $this->date['year'];
+			if (!empty($this->date['mon'])) {
+				$dir .= '/' . self::str_num($this->date['mon']);
+				if (!empty($this->date['day'])) {
+					$dir .= '/' . self::str_num($this->date['day']);
+				}
+			}
+		}
+		return $dir;
 	}
 
 	public static function getXMLFile($file=null, $lang=null) {
@@ -50,9 +60,15 @@ class BlogSite {
 		if (!is_array($lang)) $lang = array($lang);
 		$lang = array_unique($lang);
 		foreach ($lang as $l) {
-			if (!file_exists("{$file}.{$l}.xml")) $l = substr($l, 0, 2);
-			if (file_exists("{$file}.{$l}.xml")) {
-				$xml = array_merge_recursive($xml, json_decode(json_encode(simplexml_load_file("{$file}.{$l}.xml")), true));
+			$filename = "{$file}.{$l}.xml";
+			if (!file_exists($filename)) $l = substr($l, 0, 2);
+			if (!file_exists($filename) and file_exists("{$file}.xml")) {
+				$filename = "{$file}.xml";
+			}
+			if (file_exists($filename)) {
+				$sxml = simplexml_load_file($filename);
+				$json = json_decode(json_encode($sxml), true);
+				$xml = array_merge_recursive($xml, $json);
 				$xml = array_unique($xml);
 			}
 		}

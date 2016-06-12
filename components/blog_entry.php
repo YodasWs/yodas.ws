@@ -12,7 +12,7 @@ class BlogEntry implements Component {
 		if (is_string($date)) {
 			$this->date = BlogSite::getDate($date);
 		} else throw Exception("Invalid date given");
-		return new BlogEntry("{$this->date['year']}/{$this->date['mon']}/{$this->date['day']}");
+		return new BlogEntry("{$this->date['year']}/{$this->date['Mon']}/" . BlogSite::str_num($this->date['day']));
 	}
 
 	public function __construct() {
@@ -26,7 +26,7 @@ class BlogEntry implements Component {
 			$this->date = BlogSite::getDate($args[0]);
 
 			$this->xml = $blog->getXMLFile(
-				$this->date['year'] . '/' . BlogSite::str_num($this->date['mon']) . '/' . $this->date['day']
+				$this->date['year'] . '/' . BlogSite::str_num($this->date['mon']) . '/' . BlogSite::str_num($this->date['day'])
 			);
 		} else if (is_array($args[0])) {
 			// If World Map XML, take it
@@ -46,6 +46,12 @@ class BlogEntry implements Component {
 				$this->xml = $loc;
 			} else return false;
 		}
+	}
+
+	public function nearDates() {
+		global $blog;
+		$this->date['dir'];
+#getXMLFile
 	}
 
 	public function __destruct() {
@@ -88,8 +94,11 @@ class BlogEntry implements Component {
 	}
 	public function __isset($var) {
 		if (in_array($var, array(
+			'xml'
+		))) return count($this->$var) > 0;
+		if (in_array($var, array(
 			'img'
-		))) return count($this->xml['img']) > 0;
+		))) return count($this->xml[$var]) > 0;
 	}
 
 }
