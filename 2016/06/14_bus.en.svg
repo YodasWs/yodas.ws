@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.1" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+width="1500px" height="1388px" viewBox="0 0 1500 1388" xml:space="preserve">
+<style><![CDATA[
+#gateway text {
+	font-size: 12pt;
+}
+path {
+	stroke-linejoin: round;
+	fill: none;
+}
+#northcross path.buslane {
+	stroke-width: 15px;
+}
+#gateway path.buslane {
+	stroke-width: 7px;
+}
+path.buslane {
+	stroke: grey;
+}
+#gateway path.i77 {
+	stroke-width: 22px;
+}
+#northcross path.i77 {
+	stroke-width: 32px;
+}
+path.i77 {
+	stroke-linecap: round;
+	stroke-linecap: butt;
+	stroke: dimgrey;
+}
+#gateway path.walkway {
+	stroke-width: 3.5px;
+}
+#northcross path.walkway {
+	stroke-width: 7px;
+}
+path.walkway {
+	stroke: cornsilk;
+}
+rect.shelter {
+	fill: dodgerblue;
+}
+text {
+	font-family: 'Trebuchet MS', Arial, sans-serif;
+	letter-spacing: 1px;
+}
+]]></style>
+<script><![CDATA[
+]]></script>
+<g id="northcross" style="display:none">
+	<image xlink:href="northcross.png" x="0" y="0" width="1500" height="705"/>
+	<g class="i77">
+		<path class="i77" d="M717-5l16,70l15,70l14,70l13,70l24,140l11,70l11.5,70l11,70l11,82"/>
+		<path class="i77" d="M875-5l19,70l19,80l20,80l20,80l18,80l17,85l16,85l15,85l10,70"/>
+		<text x="0" y="0" transform="translate(690,50) rotate(77)">I-77 SB</text>
+		<text x="0" y="0" transform="translate(743,150) rotate(79.5)">HOT Lanes SB</text>
+		<text x="0" y="0" transform="translate(920,50) rotate(77)">I-77 NB</text>
+		<text x="0" y="0" transform="translate(905,150) rotate(76)">HOT Lanes NB</text>
+	</g>
+	<path class="buslane" d="M728-30l30,100l60,150l30,100l13.3,75l7,70v100l-10,200"/>
+	<path class="buslane" d="M855-5l10,70L891,310l13.3,75l23,80l72,200l10,50"/>
+	<rect class="shelter" x="0" y="0" width="30" height="70" transform="translate(812,330) rotate(-10)" />
+	<rect class="shelter" x="0" y="0" width="30" height="70" transform="translate(900,320) rotate(-10)" />
+	<path class="walkway" d="M552,355h20l240-28l90-10l27-4"/>
+	<rect x="0" y="705" fill="white" width="1500" height="1000"/>
+</g>
+<g id="gateway">
+	<image xlink:href="gateway.png" x="0" y="0" width="1500" height="1388"/>
+	<g class="i77">
+		<path class="i77" d="M510-5l23,100l22,100l21,100l17,100l16,100l27,200l15,100l64,480l17,120"/>
+		<path class="i77" d="M565-5l25,100l24,100l22,100l20,100l19,100l17,100l16.5,100l16,100l54,360l34,240"/>
+		<text x="0" y="0" transform="translate(490,50) rotate(77)">I-77 SB</text>
+		<text x="0" y="0" transform="translate(540,150) rotate(79.5)">HOT Lanes SB</text>
+		<text x="0" y="0" transform="translate(665,350) rotate(77)">I-77 NB</text>
+		<text x="0" y="0" transform="translate(665,450) rotate(82)">HOT Lanes NB</text>
+	</g>
+	<g style="display:none">
+		<path class="buslane" d="M595,260l10,60l13,100l10,100l5,50l35,250M595,260l-25-100l-30-100l-25-100"/>
+		<path class="buslane" d="M602,255l9,50l24,100l35,140l40,250M602,255l-17,-100l-19,-100l-16,-60"/>
+		<rect class="shelter" x="0" y="0" width="24" height="70" transform="translate(580,263) rotate(-11) scale(.5)" />
+		<rect class="shelter" x="0" y="0" width="24" height="70" transform="translate(605,259) rotate(-12) scale(.5)" />
+		<path class="walkway" d="M580,262l100,-17l66,-14l125,-30"/>
+	</g>
+	<g>
+		<path class="buslane" d="M646,553l10,65l8,120l4,80l33,250M646,553l-40-200l-46-200l-25.5-115l-5-20"/>
+		<path class="buslane" d="M654,550l10,65l24,100l31,140l38,250M654,550l-11-100l-14-100l-16-100l-23-100l-25-100"/>
+		<rect class="shelter" x="0" y="0" width="24" height="70" transform="translate(633,563) rotate(-8) scale(.5)" />
+		<rect class="shelter" x="0" y="0" width="24" height="70" transform="translate(658,559) rotate(-8) scale(.5)" />
+		<path class="walkway" d="M445,589l225-33l100-67l162-41M729,178l81,300M445,589h-135l8,170M445,589v165"/>
+	</g>
+</g>
+<g id="cornelius" style="display:none">
+	<image xlink:href="cornelius.png" x="0" y="0" width="1500" height="947.5"/>
+</g>
+</svg>
