@@ -12,7 +12,7 @@
 	<locale lat="34.2257255" lng="-77.9447102" home="true" cc="us">
 		<name>Wilmington, NC</name>
 	</locale>
-	<locale home="true" cc="us">
+	<locale lat="35.5848596" lng="-80.81007239999997" home="true" cc="us">
 		<name>Mooresville, NC</name>
 	</locale>
 	<locale lat="38.8951118" lng="-77.0363658" zed="400" cc="us">
@@ -88,7 +88,55 @@
 		<img>2009/07/31_torii.jpg</img>
 		<img>2009/07/31_shinjukuTower3.jpg</img>
 	</locale>
-	<locale cc="jp">
+	<locale lat="35.2323553" lng="139.10693749999996" cc="jp">
 		<name>Hakone</name>
+	</locale>
+	<locale lat="35.8714354" lng="128.601445" cc="kr">
+		<name>Daegu, Korea</name>
+	</locale>
+	<locale lat="35.1595454" lng="126.85260119999998" cc="kr">
+		<name>Gwangju, Korea</name>
+	</locale>
+	<locale lat="36.3504119" lng="127.38454750000005" cc="kr">
+		<name>Daejeon, Korea</name>
+	</locale>
+	<locale lat="35.1799817" lng="128.1076213" cc="kr">
+		<name>Jinju, Korea</name>
+	</locale>
+	<locale lat="31.2978557" lng="121.50983410000003" cc="kr">
+		<name>Busan, Korea</name>
+	</locale>
+	<locale lat="37.4562557" lng="126.70520620000002" cc="kr">
+		<name>Incheon, Korea</name>
+	</locale>
+	<locale lat="35.8242238" lng="127.14795320000007" cc="kr">
+		<name>Jeonju, Korea</name>
+	</locale>
+	<locale lat="34.8118351" lng="126.39216639999995" cc="kr">
+		<name>Mokpo, Korea</name>
+	</locale>
+	<locale lat="34.8806427" lng="128.62108239999998" cc="kr">
+		<name>Geoje, Korea</name>
+	</locale>
+	<locale lat="35.9676772" lng="126.7366293" cc="kr">
+		<name>Gunsan, Korea</name>
+	</locale>
+	<locale lat="53.4083714" lng="-2.9915726000000404" cc="uk">
+		<name>Liverpool, England</name>
+	</locale>
+	<locale lat="53.4807593" lng="-2.2426305000000184" cc="uk">
+		<name>Manchester, England</name>
+	</locale>
+	<locale lat="52.48624299999999" lng="-1.8904009999999971" cc="uk">
+		<name>Birmingham, England</name>
+	</locale>
+	<locale lat="51.375801" lng="-2.359903900000063" cc="uk">
+		<name>Bath, England</name>
+	</locale>
+	<locale lat="41.805699" lng="123.43147199999999" cc="cn">
+		<name>Shenyang, China</name>
+	</locale>
+	<locale lat="32.060255" lng="118.796877" cc="cn">
+		<name>Nanjing, China</name>
 	</locale>
 </world>
