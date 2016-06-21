@@ -223,16 +223,43 @@
 	<locale lat="37.2635727" lng="127.02860090000001" cc="kr">
 		<name>Suwon</name>
 	</locale>
-	<locale cc="cn">
+	<locale cc="uk">
+		<name>Oxford</name>
+	</locale>
+	<locale lat="29.117096" lng="110.47919100000001" cc="cn">
 		<name>Zhangjiajie</name>
 	</locale>
-	<locale cc="cn">
+	<locale lat="31.298979" lng="120.58528999999999" cc="cn">
 		<name>Suzhou</name>
 	</locale>
-	<locale cc="cn">
+	<locale lat="34.797281" lng="114.30758300000002" cc="cn">
 		<name>Kaifeng</name>
 	</locale>
-	<locale cc="cn">
+	<locale lat="34.746611" lng="113.62532799999997" cc="cn">
 		<name>Zhengzhou</name>
+	</locale>
+	<locale cc="ca">
+		<name>Niagara Falls</name>
+	</locale>
+	<locale cc="us">
+		<name>Kitty Hawk</name>
+	</locale>
+	<locale cc="us">
+		<name>New Bern, NC</name>
+	</locale>
+	<locale cc="us">
+		<name>Beaufort, NC</name>
+	</locale>
+	<locale cc="us">
+		<name>Georgetown, SC</name>
+	</locale>
+	<locale cc="us">
+		<name>Knoxville</name>
+	</locale>
+	<locale cc="us">
+		<name>Asheville</name>
+	</locale>
+	<locale cc="us">
+		<name>Boone</name>
 	</locale>
 </world>
