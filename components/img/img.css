@@ -1,0 +1,28 @@
+figure[itemtype$="Photograph"] {
+	transition: flex-basis 500ms;
+	flex-basis: 0%;
+	display: flex;
+	flex-flow: column nowrap;
+	align-items: center;
+}
+figure[itemtype$="Photograph"] > * {
+	transition: height 500ms, border 500ms, margin 500ms;
+}
+figure[itemtype$="Photograph"]:not(.expanded) > * {
+	overflow: hidden;
+	height: 0;
+	margin: 0;
+	border: 0 none;
+}
+figure[itemtype$="Photograph"] > img:first-of-type {
+	overflow: hidden;
+	height: auto;
+}
+figure[itemtype$="Photograph"]:not(.expanded) > img:first-of-type {
+	cursor: pointer;
+}
+figure[itemtype$="Photograph"].expanded {
+	flex-basis: 98%;
+}
+figure[itemtype$="Photograph"].expanded > * {
+}
