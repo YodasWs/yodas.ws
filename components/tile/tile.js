@@ -60,21 +60,20 @@ $(document).ready(function(){
 			this.bg_i = this.bg_i - 1
 			if (this.bg_i < 0) this.bg_i = $t.children('img').length - 1
 		}
-		// Scroll
-		setTimeout(function() {
-			$('html,body').animate({
-				scrollTop: $t.offset().top - yodasws.stickyHeight()
-			}, 500, 'swing')
-		}, 500)
 		$t.toggleClass('expanded').siblings('.tile.expanded').removeClass('expanded')
 		this.tile.changeImage()
-		$(window).trigger('resize')
+		$(window).trigger('resize', {
+			eleScrollTo: $t
+		})
 	})
 	// Close Tiles on Click
 	$(document).on('click', function(e) {
 		if (!$(e.target).closest('.tile').length) {
+			var $t = $('.tile.expanded')
 			$('.tile').removeClass('expanded')
-			$(window).trigger('resize')
+			$(window).trigger('resize', {
+				eleScrollTo: $t
+			})
 		}
 	})
 })

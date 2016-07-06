@@ -18,6 +18,25 @@ $(document).ready(function(){
 		}
 	})
 })
+$(window).on('resize', function(e, d) {
+	if (d && d.eleScrollTo && d.eleScrollTo.length) {
+		// Scroll to keep target in sight
+		setTimeout(function() {
+			var winHeight = $(window).height(),
+				scrollPad = d.eleScrollTo.is('.expanded') ? 5 : winHeight / 10,
+				scrollBtm = d.eleScrollTo.offset().top + d.eleScrollTo.outerHeight(),
+				scrollTop = d.eleScrollTo.offset().top - yodasws.stickyHeight() - scrollPad,
+				scrollPos = $('body').prop('scrollTop'),
+				doScroll = false
+			if (scrollPos > scrollTop) doScroll = true
+			if (scrollPos + winHeight + scrollPad < scrollBtm) doScroll = true
+			if (doScroll)
+			$('html,body').animate({
+				scrollTop: scrollTop
+			}, 500, 'swing')
+		}, 500)
+	}
+})
 yodasws.stickyHeight = function() {
 	var height = 0
 	$('body > header, body > nav').each(function() {
