@@ -223,7 +223,22 @@
 	<locale lat="37.2635727" lng="127.02860090000001" cc="kr">
 		<name>Suwon</name>
 	</locale>
-	<locale cc="uk">
+	<locale lat="35.8561719" lng="129.22474769999997" cc="kr">
+		<name>Gyeongju</name>
+	</locale>
+	<locale lat="36.0190178" lng="129.34348079999995" cc="kr">
+		<name>Pohang</name>
+	</locale>
+	<locale lat="35.5037598" lng="128.74644149999995" cc="kr">
+		<name>Miryang</name>
+	</locale>
+	<locale lat="35.2725591" lng="128.40647969999998" cc="kr">
+		<name>Haman</name>
+	</locale>
+	<locale lat="34.8376721" lng="127.89242339999998" cc="kr">
+		<name>Namhae</name>
+	</locale>
+	<locale lat="51.7520209" lng="-1.2577263000000585" cc="uk">
 		<name>Oxford</name>
 	</locale>
 	<locale lat="29.117096" lng="110.47919100000001" cc="cn">
@@ -238,28 +253,28 @@
 	<locale lat="34.746611" lng="113.62532799999997" cc="cn">
 		<name>Zhengzhou</name>
 	</locale>
-	<locale cc="ca">
+	<locale lat="43.0962143" lng="-79.0377388" cc="ca">
 		<name>Niagara Falls</name>
 	</locale>
-	<locale cc="us">
+	<locale lat="36.0646102" lng="-75.70573460000003" cc="us">
 		<name>Kitty Hawk</name>
 	</locale>
-	<locale cc="us">
+	<locale lat="35.108493" lng="-77.04411429999999" cc="us">
 		<name>New Bern, NC</name>
 	</locale>
-	<locale cc="us">
+	<locale lat="34.7182174" lng="-76.66381860000001" cc="us">
 		<name>Beaufort, NC</name>
 	</locale>
-	<locale cc="us">
+	<locale lat="33.376834" lng="-79.29449640000001" cc="us">
 		<name>Georgetown, SC</name>
 	</locale>
-	<locale cc="us">
+	<locale lat="35.9606384" lng="-83.92073920000001" cc="us">
 		<name>Knoxville</name>
 	</locale>
-	<locale cc="us">
+	<locale lat="35.5950581" lng="-82.55148689999999" cc="us">
 		<name>Asheville</name>
 	</locale>
-	<locale cc="us">
+	<locale lat="36.216795" lng="-81.6745517" cc="us">
 		<name>Boone</name>
 	</locale>
 </world>
