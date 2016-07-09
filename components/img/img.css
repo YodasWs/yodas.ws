@@ -1,28 +1,65 @@
 figure[itemtype$="Photograph"] {
-	transition: flex-basis 500ms;
-	flex-basis: 0%;
+	transition: all 1s;
+	flex-basis: 98%;
+	max-width: 98%;
 	display: flex;
 	flex-flow: column nowrap;
 	align-items: center;
+	border: 1px solid transparent;
+	padding: 0;
+	background-color: azure;
+	overflow: hidden;
+}
+@media (min-width: 400px) {
+	figure[itemtype$="Photograph"] {
+		flex-basis: 45%;
+		max-width: 45%;
+	}
+}
+@media (min-width: 700px) {
+	figure[itemtype$="Photograph"] {
+		max-width: 300px;
+		flex-basis: 25%;
+	}
 }
 figure[itemtype$="Photograph"] > * {
-	transition: height 500ms, border 500ms, margin 500ms;
+	transition: all 1s;
 }
 figure[itemtype$="Photograph"]:not(.expanded) > * {
 	overflow: hidden;
-	height: 0;
+	opacity: 0;
 	margin: 0;
 	border: 0 none;
+	padding: 0;
+	height: 0;
+	width: 0;
 }
 figure[itemtype$="Photograph"] > img:first-of-type {
 	overflow: hidden;
 	height: auto;
+	width: auto;
+	opacity: 1;
+	max-width: 100%;
 }
 figure[itemtype$="Photograph"]:not(.expanded) > img:first-of-type {
 	cursor: pointer;
 }
 figure[itemtype$="Photograph"].expanded {
+	border: 1px solid black;
 	flex-basis: 98%;
+	max-width: 98%;
+	padding: 1.17em;
 }
 figure[itemtype$="Photograph"].expanded > * {
+}
+
+figure[itemtype$="Photograph"] > h3 {
+	font-size: 1.17em;
+	margin-top: 0;
+}
+@supports (margin-before: 1em) or (-webkit-margin-before: 1em) {
+	figure[itemtype$="Photograph"] > h3 {
+		-webkit-margin-before: 0;
+		margin-before: 0;
+	}
 }

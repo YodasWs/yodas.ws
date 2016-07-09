@@ -2,6 +2,7 @@
 chdir($_SERVER['DOCUMENT_ROOT']);
 require_once("components/component.php");
 class Img implements Component {
+	private $fsq;
 	private $date;
 	private $xml;
 	private $fn;
@@ -66,11 +67,21 @@ class Img implements Component {
 		switch ($var) {
 		case 'date':
 			return BlogSite::date_toString($this->date);
+		case 'foursquare':
+			if (get_class($this->fsq) == 'Foursquare') {
+				return $this->fsq;
+			}
+			if (empty($this->xml['foursquare'])) {
+				return false;
+			}
+			require_once("components/4sq/4sq.php");
+			$this->fsq = new Foursquare($this->xml['foursquare']);
+			return $this->fsq;
 		}
 	}
 	public function __isset($var) {
 		if (in_array($var, array(
-			'alt','src','height'
+			'alt','src','height','foursquare'
 		))) return !empty($this->xml[$var]);
 	}
 }

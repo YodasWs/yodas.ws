@@ -9,6 +9,9 @@ if (!empty($this->alt)) {
 	echo "<h3>{$this->alt}</h3>";
 }
 $this->html();
+if (!empty($this->foursquare)) {
+	echo $this->foursquare->venueMap();
+}
 echo "</$tag>";
 if ($delay_load) echo '</template>';
 ?>

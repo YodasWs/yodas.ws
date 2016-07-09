@@ -34,7 +34,7 @@ $(window).on('resize', function(e, d) {
 			$('html,body').animate({
 				scrollTop: scrollTop
 			}, 500, 'swing')
-		}, 500)
+		}, 1000)
 	}
 })
 yodasws.stickyHeight = function() {
