@@ -36,8 +36,15 @@ class BlogSite {
 		if (empty($this->lang)) $this->lang = array('en');
 	}
 
-	public function date_as_dir() {
-		return "{$this->date['year']}/" .  self::str_num($this->date['mon']) . '/' . self::str_num($this->date['day']);
+	public function date_as_dir($date = null) {
+		if (empty($date)) $date = $this->date;
+		if (is_string($date)) $date = self::getDate($date);
+		return "{$date['year']}/" .  self::str_num($date['mon']) . '/' . self::str_num($date['day']);
+	}
+
+	public static function date_as_url($date) {
+		if (is_string($date)) $date = self::getDate($date);
+		return "/{$date['year']}/{$date['Mon']}/" . self::str_num($date['day']);
 	}
 
 	public static function getXMLFile($file=null, $lang=null) {
@@ -151,7 +158,7 @@ class BlogSite {
 	}
 
 	public static function urlencode($str) {
-		return preg_replace("'%(a-f0-9){2}'i", '', urlencode(strtolower($str)));
+		return preg_replace("'%[a-f0-9]{2}'i", '', urlencode(ucwords($str)));
 	}
 
 	public function getWorldMap() {

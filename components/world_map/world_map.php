@@ -31,6 +31,7 @@ class WorldMap implements Component {
 			if (!empty($l['name']) and (
 				(string) $l['name'] == $loc or BlogSite::urlencode((string) $l['name']) == $loc
 			)) {
+				if (empty($l['img'])) $l['img'] = array();
 				if (is_string($l['img'])) $l['img'] = array($l['img']);
 				return $l;
 			}
@@ -89,6 +90,19 @@ class WorldMap implements Component {
 		return false;
 	}
 
+	public static function getCountryCode($name, $lang=null) {
+		global $blog;
+		$wm = self::singleton();
+		$xml = $wm->getLocalWorldMap($lang);
+		if (!empty($xml)) foreach ($xml['country'] as $c) {
+			if (
+				(!empty($c['name']) and $c['name'] == $name) or
+				(!empty($c['long']) and $c['long'] == $name)
+			) return $c['@attributes']['cc'];
+		}
+		return false;
+	}
+
 	public function __construct() {
 		global $blog;
 		$this->xml = json_decode(json_encode(simplexml_load_file('world2.xml')), true);
@@ -111,6 +125,9 @@ class WorldMap implements Component {
 				$this->top_places[] = $l;
 			}
 			uasort($this->top_places, function($a, $b) {
+				if (empty($a['img']) && empty($b['img'])) return 0;
+				if (empty($a['img']) and !empty($b['img'])) return 1;
+				if (!empty($a['img']) and empty($b['img'])) return -1;
 				if (is_string($a['img'])) $a['img'] = array($a['img']);
 				if (is_string($b['img'])) $b['img'] = array($b['img']);
 				if (empty($a['img']) and !empty($b['img'])) return 1;
