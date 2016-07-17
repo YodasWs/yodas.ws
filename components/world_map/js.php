@@ -19,6 +19,8 @@ date_default_timezone_set('America/Detroit');
 header("Last-Modified: " . date('r'));
 header("ETag: " . BlogSite::etag(time()));
 ?>
+if(navigator.maxTouchPoints) {
+}
 yodasws = window.yodasws || {}
 yodasws.worldMap = {
 	geocoder: {},
@@ -30,17 +32,31 @@ yodasws.worldMap = {
 	clusterer: {},
 	oldCenter: false,
 	panRandom: function() {
-		var marker,
+		var marker = {
+			inCluster: false,
+			listener: {},
+			count: 0,
+			id: 0
+		},
 			end = (new Date()).getTime() + 1000 * 60
 		if (!yodasws.worldMap.markers) return
 		do {
-			marker = Math.floor(Math.random() * <?=count($worldmap['locale'])?>)
+			marker.id = Math.floor(Math.random() * <?=count($worldmap['locale'])?>)
 			if ((new Date()).getTime() > end) return
-		} while (!yodasws.worldMap.markers[marker] || !yodasws.worldMap.markers[marker].getPosition)
-		yodasws.worldMap.map.panTo(yodasws.worldMap.markers[marker].getPosition())
-		yodasws.worldMap.map.setZoom(6)
+		} while (!yodasws.worldMap.markers[marker.id] || !yodasws.worldMap.markers[marker.id].getPosition)
+		yodasws.worldMap.map.panTo(yodasws.worldMap.markers[marker.id].getPosition())
 		yodasws.worldMap.infoWindows.forEach(function(e) { e.close() })
-		yodasws.worldMap.infoWindows[marker].open(yodasws.worldMap.map, yodasws.worldMap.markers[marker])
+		yodasws.worldMap.map.setZoom(6)
+		marker.count = 0
+		marker.listener = google.maps.event.addListener(yodasws.worldMap.map, 'idle', function() {
+			var zoom = yodasws.worldMap.map.getZoom()
+			if (!yodasws.worldMap.markers[marker.id].getMap() && zoom < yodasws.worldMap.options.maxZoom) {
+				yodasws.worldMap.map.setZoom(zoom + 1)
+			} else {
+				yodasws.worldMap.infoWindows[marker.id].open(yodasws.worldMap.map, yodasws.worldMap.markers[marker.id])
+				google.maps.event.removeListener(marker.listener);
+			}
+		});
 		yodasws.worldMap.panTimer = setTimeout(yodasws.worldMap.panRandom, 20000)
 	}
 }
@@ -74,7 +90,7 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 	yodasws.worldMap.map = new google.maps.Map(document.getElementById("worldmap"), yodasws.worldMap.options)
 	yodasws.worldMap.clusterer = new MarkerClusterer(yodasws.worldMap.map, [], {
 		imagePath: 'components/google-maps/m',
-		gridSize: 40,
+		gridSize: 30,
 		maxZoom: 15
 	})
 	yodasws.worldMap.panTimer = setTimeout(yodasws.worldMap.panRandom, 30000)
@@ -82,9 +98,10 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 		clearTimeout(yodasws.worldMap.panTimer)
 	}).on('mouseleave', function() {
 		yodasws.worldMap.panTimer = setTimeout(yodasws.worldMap.panRandom, 10000)
-	}).on('click', function() {
+	}).on('click', function(e) {
 		$t = $(this)
 		if ($t.is('.expanded')) return
+		// Expand World Map
 		yodasws.worldMap.oldCenter = yodasws.worldMap.map.getCenter()
 		fnScroll()
 		$t.addClass('expanded')
@@ -92,8 +109,17 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 			$(window).trigger('resize')
 		}, 500)
 	})
-	// Collapse World Map on Click
 	$(document).on('click', function(e) {
+		// Check to Collapse World Map on Click
+		if ($(e.target).closest(
+			'[style*="google-maps/m1.png"],' +
+			'[style*="google-maps/m2.png"],' +
+			'[style*="google-maps/m3.png"],' +
+			'[style*="google-maps/m4.png"],' +
+			'[style*="google-maps/m5.png"]').length) return
+		if ($(e.target).closest(
+			'img[src*="maps.gstatic.com"]'
+		).length) return
 		if (!$(e.target).closest('#worldmap').length || $(e.target).is('#worldmap + *')) {
 			yodasws.worldMap.oldCenter = yodasws.worldMap.map.getCenter()
 			$wm.removeClass('expanded')
@@ -157,7 +183,7 @@ function randArray($size, $min=0, $max=100) {
 	return $list;
 }
 
-echo "var i=0;";
+echo "var i=0,j=0;";
 for ($i=0; $i<count($worldmap['locale']); $i++) { // Load Locale Markers
 	if (empty($worldmap['locale'][$i]['name'])) continue;
 	$locale = $worldmap['locale'][$i]['name'];
@@ -169,13 +195,12 @@ for ($i=0; $i<count($worldmap['locale']); $i++) { // Load Locale Markers
 	if (!$worldmap['locale'][$i]['@attributes']['lat'] or !$worldmap['locale'][$i]['@attributes']['lng']) {
 		echo <<<gMap
 	yodasws.worldMap.markers[$i]=false
-	yodasws.worldMap.geocoder.geocode({'address': "$locale"}, function(point, status) {
+	yodasws.worldMap.geocoder.geocode({address:"$locale", region:"{$xml['@attributes']['cc']}"}, function(point, status) {
 		if (status == google.maps.GeocoderStatus.OK) try {
+console.log(++j + ", $locale");
+console.log('lat="' + point[0].geometry.location.lat() + '" lng="' + point[0].geometry.location.lng() + '" ');
 			yodasws.worldMap.markers[$i] = new google.maps.Marker({
-				position: {
-					lat: point[0].geometry.location.lat(),
-					lng: point[0].geometry.location.lng()
-				},
+				position: point[0].geometry.location,
 				map: yodasws.worldMap.map,
 				title: "$locale",
 				zIndex: $zed
