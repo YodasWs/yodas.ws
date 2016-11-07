@@ -206,12 +206,12 @@ class BlogSite {
 			) $this->javascript[] = $val;
 			else if (
 				substr($val, -3) == '.js' and
-				file_exists('components\\' . str_replace('/', '\\', $val))
+				file_exists("{$_SERVER['DOCUMENT_ROOT']}/components/" . str_replace('/', '/', $val))
 			) $this->javascript[] = $val;
 			else if (
-				file_exists("components\\{$val}.js") ||
-				file_exists("components\\{$val}\\js.php") ||
-				file_exists("components\\{$val}\\{$val}.js")
+				file_exists("{$_SERVER['DOCUMENT_ROOT']}/components/{$val}.js") ||
+				file_exists("{$_SERVER['DOCUMENT_ROOT']}/components/{$val}/js.php") ||
+				file_exists("{$_SERVER['DOCUMENT_ROOT']}/components/{$val}/{$val}.js")
 			) $this->javascript[] = $val;
 			switch ($val) {
 			case "world_map":
