@@ -7,3 +7,5 @@ dev.yodas.ws.conf
 google_analytics.php
 secret.php
 Thumbs.db
+node_modules
+dist
