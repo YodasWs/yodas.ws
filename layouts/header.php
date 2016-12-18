@@ -13,7 +13,7 @@
 <?php foreach ($this->javascript as $js) {
 	if (strpos($js, 'http://') === 0 or strpos($js, 'https://') === 0)
 		echo "<script src=\"{$js}\" async></script>";
-	else if (substr($js, -3) == '.js' and file_exists($_SERVER['DOCUMENT_ROOT'] . '\\components\\' . str_replace('/', '\\', $js)))
+	else if (substr($js, -3) == '.js' and file_exists($_SERVER['DOCUMENT_ROOT'] . '/components/' . $js))
 		echo "<script src=\"/components/{$js}\" async></script>";
 	else
 		echo "<script src=\"/components/{$js}/\" async></script>";

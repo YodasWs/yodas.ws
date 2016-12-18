@@ -41,8 +41,7 @@ RewriteRule ^gtfs/ - [R=404,END]
 
 #### Country Code URLs, Location Search ####
 
-#RewriteMap lc int:tolower
-RewriteRule ^([A-Z][a-zA-Z])/?$ "/${lc:$1}/" [END]
+RewriteRule ^([a-zA-Z][A-Z]|[A-Z][a-zA-Z])/?$ "/${int:tolower:$1}/" [END]
 
 RewriteRule ^gb/?$ /uk/ [R=301,END]
 RewriteRule ^([a-z]{2})$ /$1/ [R=301,END]
