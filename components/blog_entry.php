@@ -89,7 +89,7 @@ class BlogEntry implements Component {
 	public function __isset($var) {
 		if (in_array($var, array(
 			'img'
-		))) return count($this->xml['img']) > 0;
+		)) and array_key_exists($var, $this->xml)) return count($this->xml[$var]) > 0;
 	}
 
 }

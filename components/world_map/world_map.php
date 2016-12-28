@@ -111,8 +111,8 @@ class WorldMap implements Component {
 				$this->top_places[] = $l;
 			}
 			uasort($this->top_places, function($a, $b) {
-				if (is_string($a['img'])) $a['img'] = array($a['img']);
-				if (is_string($b['img'])) $b['img'] = array($b['img']);
+				if (array_key_exists('img', $a) && is_string($a['img'])) $a['img'] = array($a['img']);
+				if (array_key_exists('img', $b) && is_string($b['img'])) $b['img'] = array($b['img']);
 				if (empty($a['img']) and !empty($b['img'])) return 1;
 				if (!empty($a['img']) and empty($b['img'])) return -1;
 				if (!empty($a['img']) and !empty($b['img'])) {
