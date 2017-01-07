@@ -41,7 +41,7 @@ class BlogEntry implements Component {
 		} else if (gettype($args[0]) == 'string') {
 			// Not Date, Check world.xml
 			$wm = $blog->getWorldMap();
-			$loc = $wm->grabLocation($args[0]);
+			$loc = $wm->getLocation($args[0]);
 			if (!empty($loc)) {
 				$this->xml = $loc;
 			} else return false;
@@ -59,8 +59,26 @@ class BlogEntry implements Component {
 		case 'url':
 			if (!empty($this->url)) return $this->url;
 			if (empty($this->title)) $this->__get('title');
-			$this->url = BlogSite::urlencode($this->title);
-			break;
+
+			if (!empty($this->date)) {
+				$this->url = BlogSite::date_as_url($this->date);
+			} else {
+				$loc = WorldMap::grabLocation($this->title);
+				if (!empty($loc)) {
+					$this->url = '/' . $loc['@attributes']['cc'] . '/' . BlogSite::urlencode($loc['name']);
+				} else {
+					$cc = WorldMap::getCountryCode($this->title);
+					if (!empty($cc)) {
+						$this->url = "/{$cc}/";
+					}
+				}
+			}
+
+			if (empty($this->url)) {
+				$this->url = BlogSite::urlencode($this->title);
+			}
+
+			return $this->url;
 		case 'title':
 			if (!empty($this->title)) return $this->title;
 			if (!empty($this->xml['name'])) {
@@ -89,7 +107,7 @@ class BlogEntry implements Component {
 	public function __isset($var) {
 		if (in_array($var, array(
 			'img'
-		)) and array_key_exists($var, $this->xml)) return count($this->xml[$var]) > 0;
+		))) return !empty($this->xml['img']) && count($this->xml['img']) > 0;
 	}
 
 }
