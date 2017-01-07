@@ -1,6 +1,9 @@
 <?php
 require_once("components/component.php");
-require_once("components/4sq/secret.php");
+if (file_exists("components/4sq/secret.php")) {
+	require_once("components/4sq/secret.php");
+}
+
 class Foursquare implements Component {
 
 	private static $venue_url = 'https://api.foursquare.com/v2/venues/';

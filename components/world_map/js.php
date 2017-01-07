@@ -151,7 +151,7 @@ function loadGMarker($xml) {
 	$txt = "<div class=\"gMarker\">";
 	$href = '/' . $xml['@attributes']['cc'] . '/' . BlogSite::urlencode($locale);
 	$txt .= "<a href=\"{$href}\">$locale</a>";
-	if (count($xml->date) > 1) { // If multiple dates, offer link to latest, 11 Dec 2008
+	if (!empty($xml->date) and count($xml->date) > 1) { // If multiple dates, offer link to latest, 11 Dec 2008
 		$dates = array();
 		foreach ($xml->date as $date) {
 			$date = (string) $date;
@@ -163,9 +163,9 @@ function loadGMarker($xml) {
 #		$txt .= "<br/><small>Last Visit: <a class=\"map\" href=\"http://yodas.ws/{$date[0]}/" . BlogSite::str_mon($date[1]) . "/{$date[2]}\">{$date[2]} " . BlogSite::str_mon($date[1]) . " {$date[0]}</a></small>";
 	}
 	// Display Pics in Info Bubbles, 29 Sep 2008
-	if (count($xml['img']) > 0 and count($xml['img']) <= 0) {
+	if (array_key_exists('img', $xml) and count($xml['img']) > 0 and count($xml['img']) <= 0) {
 		foreach ($xml['img'] as $img) $txt .= "<img src=\"http://yodas.ws/{$img['src']}\" height=\"100\" alt=\"$locale\" />";
-	} else if (count($xml['img']) > 0) {
+	} else if (array_key_exists('img', $xml) and count($xml['img']) > 0) {
 		$k = randArray(0, 0, count($xml['img'])-1);
 		for ($j=0; $j<0; $j++) {
 			$num = $k[$j];
@@ -189,8 +189,8 @@ for ($i=0; $i<count($worldmap['locale']); $i++) { // Load Locale Markers
 	$locale = $worldmap['locale'][$i]['name'];
 	$locale = preg_replace("|'|", "\\'", $locale);
 	$win = loadGMarker($worldmap['locale'][$i]);
-	if ($worldmap['locale'][$i]['home']) $zed = 500;
-	else if ($worldmap['locale'][$i]['@attributes']['zed']) $zed = $worldmap['locale'][$i]['@attributes']['zed'];
+	if (!empty($worldmap['locale'][$i]['home'])) $zed = 500;
+	else if (!empty($worldmap['locale'][$i]['@attributes']['zed'])) $zed = $worldmap['locale'][$i]['@attributes']['zed'];
 	else $zed = 400;
 	if (!$worldmap['locale'][$i]['@attributes']['lat'] or !$worldmap['locale'][$i]['@attributes']['lng']) {
 		echo <<<gMap
