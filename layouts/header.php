@@ -20,7 +20,9 @@
 } ?>
 </head>
 <body itemscope itemtype="http://schema.org/<?=$this->page_type?>">
-<?php include_once("google_analytics.php"); ?>
+<?php if (file_exists("google_analytics.php")) {
+	include_once("google_analytics.php");
+}?>
 <header itemscope itmetype="http://schema.org/WPHeader">
 	<a href="/" rel="home"><h1><?=$this->title?></h1></a>
 </header>
