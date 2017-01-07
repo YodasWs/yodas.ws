@@ -6,7 +6,7 @@
 <base href="/" target="_top" />
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="stylesheet" href="/css"/>
-<script src="/components/upgrdr/"></script>
+<script src="/components/upgrdr.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
 <script>if(!window.jQuery)document.write('<script src="/components/jquery.2-1-4.min.js"><\/script>')</script>
 <script src="/components/site.js"></script>
@@ -16,7 +16,7 @@
 	else if (substr($js, -3) == '.js' and file_exists($_SERVER['DOCUMENT_ROOT'] . '/components/' . $js))
 		echo "<script src=\"/components/{$js}\" async></script>";
 	else
-		echo "<script src=\"/components/{$js}/\" async></script>";
+		echo "<script src=\"/components/{$js}.js\" async></script>";
 } ?>
 </head>
 <body itemscope itemtype="http://schema.org/<?=$this->page_type?>">
