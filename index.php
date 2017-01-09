@@ -5,9 +5,9 @@ $uri = trim($_SERVER['REQUEST_URI'], '/');
 $dir = explode('/', $uri);
 
 // Convert Location Names to Lower Case
-if (preg_match("'^[a-z]{2}$'i", $dir[0]) and preg_match("'[A-Z]'", $uri)) {
+if (preg_match("'^[a-z]{2}$'i", $dir[0]) and preg_match("'[A-Z]'", $dir[0])) {
 	header("HTTP/1.1 301 Found");
-	header("Location: /" . BlogSite::urlencode($uri)) . "/";
+	header("Location: /" . BlogSite::urlencode($uri) . "/");
 	print "<h1>" . urldecode($uri) . "</h1>";
 	exit;
 }

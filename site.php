@@ -158,7 +158,13 @@ class BlogSite {
 	}
 
 	public static function urlencode($str) {
-		return preg_replace("'%[a-f0-9]{2}'i", '', urlencode(ucwords($str)));
+		$str = explode('/', ucwords($str));
+		if (strlen($str[0]) === 2) {
+			$str[0] = strtolower($str[0]);
+		}
+		$str = array_map('urlencode', $str);
+		$str = implode('/', $str);
+		return preg_replace("'%[a-f0-9]{2}'i", '', $str);
 	}
 
 	public function getWorldMap() {
