@@ -277,4 +277,16 @@
 	<locale lat="36.216795" lng="-81.6745517" cc="us">
 		<name>Boone</name>
 	</locale>
+	<locale cc="th">
+		<name>Bangkok</name>
+	</locale>
+	<locale cc="th">
+		<name>Phuket</name>
+	</locale>
+	<locale cc="th">
+		<name>Chiang Mai</name>
+	</locale>
+	<locale cc="th">
+		<name>Ayutthaya</name>
+	</locale>
 </world>
