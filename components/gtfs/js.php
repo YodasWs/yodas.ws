@@ -215,6 +215,9 @@ gtfs.loadGTFS = function(url) {
 			gtfs.map.fitBounds(gtfs.extremes)
 			// Paste Shapes on Map
 			for (var i in gtfs.poly) {
+				if (!gtfs.poly.hasOwnProperty(i)) continue;
+				if (typeof i === 'undefined') continue;
+				if (i === 'undefined') continue;
 				gtfs.poly[i].Polyline = new google.maps.Polyline({
 					path: gtfs.poly[i].path,
 					geodesic: true,
@@ -319,7 +322,7 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 	})
 <?php
 foreach ($_SESSION['gtfs_locs'] as $loc) {
-	echo "\tgtfs.loadGTFS('$loc')\n";
+	echo "gtfs.loadGTFS('$loc');";
 }
 ?>
 	gtfs.map.zoom = gtfs.map.getZoom()
@@ -327,6 +330,7 @@ foreach ($_SESSION['gtfs_locs'] as $loc) {
 		// Make Lines Thicker for Easier Reading
 		var weightAdjust = (gtfs.map.zoom >= 14 ? gtfs.map.zoom - 13 : 6 - Math.floor((gtfs.map.zoom - 1) / 2))
 		for (var i in gtfs.poly) {
+			if (!gtfs.poly[i].Polyline) continue;
 			gtfs.poly[i].Polyline.setOptions({
 				strokeWeight: gtfs.poly[i].weight + weightAdjust
 			})
