@@ -7,7 +7,7 @@ csv.splitRow = function(r) {
 	})
 	return r
 }
-window.gtfs = gtfs || {}
+gtfs = window.gtfs || {}
 gtfs.extremes = { north:-90, south:180, east:-180, west:180 }
 gtfs.loadedFiles = []
 gtfs.tripRoute = {}
@@ -308,9 +308,9 @@ gtfs.loadGTFS = function(url) {
 	})
 }
 $('script[src*="maps.google.com/maps/api/js"]').load(function(){
-	$('#gtfs, .gtfs').show()
+	$('#google-maps, .gtfs').show()
 	// Load Google Maps
-	gtfs.map = new google.maps.Map(document.getElementById('gtfs'), {
+	gtfs.map = new google.maps.Map(document.getElementById('google-maps'), {
 		mapTypeId: google.maps.MapTypeId.ROADMAP,
 		keyboardShortcuts: true,
 		disableDefaultUI: true,
@@ -385,7 +385,7 @@ $(document).on('loaded', function(e) {
 		})
 	})
 	$(document).on('click', function(e) {
-		if (!$(e.target).closest('section[data-route-id]').length && !$(e.target).closest('#gtfs').length) {
+		if (!$(e.target).closest('section[data-route-id]').length && !$(e.target).closest('#google-maps').length) {
 			$('section[data-route-id].active').trigger('unfocus')
 		}
 	})

@@ -1,5 +1,4 @@
-#gtfs {
-	display: none;
+#google-maps.gtfs {
 	min-height: 400px;
 	margin: 0;
 	flex-basis: 100%;
@@ -70,7 +69,7 @@ main > section.agency > h1 {
 	text-align: center;
 	margin: 0;
 }
-main > section.agency > h1:not(:first-of-type) {
+main > section.agency > h1:nth-of-type(n + 2) {
 	margin-top: 1rem;
 }
 main > section.agency > a[href] {
@@ -91,14 +90,8 @@ main > small.gtfs > p {
 	margin-top: 0;
 }
 
-@media (min-width: 800px) {
-	#gtfs {
-		margin-right: 5px;
-		flex-basis: 70%;
-	}
-}
 @media (max-width: 600px) {
-	#gtfs {
+	#google-maps.gtfs {
 		margin-right: 0;
 	}
 	main > section[data-route-id]:first-of-type,
@@ -107,5 +100,11 @@ main > small.gtfs > p {
 		flex-basis: 100%;
 		max-width: none;
 		margin: 0;
+	}
+}
+@media (min-width: 800px) {
+	#google-maps.gtfs {
+		margin-right: 5px;
+		flex-basis: 70%;
 	}
 }

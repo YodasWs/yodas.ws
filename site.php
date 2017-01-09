@@ -14,6 +14,7 @@ class BlogSite {
 	private $page_type = 'WebPage';
 	private $javascript = array();
 	private $page_wrap = true;
+	private $gmaps = array();
 	private $world_map;
 	private $lang;
 
@@ -235,6 +236,16 @@ class BlogSite {
 				break;
 			}
 #			preg_match_all("'-(\d+)(\.\d+)?'", $val, $file);
+			return;
+		case 'gmaps':
+			if (empty($this->gmaps)) {
+				echo '<div id="google-maps"></div>';
+			}
+			if (is_string($val)) {
+				$this->gmaps[] = $val;
+			} else {
+				$this->gmaps[] = true;
+			}
 			return;
 		}
 	}

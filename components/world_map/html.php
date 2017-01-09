@@ -1,1 +1,1 @@
-<div id="worldmap"></div>
+<?php $blog->gmaps = 'world-maps' ?>

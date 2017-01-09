@@ -63,14 +63,14 @@ yodasws.worldMap = {
 
 $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 	var c = 0,
-		$wm = $('#worldmap').show()
+		$wm = $('#google-maps').show()
 		fnScroll = function() {
 			// Scroll into view
 			$('html,body').animate({
 				scrollTop: $wm.offset().top - yodasws.stickyHeight()
 			}, 500, 'swing')
 		}
-	if (!document.getElementById("worldmap")) return false;
+	if (!document.getElementById("google-maps")) return false;
 	yodasws.worldMap.geocoder = new google.maps.Geocoder();
 	yodasws.worldMap.options = {
 		zoom: 2,
@@ -87,7 +87,7 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 		maxZoom: 10
 	};
 	if ($wm.width() < 670) yodasws.worldMap.options.zoom--
-	yodasws.worldMap.map = new google.maps.Map(document.getElementById("worldmap"), yodasws.worldMap.options)
+	yodasws.worldMap.map = new google.maps.Map(document.getElementById("google-maps"), yodasws.worldMap.options)
 	yodasws.worldMap.clusterer = new MarkerClusterer(yodasws.worldMap.map, [], {
 		imagePath: 'components/google-maps/m',
 		gridSize: 30,
@@ -120,7 +120,7 @@ $('script[src*="maps.google.com/maps/api/js"]').load(function(){
 		if ($(e.target).closest(
 			'img[src*="maps.gstatic.com"]'
 		).length) return
-		if (!$(e.target).closest('#worldmap').length || $(e.target).is('#worldmap + *')) {
+		if (!$(e.target).closest('#google-maps').length || $(e.target).is('#google-maps + *')) {
 			yodasws.worldMap.oldCenter = yodasws.worldMap.map.getCenter()
 			$wm.removeClass('expanded')
 			setTimeout(function(){

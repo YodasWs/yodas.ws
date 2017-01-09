@@ -1,0 +1,8 @@
+#google-maps {
+	display: none;
+	height: 300px;
+	min-width: 400px;
+	flex: 1 0 50%;
+	margin: 0 auto;
+	transition: height 500ms, flex-basis 500ms;
+}
