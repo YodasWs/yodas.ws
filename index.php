@@ -29,9 +29,18 @@ if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 			$content_loaded = false;
 			$gtfs_dir = strtolower("{$dir[0]}/{$dir[1]}");
 			$xml = $blog->world_map->getLocation($dir[1]);
-			if (!empty($xml)) {
+			if (empty($xml)) {
+				// Location not in World Map, go to Country Page
+				header("HTTP/1.1 303 See Other");
+				header("Location: /" . BlogSite::urlencode($dir[0]) . "/");
+				print "<h1>" . urldecode($uri) . "</h1>";
+				exit;
+			} else {
 				$content_loaded = true;
+				echo "<header>";
 				echo "<h1>{$xml['name']}</h1>";
+				echo "<h2><a href=\"/{$dir[0]}/\">" . $blog->world_map->getCountryName($dir[0]) . "</a></h2>";
+				echo "</header>";
 			}
 			// Load GTFS Component
 			if (is_dir("gtfs/$gtfs_dir")) {
