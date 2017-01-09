@@ -192,10 +192,10 @@ for ($i=0; $i<count($worldmap['locale']); $i++) { // Load Locale Markers
 	if (!empty($worldmap['locale'][$i]['home'])) $zed = 500;
 	else if (!empty($worldmap['locale'][$i]['@attributes']['zed'])) $zed = $worldmap['locale'][$i]['@attributes']['zed'];
 	else $zed = 400;
-	if (!$worldmap['locale'][$i]['@attributes']['lat'] or !$worldmap['locale'][$i]['@attributes']['lng']) {
+	if (empty($worldmap['locale'][$i]['@attributes']['lat']) or empty($worldmap['locale'][$i]['@attributes']['lng'])) {
 		echo <<<gMap
 	yodasws.worldMap.markers[$i]=false
-	yodasws.worldMap.geocoder.geocode({address:"$locale", region:"{$xml['@attributes']['cc']}"}, function(point, status) {
+	yodasws.worldMap.geocoder.geocode({address:"$locale", region:"{$worldmap['locale'][$i]['@attributes']['cc']}"}, function(point, status) {
 		if (status == google.maps.GeocoderStatus.OK) try {
 console.log(++j + ", $locale");
 console.log('lat="' + point[0].geometry.location.lat() + '" lng="' + point[0].geometry.location.lng() + '" ');
