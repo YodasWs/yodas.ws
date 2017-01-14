@@ -31,8 +31,8 @@
 		<name>Beijing</name>
 		<img>2009/12/28_tiananmen1.jpg</img>
 		<img>2009/12/28_palace.jpg</img>
-		<img>2009/12/28_olympics.JPG</img>
-		<img>2009/12/30_greatwall.JPG</img>
+		<img>2009/12/28_olympics.jpg</img>
+		<img>2009/12/30_greatwall.jpg</img>
 	</locale>
 	<locale lat="55.755786" lng="37.617633" zed="400" cc="ru">
 		<name>Moscow</name>
@@ -277,16 +277,16 @@
 	<locale lat="36.216795" lng="-81.6745517" cc="us">
 		<name>Boone</name>
 	</locale>
-	<locale cc="th">
+	<locale lat="13.7563309" lng="100.50176510000006" cc="th">
 		<name>Bangkok</name>
 	</locale>
-	<locale cc="th">
+	<locale lat="7.9519331" lng="98.33808840000006" cc="th">
 		<name>Phuket</name>
 	</locale>
-	<locale cc="th">
+	<locale lat="18.7060641" lng="98.98171630000002" cc="th">
 		<name>Chiang Mai</name>
 	</locale>
-	<locale cc="th">
+	<locale lat="14.3692325" lng="100.5876634" cc="th">
 		<name>Ayutthaya</name>
 	</locale>
 </world>
