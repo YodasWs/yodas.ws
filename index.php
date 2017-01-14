@@ -20,6 +20,7 @@ if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 		if (count($dir) == 1) {
 			require_once("components/tile/tile.php");
 			foreach ($locations as $l) {
+				if (!is_array($l)) continue;
 				$t = new Tile($l);
 				$t->html();
 			}
@@ -74,7 +75,7 @@ case '':
 	// Get Latest Entries
 	define('EntriesFiles', 'entries.txt');
 	if (strpos($_SERVER['HTTP_HOST'], 'dev') === 0 or !file_exists(EntriesFiles) or time() - filemtime(EntriesFiles) > 24 * 60 * 60) {
-		$entries = glob('20{0,1}{0,1,2,3,4,5,6,7,8,9}/{0,1}{0,1,2,3,4,5,6,7,8,9}/{0,1,2,3,4,5,6,7,8,9}{0,1,2,3,4,5,6,7,8,9}{,.en}.xml', GLOB_BRACE);
+		$entries = glob('20{0,1}{0,1,2,3,4,5,6,7,8,9}/{0,1}{0,1,2,3,4,5,6,7,8,9}/{0,1,2,3}{0,1,2,3,4,5,6,7,8,9}{,.en}.xml', GLOB_BRACE);
 		foreach ($entries as &$entry) {
 			$entry = array(
 				'file' => $entry,
@@ -90,7 +91,7 @@ case '':
 		file_put_contents(EntriesFiles, serialize($entries));
 	}
 	$entries = unserialize(file_get_contents(EntriesFiles));
-	$entries = array_slice($entries, 0, min(6, count($entries)));
+	$entries = array_slice($entries, 0, min(5, count($entries)));
 	foreach ($entries as $entry) {
 		$tile[] = new Tile($entry['file']);
 	}
