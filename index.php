@@ -38,6 +38,7 @@ if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 				exit;
 			} else {
 				$content_loaded = true;
+				$blog->title = $xml['name'] . ', ' . $blog->world_map->getCountryName($dir[0]);
 				echo "<header>";
 				echo "<h1>{$xml['name']}</h1>";
 				echo "<h2><a href=\"/{$dir[0]}/\">" . $blog->world_map->getCountryName($dir[0]) . "</a></h2>";

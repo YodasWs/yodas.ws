@@ -13,6 +13,7 @@ if (empty($xml)) {
 }
 ?>
 <?php
+$blog->title = $entry->title;
 echo "<h1>{$entry->title}</h1>";
 #echo "<pre>" . print_r($_SERVER, true) . "</pre>";
 foreach ($entry->img as $img) {

@@ -2,7 +2,13 @@
 <html lang="en-us">
 <head>
 <meta charset="utf-8"/>
-<title><?=$this->title?></title>
+<?php
+if (!empty($this->title)) {
+	echo "<title>" . self::Site_Title . " | {$this->title}</title>";
+} else {
+	echo "<title>" . self::Site_Title . "</title>";
+}
+?>
 <base href="/" target="_top" />
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <link rel="stylesheet" href="/css"/>
@@ -21,7 +27,7 @@
 </head>
 <body itemscope itemtype="http://schema.org/<?=$this->page_type?>">
 <header itemscope itmetype="http://schema.org/WPHeader">
-	<a href="/" rel="home"><h1><?=$this->title?></h1></a>
+	<a href="/" rel="home"><h1><?=self::Site_Title?></h1></a>
 </header>
 <nav itemscope itemtype="http://schema.org/SiteNavigationElement">
 	<a href="/">Home</a>

@@ -2,7 +2,8 @@
 chdir($_SERVER['DOCUMENT_ROOT']);
 session_start();
 class BlogSite {
-	private $title = 'YodasWs';
+	const Site_Title = 'YodasWs';
+	private $title = '';
 	private $date = array(
 		'year' => false,
 		'mon' => false,
@@ -195,6 +196,12 @@ class BlogSite {
 	}
 
 	public function __set($var, $val) {
+		if (in_array($var, array(
+			'title'
+		))) {
+			$this->$var = $val;
+			return;
+		}
 		switch ($var) {
 		case 'dirLayouts':
 			// Does Directory Exist?
