@@ -1,4 +1,4 @@
-<article class="tile">
+<article class="tile <?=$this->__get('class_list')?>">
 <?php
 if (!empty($this->img)) foreach ($this->img as $k => $i) {
 	$i->html($k > 0);

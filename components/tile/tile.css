@@ -55,3 +55,6 @@ article.tile.expanded {
 	flex-basis: 98%;
 	cursor: auto;
 }
+article.tile.expanded.single-img {
+	background-position: center center;
+}
