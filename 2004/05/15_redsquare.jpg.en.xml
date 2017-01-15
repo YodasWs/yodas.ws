@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <image xml:lang="en">
 	<src height="380">http://yodas.ws/2004/05/redsquare.JPG</src>
-	<alt>Moscow Skyline</alt>
+	<alt>Red Square</alt>
 	<geo lat="" lng="" cc="ru" />
 	<foursquare></foursquare>
+	<desc>Beautiful Red Square!</desc>
 </image>
