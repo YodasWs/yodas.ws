@@ -65,7 +65,7 @@ class BlogEntry implements Component {
 			} else {
 				$loc = WorldMap::grabLocation($this->title);
 				if (!empty($loc)) {
-					if (count($loc['date']) === 1 or is_string($loc['date'])) {
+					if (!empty($loc['date']) and (count($loc['date']) === 1 or is_string($loc['date']))) {
 						$this->url = '/' . BlogSite::urlencode($loc['date']) . '/';
 					} else {
 						$this->url = '/' . $loc['@attributes']['cc'] . '/' . BlogSite::urlencode($loc['name']);
