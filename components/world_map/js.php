@@ -61,7 +61,14 @@ yodasws.worldMap = {
 	}
 }
 
-$('script[src*="maps.google.com/maps/api/js"]').load(function(){
+
+window.onReady = window.onReady || function(cb){
+var c=0,a=function(){if(!c){if(document.readyState=='complete'){cb();c=true}}}
+if(Element.prototype.addEventListener)document.addEventListener('readystatechange',a)
+else if(Element.prototype.attachEvent)document.attachEvent('onreadystatechange',a)
+};
+
+window.onReady(function(){
 	var c = 0,
 		$wm = $('#google-maps').show()
 		fnScroll = function() {
