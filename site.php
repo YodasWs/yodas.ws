@@ -160,8 +160,17 @@ class BlogSite {
 	}
 
 	public static function urlencode($str) {
-		$str = explode('/', ucwords($str));
+		if (is_string($str)) {
+			$str = explode('/', ucwords($str));
+		} else if (!is_array($str)) {
+			throw new Exception(__FUNCTION__ . " only accepts Strings and Arrays");
+		}
+		// If Date, Convert Month String
+		if (is_numeric($str[0]) and is_numeric($str[1]) and is_numeric($str[2])) {
+			$str[1] = self::str_mon($str[1]);
+		}
 		if (strlen($str[0]) === 2) {
+			// This is a country code, keep in lower case
 			$str[0] = strtolower($str[0]);
 		}
 		$str = array_map('urlencode', $str);

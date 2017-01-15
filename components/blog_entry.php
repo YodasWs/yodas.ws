@@ -65,7 +65,11 @@ class BlogEntry implements Component {
 			} else {
 				$loc = WorldMap::grabLocation($this->title);
 				if (!empty($loc)) {
-					$this->url = '/' . $loc['@attributes']['cc'] . '/' . BlogSite::urlencode($loc['name']);
+					if (count($loc['date']) === 1 or is_string($loc['date'])) {
+						$this->url = '/' . BlogSite::urlencode($loc['date']) . '/';
+					} else {
+						$this->url = '/' . $loc['@attributes']['cc'] . '/' . BlogSite::urlencode($loc['name']);
+					}
 				} else {
 					$cc = WorldMap::getCountryCode($this->title);
 					if (!empty($cc)) {

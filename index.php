@@ -36,6 +36,12 @@ if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 				header("Location: /" . BlogSite::urlencode($dir[0]) . "/");
 				print "<h1>" . urldecode($uri) . "</h1>";
 				exit;
+			} else if (count($xml['date']) === 1 or is_string($xml['date'])) {
+				// Only one entry? Go there!
+				header("HTTP/1.1 303 See Other");
+				header("Location: /" . BlogSite::urlencode($xml['date']) . "/");
+				print "<h1>" . urldecode($uri) . "</h1>";
+				exit;
 			} else {
 				$content_loaded = true;
 				$blog->title = $xml['name'] . ', ' . $blog->world_map->getCountryName($dir[0]);
