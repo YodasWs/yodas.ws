@@ -26,7 +26,7 @@ class BlogEntry implements Component {
 			$this->date = BlogSite::getDate($args[0]);
 
 			$this->xml = $blog->getXMLFile(
-				$this->date['year'] . '/' . BlogSite::str_num($this->date['mon']) . '/' . $this->date['day']
+				$this->date['year'] . '/' . BlogSite::str_num($this->date['mon']) . '/' . BlogSite::str_num($this->date['day'])
 			);
 		} else if (is_array($args[0])) {
 			// If World Map XML, take it
