@@ -53,7 +53,11 @@ $(document).ready(function(){
 		this.tile.changeImage = this.tile.changeImage.bind(this)
 		this.tile.changeImage()
 	}).on('click', function(e){
-		var $t = $(this)
+		const $t = $(this)
+		if ($(e.target).is('a[href]')) {
+			// Clicked a link, don't confuse user with expanding tile
+			return true
+		}
 		// Expand/Collapse Tiles
 		if (!$t.is('.expanded')) {
 			// Adjust Background Image
