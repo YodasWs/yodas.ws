@@ -156,7 +156,7 @@ function loadGMarker($xml) {
 	$locale = $xml['name'];
 	// Add Click Event to display Info Window, 15 Jul 2008
 	$txt = "<div class=\"gMarker\">";
-	$href = '/' . $xml['@attributes']['cc'] . '/' . BlogSite::urlencode($locale);
+	$href = '/' . $xml['@attributes']['cc'] . BlogSite::urlencode($locale);
 	$txt .= "<a href=\"{$href}\">$locale</a>";
 	if (!empty($xml->date) and count($xml->date) > 1) { // If multiple dates, offer link to latest, 11 Dec 2008
 		$dates = array();

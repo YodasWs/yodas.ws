@@ -46,7 +46,7 @@ class BlogSite {
 
 	public static function date_as_url($date) {
 		if (is_string($date)) $date = self::getDate($date);
-		return "/{$date['year']}/{$date['Mon']}/" . self::str_num($date['day']);
+		return "/{$date['year']}/{$date['Mon']}/" . self::str_num($date['day']) . '/';
 	}
 
 	public static function getXMLFile($file=null, $lang=null) {
@@ -175,7 +175,7 @@ class BlogSite {
 		}
 		$str = array_map('urlencode', $str);
 		$str = implode('/', $str);
-		return preg_replace("'%[a-f0-9]{2}'i", '', $str);
+		return '/' . preg_replace("'%[a-f0-9]{2}'i", '', $str) . '/';
 	}
 
 	public function getWorldMap() {

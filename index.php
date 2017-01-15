@@ -7,7 +7,7 @@ $dir = explode('/', $uri);
 // Convert Location Names to Lower Case
 if (preg_match("'^[a-z]{2}$'i", $dir[0]) and preg_match("'[A-Z]'", $dir[0])) {
 	header("HTTP/1.1 301 Found");
-	header("Location: /" . BlogSite::urlencode($uri) . "/");
+	header("Location: " . BlogSite::urlencode($uri));
 	print "<h1>" . urldecode($uri) . "</h1>";
 	exit;
 }
@@ -33,13 +33,13 @@ if (preg_match("'^[a-z]{2}$'", $dir[0])) {
 			if (empty($xml)) {
 				// Location not in World Map, go to Country Page
 				header("HTTP/1.1 303 See Other");
-				header("Location: /" . BlogSite::urlencode($dir[0]) . "/");
+				header("Location: " . BlogSite::urlencode($dir[0]));
 				print "<h1>" . urldecode($uri) . "</h1>";
 				exit;
 			} else if (!empty($xml['date']) and (count($xml['date']) === 1 or is_string($xml['date']))) {
 				// Only one entry? Go there!
 				header("HTTP/1.1 303 See Other");
-				header("Location: /" . BlogSite::urlencode($xml['date']) . "/");
+				header("Location: " . BlogSite::urlencode($xml['date']));
 				print "<h1>" . urldecode($uri) . "</h1>";
 				exit;
 			} else {
@@ -128,7 +128,7 @@ default:
 		$xml = $blog->loc($uri);
 		if (!empty($xml)) {
 			header("HTTP/1.1 301 Found");
-			header("Location: {$xml['@attributes']['cc']}/" . BlogSite::urlencode($uri));
+			header("Location: /{$xml['@attributes']['cc']}" . BlogSite::urlencode($uri));
 			print "<h1>" . urldecode($uri) . "</h1>";
 			exit;
 		}
