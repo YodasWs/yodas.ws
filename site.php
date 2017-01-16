@@ -61,7 +61,7 @@ class BlogSite {
 		foreach ($lang as $l) {
 			if (!file_exists("{$file}.{$l}.xml")) $l = substr($l, 0, 2);
 			if (file_exists("{$file}.{$l}.xml")) {
-				$xml = array_merge_recursive($xml, json_decode(json_encode(simplexml_load_file("{$file}.{$l}.xml")), true));
+				$xml = array_merge_recursive($xml, json_decode(json_encode(simplexml_load_file("{$file}.{$l}.xml", null, LIBXML_NOCDATA)), true));
 				$xml = array_unique($xml);
 			}
 		}

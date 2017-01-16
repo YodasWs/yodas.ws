@@ -34,7 +34,7 @@ class Img implements Component {
 			error_log("Could not find $this->fn");
 			return false;
 		}
-		$this->xml = json_decode(json_encode(simplexml_load_file($this->fn)), true);
+		$this->xml = json_decode(json_encode(simplexml_load_file($this->fn, null, LIBXML_NOCDATA)), true);
 	}
 
 	public function print_figure($delay_load = false) {
@@ -62,7 +62,7 @@ class Img implements Component {
 
 	public function __get($var) {
 		if (in_array($var, array(
-			'alt','src','height'
+			'alt','src','height','heading'
 		))) return $this->xml[$var];
 		switch ($var) {
 		case 'date':
@@ -81,7 +81,7 @@ class Img implements Component {
 	}
 	public function __isset($var) {
 		if (in_array($var, array(
-			'alt','src','height','foursquare'
+			'alt','src','height','foursquare','heading'
 		))) return !empty($this->xml[$var]);
 	}
 }

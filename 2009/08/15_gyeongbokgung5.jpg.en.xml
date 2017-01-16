@@ -2,11 +2,9 @@
 <image xml:lang="en">
 	<height>400</height>
 	<src>http://yodas.ws/2009/08/gyeongbokgung5.JPG</src>
-	<alt></alt>
-	<geo>
-		<lat></lat>
-		<lng></lng>
-		<cc>kr</cc>
-	</geo>
+	<heading><![CDATA[<ruby lang="ko">근정전<rt>Geunjeongjeon Throne Hall</rt></ruby>]]></heading>
+	<alt>Geunjeongjeon Throne Hall</alt>
+	<desc><![CDATA[A nice view of the <ruby lang="ko">근정전<rt lang="en">Geunjeongjeon Throne Hall</rt></ruby> of the <ruby lang="ko">경복궁<rt lang="en">Gyeongbokgung Palace</rt></ruby>.]]></desc>
+	<geo lat="" lng="" cc=""/>
 	<foursquare>4d5c8c905d153704532274e7</foursquare>
 </image>

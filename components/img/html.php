@@ -5,7 +5,9 @@ case 'figure':
 	echo "<figure itemscope itemtype=\"http://schema.org/Photograph\">";
 	break;
 }
-if (!empty($this->alt)) {
+if (!empty($this->heading)) {
+	echo "<h3>{$this->heading}</h3>";
+} else if (!empty($this->alt)) {
 	echo "<h3>{$this->alt}</h3>";
 }
 $this->html();
