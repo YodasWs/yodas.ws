@@ -42,6 +42,11 @@ class Img implements Component {
 		require('html.php');
 	}
 
+	public function print_entry($delay_load = false) {
+		$tag = 'section';
+		require('html.php');
+	}
+
 	public function html($delay_load = false) {
 		global $blog;
 		$blog->javascript = 'img';

@@ -1,6 +1,9 @@
 <?php
 if ($delay_load) echo "<template id=\"{$this->fn}\">";
 switch ($tag) {
+case 'section':
+	echo "<section itemscope itemtype=\"http://schema.org/Photograph\">";
+	break;
 case 'figure':
 	echo "<figure itemscope itemtype=\"http://schema.org/Photograph\">";
 	break;

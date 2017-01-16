@@ -17,7 +17,7 @@ $blog->title = $entry->title;
 echo "<h1>{$entry->title}</h1>";
 #echo "<pre>" . print_r($_SERVER, true) . "</pre>";
 foreach ($entry->img as $img) {
-	$img->print_figure();
+	$img->print_entry();
 }
 foreach ($xml as $name => $child) {
 	if (!is_array($child)) {
