@@ -164,7 +164,7 @@ RewriteRule ^css/$ css.php [END]
 #### XML Files ####
 RewriteCond %{HTTP_HOST} dev.yodas.ws
 RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^world(.\w\w)?.xml$ - [END]
+RewriteRule world(.\w\w|2)?.xml$ - [END]
 
 #### Language Files ####
 
