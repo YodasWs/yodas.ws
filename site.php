@@ -198,6 +198,7 @@ class BlogSite {
 
 	public function __destruct() {
 		$content = ob_get_clean();
+		global $blog;
 
 		if ($this->page_wrap) include_once($this->dirLayouts.$this->fileHeader);
 		echo $content;

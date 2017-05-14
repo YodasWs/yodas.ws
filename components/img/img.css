@@ -10,11 +10,11 @@
 [itemtype$="Photograph"] > * {
 	transition: all 1s;
 }
+[itemtype$="Photograph"] > figcaption,
 [itemtype$="Photograph"] > h3 {
 	font-size: 1.17em;
-	-webkit-margin-before: 0;
-	margin-before: 0;
 	margin-top: 0;
+	margin-bottom: 0.5em;
 }
 [itemtype$="Photograph"] > img:first-of-type {
 	overflow: hidden;
@@ -62,9 +62,21 @@ figure[itemtype$="Photograph"].expanded {
 	max-width: 98%;
 	padding: 1.17em;
 }
+figure[itemtype$="Photograph"] > figcaption {
+	margin-top: 0.5em;
+	order: 1;
+}
 
 section[itemtype$="Photograph"] {
-	background-color: azure;
-	border: 1px solid black;
-	padding: 1.17em;
+	background: none;
+	padding: 1.17em 1%;
+	border: 0 none;
+}
+section[itemtype$="Photograph"]:nth-of-type(n + 2) {
+	border-top: 2px solid black;
+	margin-top: 1px;
+}
+section[itemtype$="Photograph"]:nth-last-of-type(n + 2) {
+	border-bottom: 2px solid #888aff;
+	margin-bottom: 1px;
 }
