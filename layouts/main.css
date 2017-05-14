@@ -2,9 +2,11 @@
 :root { font-size: 12pt; font-family: "Trebuchet MS", "Open Sans", sans-serif; }
 html,body { width: 100%; padding: 0; margin: 0; }
 a:link, a:visited { color: blue; }
-a:link { text-decoration: none; }
-a:link:active, a:link:hover {
+a:link:focus, a:link:active, a:link:hover {
 	text-decoration: underline;
+}
+a:link:focus {
+	outline: 1px solid blue;
 }
 a img { border: 0 none; }
 

@@ -15,12 +15,12 @@ article.tile {
 	cursor: pointer;
 	flex-basis: 98%;
 }
-@media (min-width: 400px) {
+@media (min-width: 20em) {
 	article.tile {
 		flex-basis: 45%;
 	}
 }
-@media (min-width: 700px) {
+@media (min-width: 30em) {
 	article.tile {
 		flex-basis: 25%;
 		margin: 0.5rem;

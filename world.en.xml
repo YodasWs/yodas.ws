@@ -35,6 +35,9 @@
 	<country cc="ru">
 		<name>Russia</name>
 	</country>
+	<country cc="th">
+		<name>Thailand</name>
+	</country>
 	<country cc="uk">
 		<name>United Kingdom</name>
 	</country>

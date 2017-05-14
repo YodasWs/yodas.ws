@@ -6,7 +6,6 @@ body > header, body > nav {
 	top: 0;
 }
 body > header {
-	background: cornflowerblue;
 	text-align: center;
 }
 body > header h1 {
@@ -17,8 +16,24 @@ body > header h1 {
 	color: black;
 }
 
+body > header,
 body > nav {
 	background: cornflowerblue;
+	background: #888aff;
+	background: #6080cc;
+}
+body > nav > li.active > ul,
+body > nav > li:focus > ul,
+body > nav > li:hover > ul {
+	background: #888aff;
+}
+body > nav > li:focus,
+body > nav > li:hover,
+body > nav > li.active {
+	background: #888aff;
+}
+
+body > nav {
 	padding: 0;
 	color: #222222;
 	display: flex;
@@ -42,11 +57,17 @@ body > nav a:link {
 	cursor: pointer;
 	color: #222222;
 }
+body > nav a:visited:focus,
 body > nav a:visited:hover,
+body > nav a:link:focus,
 body > nav a:link:hover,
+body > nav > *:focus,
 body > nav > *:hover,
 body > nav > .active {
 	background: rgba(255, 255, 255, .2);
+	background: #6080cc;
+	background: #888aff;
+	background: #aabaff;
 	text-decoration: none;
 	color: black;
 }
@@ -67,8 +88,8 @@ body > nav > li > ul {
 	left: 0;
 }
 body > nav > li.active > ul,
+body > nav > li:focus > ul,
 body > nav > li:hover > ul {
-	background: cornflowerblue;
 	display: block;
 }
 body > nav li > a:link {
