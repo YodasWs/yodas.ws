@@ -2,182 +2,186 @@ RewriteEngine on
 
 ExpiresActive On
 
-#### Make All URIs Directories ####
-RewriteCond %{REQUEST_FILENAME} !-f
-RewriteCond %{REQUEST_URI} !\.(html|css|js|xml|gif|jpe?g|png|txt|svg)$
-RewriteRule ^(.*[^/])$ /$1/ [R=301,END]
+<IfVersion >= 2.4>
+	#### Make All URIs Directories ####
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_URI} !\.(html|css|js|xml|gif|jpe?g|png|txt|svg)$
+	RewriteRule ^(.*[^/])$ /$1/ [R=301,END]
 
-#### Image Files ####
+	#### Image Files ####
 
-# Prevent Hyperlinking
-RewriteCond %{HTTP_REFERER} !yodas\.ws
-RewriteCond %{HTTP_REFERER} !pinterest\.com
-RewriteCond %{HTTP_REFERER} !facebook\.com
-RewriteCond %{HTTP_REFERER} !twitter\.com
-RewriteCond %{HTTP_REFERER} !google
-RewriteCond %{HTTP_REFERER} !bing
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule \.(gif|jpeg|jpg|png|svg)$ - [R=404,END]
-RewriteRule \.(gif|jpeg|jpg|png|svg)$ - [END]
+	# Prevent Hyperlinking
+	RewriteCond %{HTTP_REFERER} !yodas\.ws
+	RewriteCond %{HTTP_REFERER} !pinterest\.com
+	RewriteCond %{HTTP_REFERER} !facebook\.com
+	RewriteCond %{HTTP_REFERER} !twitter\.com
+	RewriteCond %{HTTP_REFERER} !google
+	RewriteCond %{HTTP_REFERER} !bing
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule \.(gif|jpeg|jpg|png|svg)$ - [R=404,END]
+	RewriteRule \.(gif|jpeg|jpg|png|svg)$ - [END]
 
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule \.svg$ - [END]
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule \.svg$ - [END]
 
-#### Layouts Folder ####
-RewriteRule ^layouts/.+ /layouts/ [R=301,END]
-RewriteRule ^layouts/ layouts/index.php [END]
+	#### Layouts Folder ####
+	RewriteRule ^layouts/.+ /layouts/ [R=301,END]
+	RewriteRule ^layouts/ layouts/index.php [END]
 
-#### GTFS Data ####
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteCond %{HTTP_REFERER} yodas.ws
-RewriteRule ^gtfs/.*/(agency|routes|shapes|stop(s|_times)|trips).txt$ - [END]
-ExpiresByType text/plain "access plus 60 days"
+	#### GTFS Data ####
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteCond %{HTTP_REFERER} yodas.ws
+	RewriteRule ^gtfs/.*/(agency|routes|shapes|stop(s|_times)|trips).txt$ - [END]
+	ExpiresByType text/plain "access plus 60 days"
 
-RewriteCond %{HTTP_HOST} ^dev.yodas.ws$
-RewriteCond %{DOCUMENT_ROOT}/gtfs/$1/$2/routes.txt -f
-RewriteRule ^([a-z]{2})/([^/]+)/edit/?$ gtfs/edit.php [END]
+	RewriteCond %{HTTP_HOST} ^dev.yodas.ws$
+	RewriteCond %{DOCUMENT_ROOT}/gtfs/$1/$2/routes.txt -f
+	RewriteRule ^([a-z]{2})/([^/]+)/edit/?$ gtfs/edit.php [END]
 
-RewriteRule ^gtfs/ - [R=404,END]
+	RewriteRule ^gtfs/ - [R=404,END]
 
-#### Country Code URLs, Location Search ####
+	#### Country Code URLs, Location Search ####
 
-RewriteRule ^([a-zA-Z][A-Z]|[A-Z][a-zA-Z])/?$ "/${int:tolower:$1}/" [END]
+	RewriteRule ^([a-zA-Z][A-Z]|[A-Z][a-zA-Z])/?$ "/${int:tolower:$1}/" [END]
 
-RewriteRule ^gb/?$ /uk/ [R=301,END]
-RewriteRule ^([a-z]{2})$ /$1/ [R=301,END]
-RewriteRule ^[a-z]{2}/ index.php [END]
+	RewriteRule ^gb/?$ /uk/ [R=301,END]
+	RewriteRule ^([a-z]{2})$ /$1/ [R=301,END]
+	RewriteRule ^[a-z]{2}/ index.php [END]
 
-#### Components Folder ####
+	#### Components Folder ####
 
-# Component Library
-RewriteCond %{REQUEST_URI} !.js$
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^components/ components/index.php [END]
+	# Component Library
+	RewriteCond %{REQUEST_URI} !.js$
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^components/ components/index.php [END]
 
-# JavaScript Files
+	# JavaScript Files
 
-RewriteCond %{HTTP_REFERER} yodas.ws
-RewriteRule ^gtfs/edit.js$ - [END]
+	RewriteCond %{HTTP_REFERER} yodas.ws
+	RewriteRule ^gtfs/edit.js$ - [END]
 
-RewriteCond %{DOCUMENT_ROOT}/components/$1/js.php -f
-RewriteRule ^components/([^/\.]+)(/|\.js)?$ components/$1/js.php
+	RewriteCond %{DOCUMENT_ROOT}/components/$1/js.php -f
+	RewriteRule ^components/([^/\.]+)(/|\.js)?$ components/$1/js.php
 
-RewriteCond %{DOCUMENT_ROOT}/components/$1/$1.js -f
-RewriteRule ^components/([^/\.]*)(/|\.js)?$ components/$1/$1.js
+	RewriteCond %{DOCUMENT_ROOT}/components/$1/$1.js -f
+	RewriteRule ^components/([^/\.]*)(/|\.js)?$ components/$1/$1.js
 
-RewriteCond %{DOCUMENT_ROOT}/components/$1.js -f
-RewriteRule ^components/([^/\.]*)(/|\.js)?$ components/$1.js
+	RewriteCond %{DOCUMENT_ROOT}/components/$1.js -f
+	RewriteRule ^components/([^/\.]*)(/|\.js)?$ components/$1.js
 
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule ^components/ - [END]
-RewriteRule ^components/ - [R=404,END]
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule ^components/ - [END]
+	RewriteRule ^components/ - [R=404,END]
 
-<FilesMatch "(\.js$|js\.php)">
-	Header set Content-type application/javascript
-</FilesMatch>
-ExpiresByType application/javascript "access plus 60 days"
+	<FilesMatch "(\.js$|js\.php)">
+		Header set Content-type application/javascript
+	</FilesMatch>
+	ExpiresByType application/javascript "access plus 60 days"
 
-#### Dates in URL ####
+	#### Dates in URL ####
 
-# Stringify Month
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/01/(.*) /$1/Jan/$2 [R=301,END]
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/02/(.*) /$1/Feb/$2 [R=301,END]
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/03/(.*) /$1/Mar/$2 [R=301,END]
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/04/(.*) /$1/Apr/$2 [R=301,END]
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/05/(.*) /$1/May/$2 [R=301,END]
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/06/(.*) /$1/Jun/$2 [R=301,END]
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/07/(.*) /$1/Jul/$2 [R=301,END]
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/08/(.*) /$1/Aug/$2 [R=301,END]
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/09/(.*) /$1/Sep/$2 [R=301,END]
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/10/(.*) /$1/Oct/$2 [R=301,END]
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/11/(.*) /$1/Nov/$2 [R=301,END]
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/12/(.*) /$1/Dec/$2 [R=301,END]
+	# Stringify Month
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/01/(.*) /$1/Jan/$2 [R=301,END]
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/02/(.*) /$1/Feb/$2 [R=301,END]
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/03/(.*) /$1/Mar/$2 [R=301,END]
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/04/(.*) /$1/Apr/$2 [R=301,END]
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/05/(.*) /$1/May/$2 [R=301,END]
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/06/(.*) /$1/Jun/$2 [R=301,END]
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/07/(.*) /$1/Jul/$2 [R=301,END]
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/08/(.*) /$1/Aug/$2 [R=301,END]
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/09/(.*) /$1/Sep/$2 [R=301,END]
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/10/(.*) /$1/Oct/$2 [R=301,END]
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/11/(.*) /$1/Nov/$2 [R=301,END]
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/12/(.*) /$1/Dec/$2 [R=301,END]
 
-RewriteCond %{HTTP_ACCEPT} text/html
-RewriteRule ^(\d{4})/\d+ - [R=404,END]
+	RewriteCond %{HTTP_ACCEPT} text/html
+	RewriteRule ^(\d{4})/\d+ - [R=404,END]
 
-# Set Internal Month Directory
+	# Set Internal Month Directory
 
-RewriteRule ^(\d{4})/Jan $1/01
-RewriteRule ^(\d{4})/Feb $1/02
-RewriteRule ^(\d{4})/Mar $1/03
-RewriteRule ^(\d{4})/Apr $1/04
-RewriteRule ^(\d{4})/May $1/05
-RewriteRule ^(\d{4})/Jun $1/06
-RewriteRule ^(\d{4})/Jul $1/07
-RewriteRule ^(\d{4})/Aug $1/08
-RewriteRule ^(\d{4})/Sep $1/09
-RewriteRule ^(\d{4})/Oct $1/10
-RewriteRule ^(\d{4})/Nov $1/11
-RewriteRule ^(\d{4})/Dec $1/12
+	RewriteRule ^(\d{4})/Jan $1/01
+	RewriteRule ^(\d{4})/Feb $1/02
+	RewriteRule ^(\d{4})/Mar $1/03
+	RewriteRule ^(\d{4})/Apr $1/04
+	RewriteRule ^(\d{4})/May $1/05
+	RewriteRule ^(\d{4})/Jun $1/06
+	RewriteRule ^(\d{4})/Jul $1/07
+	RewriteRule ^(\d{4})/Aug $1/08
+	RewriteRule ^(\d{4})/Sep $1/09
+	RewriteRule ^(\d{4})/Oct $1/10
+	RewriteRule ^(\d{4})/Nov $1/11
+	RewriteRule ^(\d{4})/Dec $1/12
 
-# Unknown Month, goto Year
-RewriteCond %{DOCUMENT_ROOT}/$1 -d
-RewriteCond %{DOCUMENT_ROOT}/$1/$2 !-d
-RewriteRule ^(\d{4})/(\d{2}) $1/ [R=302,END]
+	# Unknown Month, goto Year
+	RewriteCond %{DOCUMENT_ROOT}/$1 -d
+	RewriteCond %{DOCUMENT_ROOT}/$1/$2 !-d
+	RewriteRule ^(\d{4})/(\d{2}) $1/ [R=302,END]
 
-# Load Appropriate Calendar Script
-RewriteCond %{DOCUMENT_ROOT}/$1 -d
-RewriteCond %{DOCUMENT_ROOT}/$1/$2.en.xml -f
-RewriteRule ^(\d{4}/\d{2})/(\d{2})/$ components/blog_entry.html.php [END]
+	# Load Appropriate Calendar Script
+	RewriteCond %{DOCUMENT_ROOT}/$1 -d
+	RewriteCond %{DOCUMENT_ROOT}/$1/$2.en.xml -f
+	RewriteRule ^(\d{4}/\d{2})/(\d{2})/$ components/blog_entry.html.php [END]
 
-RewriteCond %{DOCUMENT_ROOT}/$1 -d
-RewriteRule ^(\d{4}/\d{2})/$ month.php [END]
-RewriteCond %{DOCUMENT_ROOT}/$1 -d
-RewriteRule ^(\d{4}/\d{2}) /$1/ [R=301,END]
+	RewriteCond %{DOCUMENT_ROOT}/$1 -d
+	RewriteRule ^(\d{4}/\d{2})/$ month.php [END]
+	RewriteCond %{DOCUMENT_ROOT}/$1 -d
+	RewriteRule ^(\d{4}/\d{2}) /$1/ [R=301,END]
 
-RewriteCond %{DOCUMENT_ROOT}/$1 -d
-RewriteRule ^(\d{4})/$ year.php [END]
-RewriteCond %{DOCUMENT_ROOT}/$1 -d
-RewriteRule ^(\d{4}) /$1/ [R=301,END]
+	RewriteCond %{DOCUMENT_ROOT}/$1 -d
+	RewriteRule ^(\d{4})/$ year.php [END]
+	RewriteCond %{DOCUMENT_ROOT}/$1 -d
+	RewriteRule ^(\d{4}) /$1/ [R=301,END]
 
-#### CSS Files ####
+	#### CSS Files ####
 
-RewriteCond %{HTTP_ACCEPT} text/css
-RewriteCond %{REQUEST_URI} !^/css/$
-RewriteRule .* /css/ [R=301,END]
+	RewriteCond %{HTTP_ACCEPT} text/css
+	RewriteCond %{REQUEST_URI} !^/css/$
+	RewriteRule .* /css/ [R=301,END]
 
-RewriteCond %{HTTP_ACCEPT} text/css
-RewriteRule ^css/$ css.php [END]
-<Files css.php>
-	Header set Content-type text/css
-</Files>
-ExpiresByType text/css "access plus 60 days"
+	RewriteCond %{HTTP_ACCEPT} text/css
+	RewriteRule ^css/$ css.php [END]
+	<Files css.php>
+		Header set Content-type text/css
+	</Files>
+	ExpiresByType text/css "access plus 60 days"
 
-RewriteCond %{REQUEST_URI} css
-RewriteCond %{REQUEST_URI} !^/css/$
-RewriteRule .* /css/ [R=301,END]
-RewriteRule ^css/$ css.php [END]
+	RewriteCond %{REQUEST_URI} css
+	RewriteCond %{REQUEST_URI} !^/css/$
+	RewriteRule .* /css/ [R=301,END]
+	RewriteRule ^css/$ css.php [END]
 
-#### XML Files ####
-RewriteCond %{HTTP_HOST} dev.yodas.ws
-RewriteCond %{REQUEST_FILENAME} -f
-RewriteRule world(.\w\w|2)?.xml$ - [END]
+	#### XML Files ####
+	RewriteCond %{HTTP_HOST} dev.yodas.ws
+	RewriteCond %{REQUEST_FILENAME} -f
+	RewriteRule world(.\w\w|2)?.xml$ - [END]
 
-#### Language Files ####
+	#### Language Files ####
 
-LanguagePriority en-us en-gb en
-ForceLanguagePriority Prefer Fallback
+	LanguagePriority en-us en-gb en
+	ForceLanguagePriority Prefer Fallback
 
-#### World Map ####
+	#### World Map ####
 
-RewriteRule ^world/$ world/index.php [END]
-RewriteRule ^world - [R=404,END]
+	RewriteRule ^world/$ world/index.php [END]
+	RewriteRule ^world - [R=404,END]
 
-#### Catch All ####
+	#### Catch All ####
 
-RewriteRule .* index.php [END]
-FallbackResource index.php
-ErrorDocument 404 /
+	RewriteRule .* index.php [END]
+	FallbackResource index.php
+	ErrorDocument 404 /
+</IfVersion>
+<IfVersion < 2.4>
+</IfVersion>

@@ -26,4 +26,4 @@ foreach ($xml as $name => $child) {
 	switch ($name) {
 	}
 }
-echo "<pre>" . print_r($entry, true) . "</pre>";
+#echo "<pre>" . print_r($entry, true) . "</pre>";
