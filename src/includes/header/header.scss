@@ -1,13 +1,19 @@
 $header-color: black;
 $header-bg: lightgreen;
 $header-second-color: black;
+$grey: #222222;
 
 body > header {
 	color: $header-color;
 	background: $header-bg;
+	flex-basis: 100%;
 
 	h1 {
+		padding: 10px 1em 15px;
+		display: inline-block;
+		font-size: 2rem;
 		margin: 0;
+		color: black;
 	}
 
 	h2 {
@@ -29,43 +35,25 @@ body > nav:not([hidden]) {
 
 body > header,
 body > nav {
-	position: fixed;
-	z-index: 1;
-	right: 0;
-	left: 0;
-	top: 0;
-}
-body > header {
-	text-align: center;
-}
-body > header h1 {
-	padding: 10px 1em 15px;
-	display: inline-block;
-	font-size: 2rem;
-	margin: 0;
-	color: black;
+	background: #6080CC;
 }
 
-body > header,
-body > nav {
-	background: cornflowerblue;
-	background: #888aff;
-	background: #6080cc;
-}
 body > nav > li.active > ul,
 body > nav > li:focus > ul,
 body > nav > li:hover > ul {
-	background: #888aff;
+	display: block;
+	background: #888AFF;
 }
+
 body > nav > li:focus,
 body > nav > li:hover,
 body > nav > li.active {
-	background: #888aff;
+	background: #888AFF;
 }
 
 body > nav {
 	padding: 0;
-	color: #222222;
+	color: $gray;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-around;
@@ -74,6 +62,7 @@ body > nav {
 	top: calc(2rem + 24px);
 	transition: top 100ms;
 }
+
 body > nav > * {
 	display: block;
 	padding: 0px 10px;
@@ -82,11 +71,13 @@ body > nav > * {
 	flex-grow: 1;
 	text-align: center;
 }
+
 body > nav a:visited,
 body > nav a:link {
 	cursor: pointer;
-	color: #222222;
+	color: $grey;
 }
+
 body > nav a:visited:focus,
 body > nav a:visited:hover,
 body > nav a:link:focus,
@@ -94,19 +85,18 @@ body > nav a:link:hover,
 body > nav > *:focus,
 body > nav > *:hover,
 body > nav > .active {
-	background: rgba(255, 255, 255, .2);
-	background: #6080cc;
-	background: #888aff;
-	background: #aabaff;
+	background: #AABAFF;
 	text-decoration: none;
 	color: black;
 }
+
 body > nav a:link {
 }
 
 body > nav > li {
 	position: relative;
 }
+
 body > nav > li > ul {
 	position: absolute;
 	list-style: none;
@@ -117,11 +107,7 @@ body > nav > li > ul {
 	margin: 0;
 	left: 0;
 }
-body > nav > li.active > ul,
-body > nav > li:focus > ul,
-body > nav > li:hover > ul {
-	display: block;
-}
+
 body > nav li > a:link {
 	padding: 2px 5px;
 	display: block;
