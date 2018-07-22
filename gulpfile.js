@@ -343,17 +343,17 @@ options = {
 			'**/module.js',
 			'{components,pages}/**/*.js',
 			'app.js',
-		]
+		],
 	},
-	replaceString:{
-		js:{
+	replaceString: {
+		js: {
 			pattern:/\/\* app\.json \*\//,
-			replacement:()=>{
+			replacement: () => {
 				// Read app.json to build site!
-				let site = require('./src/app.json')
-				if (!site.modules) site.modules = ['ngRoute']
-				let requires = ''
-				;[
+				let site = require('./src/app.json');
+				if (!site.modules) site.modules = ['ngRoute'];
+				let requires = '';
+				[
 					{
 						prop:'pages',
 						pref:'page',
@@ -363,27 +363,27 @@ options = {
 						pref:'comp',
 					},
 				].forEach((p) => {
-					if (!site[p.prop]) site[p.prop] = []
+					if (!site[p.prop]) site[p.prop] = [];
 					site[p.prop].forEach((c) => {
-						site.modules.push(c.module || camelCase(p.pref, c.path))
-						;['module','routes','ctrl'].forEach((k) => {
-							let file = `${p.prop}/${c.path}`
-							if (file.substr(-1) !== '/') file += '/'
-							file += `${k}.js`
-							console.log(`checking for file ${file}`)
+						site.modules.push(c.module || camelCase(p.pref, c.path));
+						['module','routes','ctrl'].forEach((k) => {
+							let file = `${p.prop}/${c.path}`;
+							if (file.substr(-1) !== '/') file += '/';
+							file += `${k}.js`;
+							console.log(`checking for file ${file}`);
 							try {
-								fs.accessSync(`./src/${file}`)
-								requires += `\nrequire('../src/${file}')`
+								fs.accessSync(`./src/${file}`);
+								requires += `\nrequire('../src/${file}')`;
 							} catch (e) {}
 						})
 					})
-				})
-				return `const modules = ${JSON.stringify(site.modules, null, '\t')}${requires}`
+				});
+				return `const modules = ${JSON.stringify(site.modules, null, '\t')}${requires}`;
 			},
 			options:{
-				notReplaced: false
-			}
-		}
+				notReplaced: false,
+			},
+		},
 	},
 	webpack:{
 		logs:{
