@@ -1,0 +1,135 @@
+$header-color: black;
+$header-bg: lightgreen;
+$header-second-color: black;
+
+body > header {
+	color: $header-color;
+	background: $header-bg;
+
+	h1 {
+		margin: 0;
+	}
+
+	h2 {
+		color: $header-second-color;
+	}
+}
+
+body > nav:not([hidden]) {
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: space-between;
+	align-content: flex-start;
+	align-items: flex-start;
+
+	> *:not([hidden]) {
+		display: block;
+	}
+}
+
+body > header,
+body > nav {
+	position: fixed;
+	z-index: 1;
+	right: 0;
+	left: 0;
+	top: 0;
+}
+body > header {
+	text-align: center;
+}
+body > header h1 {
+	padding: 10px 1em 15px;
+	display: inline-block;
+	font-size: 2rem;
+	margin: 0;
+	color: black;
+}
+
+body > header,
+body > nav {
+	background: cornflowerblue;
+	background: #888aff;
+	background: #6080cc;
+}
+body > nav > li.active > ul,
+body > nav > li:focus > ul,
+body > nav > li:hover > ul {
+	background: #888aff;
+}
+body > nav > li:focus,
+body > nav > li:hover,
+body > nav > li.active {
+	background: #888aff;
+}
+
+body > nav {
+	padding: 0;
+	color: #222222;
+	display: flex;
+	flex-flow: row nowrap;
+	justify-content: space-around;
+	align-items: flex-end;
+	z-index: 100;
+	top: calc(2rem + 24px);
+	transition: top 100ms;
+}
+body > nav > * {
+	display: block;
+	padding: 0px 10px;
+	line-height: 2em;
+	cursor: default;
+	flex-grow: 1;
+	text-align: center;
+}
+body > nav a:visited,
+body > nav a:link {
+	cursor: pointer;
+	color: #222222;
+}
+body > nav a:visited:focus,
+body > nav a:visited:hover,
+body > nav a:link:focus,
+body > nav a:link:hover,
+body > nav > *:focus,
+body > nav > *:hover,
+body > nav > .active {
+	background: rgba(255, 255, 255, .2);
+	background: #6080cc;
+	background: #888aff;
+	background: #aabaff;
+	text-decoration: none;
+	color: black;
+}
+body > nav a:link {
+}
+
+body > nav > li {
+	position: relative;
+}
+body > nav > li > ul {
+	position: absolute;
+	list-style: none;
+	text-align: left;
+	display: none;
+	width: 100%;
+	padding: 0;
+	margin: 0;
+	left: 0;
+}
+body > nav > li.active > ul,
+body > nav > li:focus > ul,
+body > nav > li:hover > ul {
+	display: block;
+}
+body > nav li > a:link {
+	padding: 2px 5px;
+	display: block;
+	height: 100%;
+	width: 100%;
+}
+
+body > nav + * {
+	margin-top: calc(4rem + 25px);
+	transition: margin-top 100ms;
+}

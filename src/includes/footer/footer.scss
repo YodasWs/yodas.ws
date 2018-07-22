@@ -1,0 +1,12 @@
+body > footer {
+	padding-bottom: 5px;
+	flex: 0 0 480px;
+	max-width: 100%;
+}
+body > footer > small {
+	display: block;
+	margin: 1rem auto 0;
+	max-width: 480px;
+	line-height: 25px;
+	padding: 0 5px;
+}

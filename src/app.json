@@ -1,0 +1,9 @@
+{
+	"name": "yodas.ws",
+	"components": [],
+	"sections": [],
+	"modules": [
+		"ngRoute"
+	],
+	"pages": []
+}
