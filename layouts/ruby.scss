@@ -1,0 +1,15 @@
+/* Ruby Annotations */
+ruby > rt[lang=en],
+ruby[lang=ko] > rt,
+ruby[lang=en] > rt {
+	display: inline;
+	font-size: 100%;
+
+	&::before {
+		content: ' (';
+	}
+
+	&::after {
+		content: ')';
+	}
+}
