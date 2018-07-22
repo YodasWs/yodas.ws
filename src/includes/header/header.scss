@@ -1,19 +1,18 @@
-$header-color: black;
-$header-bg: lightgreen;
 $header-second-color: black;
+$black: #000000;
 $grey: #222222;
+$site-blue: #6080CC;
 
 body > header {
-	color: $header-color;
-	background: $header-bg;
-	flex-basis: 100%;
+	background: $site-blue;
+	color: $black;
 
 	h1 {
 		padding: 10px 1em 15px;
 		display: inline-block;
 		font-size: 2rem;
 		margin: 0;
-		color: black;
+		color: $black;
 	}
 
 	h2 {
@@ -21,37 +20,8 @@ body > header {
 	}
 }
 
-body > nav:not([hidden]) {
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: space-between;
-	align-content: flex-start;
-	align-items: flex-start;
-
-	> *:not([hidden]) {
-		display: block;
-	}
-}
-
-body > header,
 body > nav {
-	background: #6080CC;
-}
-
-body > nav > li.active > ul,
-body > nav > li:focus > ul,
-body > nav > li:hover > ul {
-	display: block;
-	background: #888AFF;
-}
-
-body > nav > li:focus,
-body > nav > li:hover,
-body > nav > li.active {
-	background: #888AFF;
-}
-
-body > nav {
+	position: relative;
 	padding: 0;
 	color: $gray;
 	display: flex;
@@ -59,23 +29,60 @@ body > nav {
 	justify-content: space-around;
 	align-items: flex-end;
 	z-index: 100;
-	top: calc(2rem + 24px);
-	transition: top 100ms;
-}
+	background: $site-blue;
 
-body > nav > * {
-	display: block;
-	padding: 0px 10px;
-	line-height: 2em;
-	cursor: default;
-	flex-grow: 1;
-	text-align: center;
-}
+	> * {
+		display: block;
+		padding: 0px 10px;
+		line-height: 2em;
+		cursor: default;
+		flex-grow: 1;
+		text-align: center;
+	}
 
-body > nav a:visited,
-body > nav a:link {
-	cursor: pointer;
-	color: $grey;
+	a:visited,
+	a:link {
+		cursor: pointer;
+		color: $grey;
+	}
+
+	> li {
+		position: relative;
+
+		> ul {
+			display: none;
+			width: 100%;
+			padding: 0;
+			margin: 0;
+			list-style: none;
+			text-align: left;
+			position: absolute;
+			left: 0;
+		}
+
+		&:focus,
+		&:hover,
+		&.active {
+			background: #888AFF;
+
+			> ul {
+				display: block;
+				background: inherit;
+			}
+		}
+	}
+
+	&:not([hidden]) {
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-between;
+		align-content: flex-start;
+		align-items: flex-start;
+
+		> *:not([hidden]) {
+			display: block;
+		}
+	}
 }
 
 body > nav a:visited:focus,
@@ -87,25 +94,10 @@ body > nav > *:hover,
 body > nav > .active {
 	background: #AABAFF;
 	text-decoration: none;
-	color: black;
+	color: $black;
 }
 
 body > nav a:link {
-}
-
-body > nav > li {
-	position: relative;
-}
-
-body > nav > li > ul {
-	position: absolute;
-	list-style: none;
-	text-align: left;
-	display: none;
-	width: 100%;
-	padding: 0;
-	margin: 0;
-	left: 0;
 }
 
 body > nav li > a:link {
@@ -113,9 +105,4 @@ body > nav li > a:link {
 	display: block;
 	height: 100%;
 	width: 100%;
-}
-
-body > nav + * {
-	margin-top: calc(4rem + 25px);
-	transition: margin-top 100ms;
 }
