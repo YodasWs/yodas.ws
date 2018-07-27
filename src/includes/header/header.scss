@@ -23,7 +23,7 @@ body > header {
 body > nav {
 	position: relative;
 	padding: 0;
-	color: $gray;
+	color: $grey;
 	display: flex;
 	flex-flow: row nowrap;
 	justify-content: space-around;
@@ -33,7 +33,7 @@ body > nav {
 
 	> * {
 		display: block;
-		padding: 0px 10px;
+		padding: 0 10px;
 		line-height: 2em;
 		cursor: default;
 		flex-grow: 1;
@@ -95,9 +95,6 @@ body > nav > .active {
 	background: #AABAFF;
 	text-decoration: none;
 	color: $black;
-}
-
-body > nav a:link {
 }
 
 body > nav li > a:link {
