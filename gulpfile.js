@@ -301,29 +301,29 @@ options = {
 		cascade: false
 	},
 	dest: 'docs/',
-	rmLines:{
-		css:{
-			filters:[
+	rmLines: {
+		css: {
+			filters: [
 				/^\s*$/,
 				/^\s*@import\b/,
-			]
+			],
 		},
-		js:{
-			filters:[
+		js: {
+			filters: [
 				/^[\'"]use strict[\'"];$/,
 				/^\s*$/,
-			]
+			],
 		},
 	},
 	concat:{
-		css:{
-			path: 'min.css'
+		css: {
+			path: 'min.css',
 		},
-		js:{
-			path: 'min.js'
-		}
+		js: {
+			path: 'min.js',
+		},
 	},
-	webserver:{
+	webserver: {
 		path: `/${packageJson.name}/`,
 		directoryListing: false,
 		defaultFile: 'index.html',
@@ -331,14 +331,14 @@ options = {
 		livereload: true,
 		port: argv.port,
 	},
-	sort:{
-		css:[
+	sort: {
+		css: [
 			'scss/**/*.{sa,sc,c}ss',
 			'main.scss',
 			'components/**/*.{sa,sc,c}ss',
 			'**/*.{sa,sc,c}ss',
 		],
-		js:[
+		js: [
 			'js/**/*.js',
 			'**/module.js',
 			'{components,pages}/**/*.js',
@@ -366,7 +366,7 @@ options = {
 					if (!site[p.prop]) site[p.prop] = [];
 					site[p.prop].forEach((c) => {
 						site.modules.push(c.module || camelCase(p.pref, c.path));
-						['module','routes','ctrl'].forEach((k) => {
+						['module', 'routes', 'ctrl'].forEach((k) => {
 							let file = `${p.prop}/${c.path}`;
 							if (file.substr(-1) !== '/') file += '/';
 							file += `${k}.js`;
@@ -375,8 +375,8 @@ options = {
 								fs.accessSync(`./src/${file}`);
 								requires += `\nrequire('../src/${file}')`;
 							} catch (e) {}
-						})
-					})
+						});
+					});
 				});
 				return `const modules = ${JSON.stringify(site.modules, null, '\t')}${requires}`;
 			},
@@ -385,21 +385,24 @@ options = {
 			},
 		},
 	},
-	webpack:{
-		logs:{
-			enabled:false
+	webpack: {
+		logs: {
+			enabled: false,
 		},
-		output:{
-			filename:'[name].js'
+		output: {
+			filename: '[name].js',
 		},
-		module:{
-			loaders:[
-				{ test:/\.json$/, loader:'json-loader' },
-			]
-		}
+		module: {
+			loaders: [
+				{
+					test: /\.json$/,
+					loader: 'json-loader',
+				},
+			],
+		},
 	},
-	ssi:{
-		root: 'src'
+	ssi: {
+		root: 'src',
 	},
 }
 
@@ -557,9 +560,9 @@ gulp.task('lint:js', () => {
 		.pipe(plugins.lintES(options.lintES))
 		.pipe(plugins.lintES.failOnError())
 		.pipe(plugins.lintES.format())
-})
+});
 
-gulp.task('lint', gulp.parallel('lint:sass', 'lint:js', 'lint:html'))
+gulp.task('lint', gulp.parallel('lint:sass', 'lint:js', 'lint:html'));
 
 gulp.task('transfer:res', (done) => {
 	gulp.src([
@@ -567,64 +570,64 @@ gulp.task('transfer:res', (done) => {
 		'./node_modules/angular-route/angular-route.min.js{,.map}',
 		'./node_modules/jquery/dist/jquery.min.{js,map}',
 	])
-		.pipe(gulp.dest(path.join(options.dest, 'res')))
+		.pipe(gulp.dest(path.join(options.dest, 'res')));
 	gulp.src([
 		'./node_modules/font-awesome/fonts/fontawesome-webfont.*',
 	])
-		.pipe(gulp.dest(path.join(options.dest, 'fonts')))
-	done()
-})
+		.pipe(gulp.dest(path.join(options.dest, 'fonts')));
+	done();
+});
 
-gulp.task('transfer-files', gulp.parallel('transfer:assets', 'transfer:res'))
+gulp.task('transfer-files', gulp.parallel('transfer:assets', 'transfer:res'));
 
 gulp.task('bundle:js', gulp.series(
 	'build:js',
 	'webpack:js'
-))
+));
 
 gulp.task('compile:js', gulp.series(
 	'bundle:js',
 	'minify:js'
-))
+));
 
-gulp.task('compile', gulp.parallel('compile:html', 'compile:js', 'compile:sass', 'transfer-files'))
+gulp.task('compile', gulp.parallel('compile:html', 'compile:js', 'compile:sass', 'transfer-files'));
 
 gulp.task('watch', () => {
-	gulp.watch('./src/**/*.{sa,sc,c}ss', gulp.series('compile:sass'))
-	gulp.watch('./src/**/*.html', gulp.series('compile:html'))
-	gulp.watch('./src/**/*.js', gulp.series('compile:js'))
-})
+	gulp.watch('./src/**/*.{sa,sc,c}ss', gulp.series('compile:sass'));
+	gulp.watch('./src/**/*.html', gulp.series('compile:html'));
+	gulp.watch('./src/**/*.js', gulp.series('compile:js'));
+});
 
 gulp.task('serve', () => {
 	return gulp.src(options.dest)
-		.pipe(plugins.webserver(options.webserver))
-})
+		.pipe(plugins.webserver(options.webserver));
+});
 
 gulp.task('generate:page', gulp.series(
 	(done) => {
-		argv.sectionCC = argv.section ? camelCase(argv.section) + '/' : ''
-		argv.nameCC = camelCase(argv.name)
-		argv.module = camelCase('page', argv.sectionCC, argv.nameCC)
-		done()
+		argv.sectionCC = argv.section ? camelCase(argv.section) + '/' : '';
+		argv.nameCC = camelCase(argv.name);
+		argv.module = camelCase('page', argv.sectionCC, argv.nameCC);
+		done();
 	},
 	gulp.parallel(
 		() => {
-			const str = `[ng-view='${argv.module}'] {\n\t/* SCSS Goes Here */\n}\n`
+			const str = `[ng-view='${argv.module}'] {\n\t/* SCSS Goes Here */\n}\n`;
 			return plugins.newFile(`${argv.nameCC}.scss`, str, { src: true })
-				.pipe(gulp.dest(`./src/pages/${argv.sectionCC}${argv.nameCC}`))
+				.pipe(gulp.dest(`./src/pages/${argv.sectionCC}${argv.nameCC}`));
 		},
 		() => {
-			const str = `<h2>${argv.name}</h2>\n`
+			const str = `<h2>${argv.name}</h2>\n`;
 			return plugins.newFile(`${argv.nameCC}.html`, str, { src: true })
-				.pipe(gulp.dest(`./src/pages/${argv.sectionCC}${argv.nameCC}`))
+				.pipe(gulp.dest(`./src/pages/${argv.sectionCC}${argv.nameCC}`));
 		},
 		() => {
-			const str = `angular.module('${argv.module}', [\n\t'ngRoute',\n])\n`
+			const str = `angular.module('${argv.module}', [\n\t'ngRoute',\n])\n`;
 			return plugins.newFile('module.js', str, { src: true })
-				.pipe(gulp.dest(`./src/pages/${argv.sectionCC}${argv.nameCC}`))
+				.pipe(gulp.dest(`./src/pages/${argv.sectionCC}${argv.nameCC}`));
 		},
 		() => {
-			const str = `angular.module('${argv.module}')
+			const str = `angular.module('${argv.module}');
 .config(['$routeProvider', function($routeProvider) {
 \t$routeProvider.when('/${argv.sectionCC}${argv.nameCC}/', {
 \t\ttemplateUrl: 'pages/${argv.sectionCC}${argv.nameCC}/${argv.nameCC}.html',
@@ -633,47 +636,47 @@ gulp.task('generate:page', gulp.series(
 \t\t\tangular.element('[ng-view]').attr('ng-view', '${argv.module}')
 \t\t},
 \t})
-}])\n`
+}])\n`;
 			return plugins.newFile(`routes.js`, str, { src: true })
-				.pipe(gulp.dest(`./src/pages/${argv.sectionCC}${argv.nameCC}`))
+				.pipe(gulp.dest(`./src/pages/${argv.sectionCC}${argv.nameCC}`));
 		},
 		// TODO: Add to app.json
 		() => {
-			let site = require('./src/app.json')
-			if (!site.pages) site.pages = []
+			let site = require('./src/app.json');
+			if (!site.pages) site.pages = [];
 			site.pages.push({
 				path: `${argv.sectionCC}${argv.nameCC}`,
 				module: argv.module,
-			})
+			});
 			return plugins.newFile(`app.json`, JSON.stringify(site, null, '\t'), { src: true })
-				.pipe(gulp.dest(`./src`))
+				.pipe(gulp.dest(`./src`));
 		}
 	),
 	plugins.cli([
 		`git status`,
 	])
-))
+));
 
 gulp.task('generate:component', gulp.series(
 	(done) => {
-		argv.sectionCC = argv.section ? camelCase(argv.section) + '/' : ''
-		argv.module = camelCase('comp', argv.sectionCC, argv.name)
-		done()
+		argv.sectionCC = argv.section ? camelCase(argv.section) + '/' : '';
+		argv.module = camelCase('comp', argv.sectionCC, argv.name);
+		done();
 	},
 	gulp.parallel(
 		() => {
 			return plugins.newFile(`${argv.name}.html`, '', { src: true })
-				.pipe(gulp.dest(`./src/components/${argv.sectionCC}${argv.name}`))
+				.pipe(gulp.dest(`./src/components/${argv.sectionCC}${argv.name}`));
 		},
 		() => {
-			const str = `${argv.name} {\n\t/* SCSS Goes Here */\n}\n`
+			const str = `${argv.name} {\n\t/* SCSS Goes Here */\n}\n`;
 			return plugins.newFile(`${argv.name}.scss`, str, { src: true })
-				.pipe(gulp.dest(`./src/components/${argv.sectionCC}${argv.name}`))
+				.pipe(gulp.dest(`./src/components/${argv.sectionCC}${argv.name}`));
 		},
 		() => {
-			const str = `angular.module('${argv.module}', [])\n`
+			const str = `angular.module('${argv.module}', [])\n`;
 			return plugins.newFile('module.js', str, { src: true })
-				.pipe(gulp.dest(`./src/components/${argv.sectionCC}${argv.name}`))
+				.pipe(gulp.dest(`./src/components/${argv.sectionCC}${argv.name}`));
 		},
 		() => {
 			const str = `angular.module('${argv.module}')
@@ -681,26 +684,26 @@ gulp.task('generate:component', gulp.series(
 \ttemplateUrl: 'components/${argv.sectionCC}${argv.name}/${argv.name}.html',
 \tcontrollerAs: '$ctrl',
 \tcontroller() {\n\t}
-})\n`
+})\n`;
 			return plugins.newFile('ctrl.js', str, { src: true })
-				.pipe(gulp.dest(`./src/components/${argv.sectionCC}${argv.name}`))
+				.pipe(gulp.dest(`./src/components/${argv.sectionCC}${argv.name}`));
 		},
 		// TODO: Add to app.json
 		() => {
-			let site = require('./src/app.json')
-			if (!site.components) site.components = []
+			let site = require('./src/app.json');
+			if (!site.components) site.components = [];
 			site.components.push({
 				path: `${argv.sectionCC}${argv.name}`,
 				module: argv.module,
-			})
+			});
 			return plugins.newFile(`app.json`, JSON.stringify(site, null, '\t'), { src: true })
-				.pipe(gulp.dest(`./src`))
+				.pipe(gulp.dest(`./src`));
 		}
 	),
 	plugins.cli([
 		`git status`,
 	])
-))
+));
 
 gulp.task('init:win', () => {
 })
