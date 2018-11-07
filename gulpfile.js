@@ -365,8 +365,9 @@ options = {
 				].forEach((p) => {
 					if (!site[p.prop]) site[p.prop] = [];
 					site[p.prop].forEach((c) => {
-						site.modules.push(c.module || camelCase(p.pref, c.path));
-						['module', 'routes', 'ctrl'].forEach((k) => {
+						const module = c.module || camelCase(p.pref, c.path);
+						if (!site.modules.includes(module)); site.modules.push(module);
+						['module', 'ctrl'].forEach((k) => {
 							let file = `${p.prop}/${c.path}`;
 							if (file.substr(-1) !== '/') file += '/';
 							file += `${k}.js`;
@@ -622,22 +623,22 @@ gulp.task('generate:page', gulp.series(
 				.pipe(gulp.dest(`./src/pages/${argv.sectionCC}${argv.nameCC}`));
 		},
 		() => {
-			const str = `angular.module('${argv.module}', [\n\t'ngRoute',\n])\n`;
+			const str = `angular.module('${argv.module}', [\n\t'ngRoute',\n]);\n`;
 			return plugins.newFile('module.js', str, { src: true })
 				.pipe(gulp.dest(`./src/pages/${argv.sectionCC}${argv.nameCC}`));
 		},
 		() => {
-			const str = `angular.module('${argv.module}');
+			const str = `angular.module('${argv.module}')
 .config(['$routeProvider', function($routeProvider) {
 \t$routeProvider.when('/${argv.sectionCC}${argv.nameCC}/', {
 \t\ttemplateUrl: 'pages/${argv.sectionCC}${argv.nameCC}/${argv.nameCC}.html',
 \t\tcontrollerAs: '$ctrl',
 \t\tcontroller() {
-\t\t\tangular.element('[ng-view]').attr('ng-view', '${argv.module}')
+\t\t\tangular.element('[ng-view]').attr('ng-view', '${argv.module}');
 \t\t},
 \t})
-}])\n`;
-			return plugins.newFile(`routes.js`, str, { src: true })
+}]);\n`;
+			return plugins.newFile(`ctrl.js`, str, { src: true })
 				.pipe(gulp.dest(`./src/pages/${argv.sectionCC}${argv.nameCC}`));
 		},
 		// TODO: Add to app.json
@@ -674,7 +675,7 @@ gulp.task('generate:component', gulp.series(
 				.pipe(gulp.dest(`./src/components/${argv.sectionCC}${argv.name}`));
 		},
 		() => {
-			const str = `angular.module('${argv.module}', [])\n`;
+			const str = `angular.module('${argv.module}', []);\n`;
 			return plugins.newFile('module.js', str, { src: true })
 				.pipe(gulp.dest(`./src/components/${argv.sectionCC}${argv.name}`));
 		},
@@ -683,8 +684,8 @@ gulp.task('generate:component', gulp.series(
 .component('${argv.module}', {
 \ttemplateUrl: 'components/${argv.sectionCC}${argv.name}/${argv.name}.html',
 \tcontrollerAs: '$ctrl',
-\tcontroller() {\n\t}
-})\n`;
+\tcontroller() {\n\t},
+});\n`;
 			return plugins.newFile('ctrl.js', str, { src: true })
 				.pipe(gulp.dest(`./src/components/${argv.sectionCC}${argv.name}`));
 		},
@@ -765,13 +766,13 @@ a:link,\na:visited {\n\tcolor: dodgerblue;\n}\n`
 			}
 			const str = `/* app.json */\nangular.module('${camelCase(argv.name)}', modules)
 .config(['$locationProvider', '$routeProvider', function($locationProvider, $routeProvider) {
-\t$locationProvider.html5Mode(false)
+\t$locationProvider.html5Mode(false);
 \t$routeProvider.when('/', {\n\t\ttemplateUrl: 'pages/home.html',
 \t\tcontrollerAs: '$ctrl',\n\t\tcontroller() {
 \t\t\tangular.element('[ng-view]').attr('ng-view', 'pageHome')
 \t\t},
-\t})\n\t.otherwise({redirectTo: '/'})
-}])\n`
+\t})\n\t.otherwise({redirectTo: '/'});
+}]);\n`
 			return plugins.newFile(`app.js`, str, { src: true })
 				.pipe(gulp.dest(`./src`))
 		},
@@ -782,15 +783,15 @@ a:link,\na:visited {\n\tcolor: dodgerblue;\n}\n`
 				return
 			}
 			const site = {
-				"name": packageJson.name,
-				"components":[
+				name: packageJson.name,
+				components:[
 				],
-				"sections":[
+				sections:[
 				],
-				"modules":[
+				modules:[
 					'ngRoute',
 				],
-				"pages":[
+				pages:[
 				],
 			}
 			return plugins.newFile(`app.json`, JSON.stringify(site, null, '\t'), { src: true })
