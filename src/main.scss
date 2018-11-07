@@ -1,7 +1,7 @@
 * { box-sizing: border-box; }
 
 :root {
-	font-family: "Trebuchet MS", "Open Sans", 'Helvetica Neue', sans-serif;
+	font-family: 'Trebuchet MS', 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 html {
@@ -92,6 +92,7 @@ main > h5:first-child,
 main > h6:first-child {
 	margin-top: 0.5rem;
 }
+
 main > * {
 	display: block;
 	margin: 0.5rem 2%;
@@ -120,7 +121,7 @@ main > section.wide {
 main > section.wide > h1,
 main > section.wide > h2 {
 	text-align: center;
-	margin: .3rem 0 .5rem;
+	margin: 0.3rem 0 0.5rem;
 }
 
 /* To Keep Google Maps within Frame */
