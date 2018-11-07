@@ -5,5 +5,8 @@
 	"modules": [
 		"ngRoute"
 	],
+	"json": {
+		"travels": "travels"
+	},
 	"pages": []
 }
