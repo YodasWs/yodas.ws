@@ -8,5 +8,10 @@
 	"json": {
 		"travels": "travels"
 	},
-	"pages": []
+	"pages": [
+		{
+			"path": "home",
+			"module": "pageHome"
+		}
+	]
 }
