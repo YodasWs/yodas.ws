@@ -1,0 +1,17 @@
+{
+	"name": "YodasWs",
+	"components": [],
+	"sections": [],
+	"modules": [
+		"ngRoute"
+	],
+	"json": {
+		"travels": "travels"
+	},
+	"pages": [
+		{
+			"path": "home",
+			"module": "pageHome"
+		}
+	]
+}
