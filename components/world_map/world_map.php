@@ -1,5 +1,5 @@
 <?php
-chdir($_SERVER['DOCUMENT_ROOT']);
+chdir("{$_SERVER['DOCUMENT_ROOT']}/{$_SERVER['SITE_DIR']}");
 require_once("components/component.php");
 class WorldMap implements Component {
 
@@ -105,7 +105,7 @@ class WorldMap implements Component {
 
 	public function __construct() {
 		global $blog;
-		$this->xml = json_decode(json_encode(simplexml_load_file("{$_SERVER['DOCUMENT_ROOT']}/world2.xml")), true);
+		$this->xml = json_decode(json_encode(simplexml_load_file("{$_SERVER['DOCUMENT_ROOT']}/{$_SERVER['SITE_DIR']}/world2.xml")), true);
 		if (!empty($this->xml['locale']['@attributes']))
 			$this->xml['locale'] = array($this->xml['locale']);
 		$lang_xml = $this->getLocalWorldMap($blog->lang);

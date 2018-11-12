@@ -1,5 +1,5 @@
 <?php
-chdir($_SERVER['DOCUMENT_ROOT']);
+chdir("{$_SERVER['DOCUMENT_ROOT']}/{$_SERVER['SITE_DIR']}");
 require_once("components/component.php");
 class GTFS implements Component {
 

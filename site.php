@@ -1,5 +1,5 @@
 <?php
-chdir($_SERVER['DOCUMENT_ROOT']);
+chdir("{$_SERVER['DOCUMENT_ROOT']}/{$_SERVER['SITE_DIR']}");
 session_start();
 class BlogSite {
 	const Site_Title = 'YodasWs';

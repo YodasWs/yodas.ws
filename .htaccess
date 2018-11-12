@@ -2,31 +2,75 @@ RewriteEngine on
 
 ExpiresActive On
 
+#### Make All URIs Directories ####
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !\.(html|css|js|xml|gif|jpe?g|png|txt|svg)$
+RewriteRule ^(.*[^/])$ /$1/ [R=301,END]
+
+#### CSS Files ####
+
+<Files css.php>
+	Header set Content-type text/css
+</Files>
+ExpiresByType text/css "access plus 60 days"
+
+#RewriteCond %{HTTP_ACCEPT} text/css
+#RewriteCond %{REQUEST_URI} !^css/$
+#RewriteRule .* /css/ [R=301,END]
+
+#RewriteCond %{HTTP_ACCEPT} text/css
+#RewriteRule ^css/$ css.php [END]
+
+#RewriteCond %{REQUEST_URI} css
+#RewriteCond %{REQUEST_URI} !^css/$
+#RewriteRule .* /css/ [R=301,END]
+RewriteRule ^css/$ css.php [END]
+
+# JavaScript Files
+
+<FilesMatch "(\.js$|js\.php)">
+	Header set Content-type application/javascript
+</FilesMatch>
+ExpiresByType application/javascript "access plus 60 days"
+
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule ^components/.*\.js - [END]
+
+RewriteCond %{DOCUMENT_ROOT}/%{ENV:SITE_DIR}/components/$2.js -f
+RewriteRule ^(components/)?([^/\.]+)(/|\.js)?$ components/$2.js [END]
+
+RewriteCond %{DOCUMENT_ROOT}/%{ENV:SITE_DIR}/components/$2/js.php -f
+RewriteRule ^(components/)?([^/\.]+)(/|\.js)$ components/$2/js.php [END]
+
+RewriteCond %{DOCUMENT_ROOT}/%{ENV:SITE_DIR}/components/$2/$2.js -f
+RewriteRule ^(components/)?([^/\.]+)(/|\.js)$ components/$2/$2.js [END]
+
+RewriteRule ^components/. - [R=404,END]
+
+RewriteCond %{HTTP_REFERER} yodas.ws
+RewriteRule ^gtfs/edit.js$ - [END]
+
+#### Layouts Folder ####
+RewriteRule ^layouts/.+ /layouts/ [R=301,END]
+RewriteRule ^layouts/ layouts/index.php [END]
+
+#### Image Files ####
+
+# Prevent Hyperlinking
+RewriteCond %{HTTP_REFERER} !yodas\.ws
+RewriteCond %{HTTP_REFERER} !pinterest\.com
+RewriteCond %{HTTP_REFERER} !facebook\.com
+RewriteCond %{HTTP_REFERER} !twitter\.com
+RewriteCond %{HTTP_REFERER} !google
+RewriteCond %{HTTP_REFERER} !bing
+RewriteCond %{REQUEST_FILENAME} -f
+RewriteRule \.(gif|jpeg|jpg|png|svg)$ - [R=404,END]
+RewriteRule \.(gif|jpeg|jpg|png|svg)$ - [END]
+
+#RewriteCond %{REQUEST_FILENAME} -f
+#RewriteRule \.svg$ - [END]
+
 <IfVersion >= 2.4>
-	#### Make All URIs Directories ####
-	RewriteCond %{REQUEST_FILENAME} !-f
-	RewriteCond %{REQUEST_URI} !\.(html|css|js|xml|gif|jpe?g|png|txt|svg)$
-	RewriteRule ^(.*[^/])$ /$1/ [R=301,END]
-
-	#### Image Files ####
-
-	# Prevent Hyperlinking
-	RewriteCond %{HTTP_REFERER} !yodas\.ws
-	RewriteCond %{HTTP_REFERER} !pinterest\.com
-	RewriteCond %{HTTP_REFERER} !facebook\.com
-	RewriteCond %{HTTP_REFERER} !twitter\.com
-	RewriteCond %{HTTP_REFERER} !google
-	RewriteCond %{HTTP_REFERER} !bing
-	RewriteCond %{REQUEST_FILENAME} -f
-	RewriteRule \.(gif|jpeg|jpg|png|svg)$ - [R=404,END]
-	RewriteRule \.(gif|jpeg|jpg|png|svg)$ - [END]
-
-	RewriteCond %{REQUEST_FILENAME} -f
-	RewriteRule \.svg$ - [END]
-
-	#### Layouts Folder ####
-	RewriteRule ^layouts/.+ /layouts/ [R=301,END]
-	RewriteRule ^layouts/ layouts/index.php [END]
 
 	#### GTFS Data ####
 	RewriteCond %{REQUEST_FILENAME} -f
@@ -54,29 +98,6 @@ ExpiresActive On
 	RewriteCond %{REQUEST_URI} !.js$
 	RewriteCond %{HTTP_ACCEPT} text/html
 	RewriteRule ^components/ components/index.php [END]
-
-	# JavaScript Files
-
-	RewriteCond %{HTTP_REFERER} yodas.ws
-	RewriteRule ^gtfs/edit.js$ - [END]
-
-	RewriteCond %{DOCUMENT_ROOT}/components/$1/js.php -f
-	RewriteRule ^components/([^/\.]+)(/|\.js)?$ components/$1/js.php
-
-	RewriteCond %{DOCUMENT_ROOT}/components/$1/$1.js -f
-	RewriteRule ^components/([^/\.]*)(/|\.js)?$ components/$1/$1.js
-
-	RewriteCond %{DOCUMENT_ROOT}/components/$1.js -f
-	RewriteRule ^components/([^/\.]*)(/|\.js)?$ components/$1.js
-
-	RewriteCond %{REQUEST_FILENAME} -f
-	RewriteRule ^components/ - [END]
-	RewriteRule ^components/ - [R=404,END]
-
-	<FilesMatch "(\.js$|js\.php)">
-		Header set Content-type application/javascript
-	</FilesMatch>
-	ExpiresByType application/javascript "access plus 60 days"
 
 	#### Dates in URL ####
 
@@ -144,24 +165,6 @@ ExpiresActive On
 	RewriteCond %{DOCUMENT_ROOT}/$1 -d
 	RewriteRule ^(\d{4}) /$1/ [R=301,END]
 
-	#### CSS Files ####
-
-	RewriteCond %{HTTP_ACCEPT} text/css
-	RewriteCond %{REQUEST_URI} !^/css/$
-	RewriteRule .* /css/ [R=301,END]
-
-	RewriteCond %{HTTP_ACCEPT} text/css
-	RewriteRule ^css/$ css.php [END]
-	<Files css.php>
-		Header set Content-type text/css
-	</Files>
-	ExpiresByType text/css "access plus 60 days"
-
-	RewriteCond %{REQUEST_URI} css
-	RewriteCond %{REQUEST_URI} !^/css/$
-	RewriteRule .* /css/ [R=301,END]
-	RewriteRule ^css/$ css.php [END]
-
 	#### XML Files ####
 	RewriteCond %{HTTP_HOST} dev.yodas.ws
 	RewriteCond %{REQUEST_FILENAME} -f
@@ -179,9 +182,10 @@ ExpiresActive On
 
 	#### Catch All ####
 
-	RewriteRule .* index.php [END]
 	FallbackResource index.php
-	ErrorDocument 404 /
 </IfVersion>
 <IfVersion < 2.4>
 </IfVersion>
+
+RewriteRule .* index.php [END]
+ErrorDocument 404 /

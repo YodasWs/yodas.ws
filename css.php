@@ -27,7 +27,6 @@ if (strpos($_SERVER['HTTP_HOST'], 'dev') === 0 or !file_exists($minfile) or time
 	}
 	// Require CSSTidy
 	require_once('csstidy/class.csstidy.php');
-	$tidy = new csstidy();
 	// Gather and Sort CSS
 	ob_start();
 	usort($files, function($a, $b) {
@@ -47,9 +46,18 @@ if (strpos($_SERVER['HTTP_HOST'], 'dev') === 0 or !file_exists($minfile) or time
 	$css = ob_get_flush();
 	// TODO: Can we terminate the connection to the client so the below code can continue to run on the server without affecting the client?
 	// Minify
+	/*
+	$tidy = new csstidy();
 	$tidy->load_template('highest_compression');
 	$tidy->parse($css);
 	$css = $tidy->print->plain();
+	// TODO: csstidy doesn't put space around +/- in calc!
+	try {
+		$css = preg_replace("'(?<=\b(calc)\([^\)]*)(?<!\s)([+-])(?!\s)'g", " $2 ", $css);
+	} catch (Exception $e) {
+		print_r($e);
+	}
+	/**/
 	file_put_contents($minfile, $css);
 	exit;
 } else {

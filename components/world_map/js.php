@@ -1,5 +1,5 @@
 <?php
-chdir($_SERVER['DOCUMENT_ROOT']);
+chdir("{$_SERVER['DOCUMENT_ROOT']}/{$_SERVER['SITE_DIR']}");
 require_once("site.php");
 require_once("components/world_map/world_map.php");
 $fmt = filemtime('world2.xml');

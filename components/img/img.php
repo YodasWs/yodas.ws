@@ -1,5 +1,5 @@
 <?php
-chdir($_SERVER['DOCUMENT_ROOT']);
+chdir("{$_SERVER['DOCUMENT_ROOT']}/{$_SERVER['SITE_DIR']}");
 require_once("components/component.php");
 class Img implements Component {
 	private $fsq;
@@ -60,7 +60,7 @@ class Img implements Component {
 		if (!empty($this->height)) $img[] = "data-height=\"{$this->height}\"";
 		$style = array();
 		if (!empty($this->height)) $style[] = "max-height:{$this->height}px";
-		$img[] = 'style="' . join(';', $style) . '"';
+		if (!empty($style)) $img[] = 'style="' . join(';', $style) . '"';
 		$img[] = $delay_load ? "></load-img>" : "/>";
 		echo join(' ', $img);
 	}
