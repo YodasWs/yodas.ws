@@ -366,7 +366,7 @@ options = {
 					if (!site[p.prop]) site[p.prop] = [];
 					site[p.prop].forEach((c) => {
 						const module = c.module || camelCase(p.pref, c.path);
-						if (!site.modules.includes(module)); site.modules.push(module);
+						if (!site.modules.includes(module)) site.modules.push(module);
 						['module', 'ctrl'].forEach((k) => {
 							let file = `${p.prop}/${c.path}`;
 							if (file.substr(-1) !== '/') file += '/';
