@@ -1,0 +1,64 @@
+comp-tile {
+	background-position: center center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	display: inline-block;
+	min-height: 200px;
+	align-self: center;
+	flex-grow: 1;
+	text-shadow: 1px 2px 0px whitesmoke, 0px -1px 0px whitesmoke, -1px 0px 0px whitesmoke, 1px 0px 0px whitesmoke;
+	letter-spacing: 2px;
+	text-rendering: optimizeLegibility;
+	overflow: hidden;
+	position: relative;
+	transition: background 1s, flex-basis 750ms, max-width 750ms, min-height 1s;
+	cursor: pointer;
+	flex-basis: 98%;
+
+	@media (min-width: 20em) {
+		flex-basis: 45%;
+	}
+
+	@media (min-width: 30em) {
+		flex-basis: 25%;
+		margin: 0.5rem;
+		max-width: 300px;
+	}
+
+	> h1 {
+		text-align: center;
+		letter-spacing: 1px;
+		font-size: 1.2rem;
+		font-family: Calibri, sans-serif;
+		font-weight: bold;
+		margin: 0.5rem 0 1rem;
+		text-shadow: 1px 1px 0px white, -1px 0px 0px white;
+	}
+
+	&:not(.expanded) > h1 > a:visited:not(:hover),
+	&:not(.expanded) > h1 > a:link:not(:hover) {
+		color: black;
+	}
+
+	> img {
+		display: none;
+	}
+
+	> .alt {
+		position: absolute;
+		bottom: 5px; left: 5px;
+	}
+
+	&.expanded {
+		background-position: center left, center right;
+		background-size: auto;
+		min-height: 400px;
+		max-width: 98%;
+		flex-basis: 98%;
+		cursor: auto;
+	}
+
+	&.expanded.single-img {
+		background-position: center center;
+	}
+}

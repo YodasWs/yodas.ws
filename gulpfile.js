@@ -530,7 +530,6 @@ function runTasks(task) {
 		name: 'transfer:assets',
 		src: [
 			'./src/**/*.jp{,e}g',
-			'./src/**/*.json',
 			'./src/**/*.gif',
 			'./src/**/*.png',
 			'./src/**/*.ttf',

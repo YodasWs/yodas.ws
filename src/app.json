@@ -1,6 +1,10 @@
 {
 	"name": "YodasWs",
-	"components": [],
+	"components": [
+		{
+			"path": "tile"
+		}
+	],
 	"sections": [],
 	"modules": [
 		"ngRoute"
