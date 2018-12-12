@@ -94,16 +94,14 @@ controller($scope) {
 	.directive('compTile', ['$timeout', ($timeout) => ({
 		link(scope, element, attrs, controller, transcludeFn) {
 			const randInt = (max) => Math.floor(Math.random() * Math.floor(max));
-			if (scope.locale && scope.locale.name.includes('Beijing')) {
-				$timeout(() => {
-					const imgs = element.find('img');
+			$timeout(() => {
+				const imgs = element.find('img');
 
-					// Set random background image
-					element.css({
-						'background-image': `url('${$(imgs[randInt(imgs.length)]).attr('src')}')`,
-					});
-				}, 0);
-			}
+				// Set random background image
+				element.css({
+					'background-image': `url('${$(imgs[randInt(imgs.length)]).attr('src')}')`,
+				});
+			}, 0);
 		},
 	})])
 	.controller('ctrlTile', ['$document', '$scope', function($document, $scope) {

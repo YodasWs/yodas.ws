@@ -43,76 +43,92 @@
 		{
 			"lat": 38.8951118,
 			"lng": -77.0363658,
- 			"cc": "us",
+			"cc": "us",
 			"name": "Washington, DC"
 		},
 		{
 			"lat": 51.5001524,
 			"lng": -0.1262362,
- 			"cc": "uk",
+			"cc": "uk",
 			"name": "London"
 		},
 		{
 			"lat": 48.8566667,
 			"lng": 2.3509871,
- 			"cc": "fr",
+			"cc": "fr",
 			"name": "Paris"
 		},
 		{
 			"lat": 50.8462807,
 			"lng": 4.3547273,
- 			"cc": "be",
+			"cc": "be",
 			"name": "Brussels"
 		},
 		{
 			"lat": 39.904667,
 			"lng": 116.408198,
- 			"cc": "cn",
+			"cc": "cn",
 			"name": "Beijing",
-			"date": "2009/12/28",
-			"date": "2009/12/30",
-			"img": "2009/12/28_tiananmen1.jpg",
-			"img": "2009/12/28_palace.jpg",
-			"img": "2009/12/28_olympics.jpg",
-			"img": "2009/12/30_greatwall.jpg"
+			"date": [
+				"2009/12/28",
+				"2009/12/30"
+			],
+			"img": [
+				"http://yodas.ws/2009/12/tiananmen1.jpg",
+				"http://yodas.ws/2009/12/palace.jpg",
+				"http://yodas.ws/2009/12/olympics.jpg",
+				"http://yodas.ws/2009/12/greatwall.jpg"
+			]
 		},
 		{
 			"lat": 55.755786,
 			"lng": 37.617633,
- 			"cc": "ru",
+			"cc": "ru",
 			"name": "Moscow",
-			"date": "2004/05/14",
-			"date": "2004/05/15",
-			"date": "2004/05/19",
-			"img": "2004/05/14_moscow1.jpg",
-			"img": "2004/05/15_cathedral1.jpg",
-			"img": "2004/05/15_redsquare.jpg",
-			"img": "2004/05/15_theatre.jpg",
-			"img": "2004/05/19_cathedral2.jpg"
+			"date": [
+				"2004/05/14",
+				"2004/05/15",
+				"2004/05/19"
+			],
+			"img": [
+				"http://yodas.ws/2004/05/moscow1.jpg",
+				"http://yodas.ws/2004/05/cathedral1.jpg",
+				"http://yodas.ws/2004/05/redsquare.jpg",
+				"http://yodas.ws/2004/05/theatre.jpg",
+				"http://yodas.ws/2004/05/cathedral2.jpg"
+			]
 		},
 		{
 			"lat": 52.5234051,
 			"lng": 13.4113999,
- 			"cc": "de",
+			"cc": "de",
 			"name": "Berlin",
-			"date": "2008/04/02",
-			"img": "2008/04/02_tower2.jpg"
+			"date": [
+				"2008/04/02"
+			],
+			"img": [
+				"http://yodas.ws/2008/04/tower2.jpg"
+			]
 		},
 		{
 			"lat": 52.3738007,
 			"lng": 4.8909347,
- 			"cc": "nl",
+			"cc": "nl",
 			"name": "Amsterdam",
-			"date": "2008/03/31",
-			"img": "2008/03/31_amsterdam9.jpg",
-			"img": "2008/03/31_amsterdam12.jpg",
-			"img": "2008/03/31_amsterdam5.jpg",
-			"img": "2008/03/31_canal1.jpg"
+			"date": [
+				"2008/03/31"
+			],
+			"img": [
+				"http://yodas.ws/2008/03/amsterdam9.jpg",
+				"http://yodas.ws/2008/03/amsterdam12.jpg",
+				"http://yodas.ws/2008/03/amsterdam5.jpg",
+				"http://yodas.ws/2008/03/canal1.jpg"
+			]
 		},
 		{
 			"lat": 53.344104,
 			"lng": -6.2674937,
- 			"cc": "ie",
+			"cc": "ie",
 			"name": "Dublin"
 		},
 		{
@@ -124,50 +140,62 @@
 		{
 			"lat": 40.7143528,
 			"lng": -74.0059731,
- 			"cc": "us",
+			"cc": "us",
 			"name": "New York",
-			"date": "2002/07/06",
-			"img": "2002/07/06_downtown.jpg"
+			"date": [
+				"2002/07/06"
+			],
+			"img": [
+				"http://yodas.ws/2002/07/downtown.jpg"
+			]
 		},
 		{
 			"lat": 37.566535,
 			"lng": 126.9779692,
 			"cc": "kr",
 			"name": "Seoul",
-			"date": "2009/08/14",
-			"date": "2009/08/15",
-			"date": "2009/08/16",
-			"date": "2009/08/23",
-			"date": "2010/04/25",
-			"date": "2010/05/08",
-			"img": "2009/08/14_heroes1.jpg",
-			"img": "2009/08/15_seoul2.jpg",
-			"img": "2009/08/15_sejongno2.jpg",
-			"img": "2009/08/15_gyeongbokgung5.jpg",
-			"img": "2009/08/15_cheonggyecheon1.jpg",
-			"img": "2009/08/15_seoul3.jpg",
-			"img": "2009/08/16_seoulPlaza.jpg",
-			"img": "2009/08/16_seoul7.jpg",
-			"img": "2009/08/23_dongdaemun3.jpg",
-			"img": "2009/08/23_deoksugung2.jpg",
-			"img": "2009/08/23_yeouido1.jpg",
-			"img": "2010/04/25_changdeokgung1.jpg",
-			"img": "2010/05/08_hanriver1.jpg"
+			"date": [
+				"2009/08/14",
+				"2009/08/15",
+				"2009/08/16",
+				"2009/08/23",
+				"2010/04/25",
+				"2010/05/08"
+			],
+			"img": [
+				"http://yodas.ws/2009/08/heroes1.jpg",
+				"http://yodas.ws/2009/08/seoul2.jpg",
+				"http://yodas.ws/2009/08/sejongno2.jpg",
+				"http://yodas.ws/2009/08/gyeongbokgung5.jpg",
+				"http://yodas.ws/2009/08/cheonggyecheon1.jpg",
+				"http://yodas.ws/2009/08/seoul3.jpg",
+				"http://yodas.ws/2009/08/seoulPlaza.jpg",
+				"http://yodas.ws/2009/08/seoul7.jpg",
+				"http://yodas.ws/2009/08/dongdaemun3.jpg",
+				"http://yodas.ws/2009/08/deoksugung2.jpg",
+				"http://yodas.ws/2009/08/yeouido1.jpg",
+				"http://yodas.ws/2010/04/changdeokgung1.jpg",
+				"http://yodas.ws/2010/05/hanriver1.jpg"
+			]
 		},
 		{
 			"lat": 35.6894875,
 			"lng": 139.6917064,
 			"cc": "jp",
 			"name": "Tokyo",
-			"date": "2009/07/29",
-			"date": "2009/07/30",
-			"date": "2009/07/31",
-			"img": "2009/07/29_shinjukuLights.jpg",
-			"img": "2009/07/30_tokyoLake.jpg",
-			"img": "2009/07/30_tokyoGov.jpg",
-			"img": "2009/07/30_harajuku.jpg",
-			"img": "2009/07/31_torii.jpg",
-			"img": "2009/07/31_shinjukuTower3.jpg"
+			"date": [
+				"2009/07/29",
+				"2009/07/30",
+				"2009/07/31"
+			],
+			"img": [
+				"http://yodas.ws/2009/07/shinjukuLights.jpg",
+				"http://yodas.ws/2009/07/tokyoLake.jpg",
+				"http://yodas.ws/2009/07/tokyoGov.jpg",
+				"http://yodas.ws/2009/07/harajuku.jpg",
+				"http://yodas.ws/2009/07/torii.jpg",
+				"http://yodas.ws/2009/07/shinjukuTower3.jpg"
+			]
 		},
 		{
 			"lat": 35.2323553,
@@ -293,7 +321,10 @@
 			"lat": 41.805699,
 			"lng": 123.43147199999999,
 			"cc": "cn",
-			"name": "Shenyang"
+			"name": "Shenyang",
+			"img": [
+				"http://yodas.ws/2009/12/shenyang2.jpg"
+			]
 		},
 		{
 			"lat": 32.060255,
@@ -420,8 +451,12 @@
 			"lng": 129.31135960000006,
 			"cc": "kr",
 			"name": "Ulsan",
-			"date": "2009/09/05",
-			"img": "2009/09/05_wheel.jpg"
+			"date": [
+				"2009/09/05"
+			],
+			"img": [
+				"http://yodas.ws/2009/09/wheel.jpg"
+			]
 		},
 		{
 			"lat": 36.0068191,
