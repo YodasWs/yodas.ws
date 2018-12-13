@@ -94,14 +94,17 @@ controller($scope) {
 	.directive('compTile', ['$timeout', ($timeout) => ({
 		link(scope, element, attrs, controller, transcludeFn) {
 			const randInt = (max) => Math.floor(Math.random() * Math.floor(max));
-			$timeout(() => {
+			const changeBackground = () => {
 				const imgs = element.find('img');
-
 				// Set random background image
 				element.css({
 					'background-image': `url('${$(imgs[randInt(imgs.length)]).attr('src')}')`,
 				});
-			}, 0);
+				if (imgs.length > 1) {
+					$timeout(changeBackground, (randInt(5) + 5) * 1000);
+				}
+			};
+			$timeout(changeBackground, 0);
 		},
 	})])
 	.controller('ctrlTile', ['$document', '$scope', function($document, $scope) {
