@@ -116,11 +116,12 @@ controller($scope) {
 				if (imgs.length === 2 && !element.is('.expanded')) {
 					imgs.push(imgs.shift());
 				} else if (imgs.length > 2){
+					img1 = element.nextBG;
 					do {
-						img1 = randInt(imgs.length);
 						img2 = randInt(imgs.length);
-					} while (img1 === img2 || img1 === element.currentBG);
+					} while (img1 === img2 || img2 === element.currentBG || img2 === element.nextBG);
 					element.currentBG = img1;
+					element.nextBG = img2;
 				}
 				element.css({
 					'background-image': `url('${$(imgs[img1]).attr('src')}'), url('${$(imgs[img2]).attr('src')}')`,
