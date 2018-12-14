@@ -110,21 +110,11 @@ controller($scope) {
 					return;
 				}
 
-				let img1 = 0;
-				let img2 = 1;
-
-				if (imgs.length === 2 && !element.is('.expanded')) {
+				if (imgs.length === 2 && !element.is('.expanded') || imgs.length > 2) {
 					imgs.push(imgs.shift());
-				} else if (imgs.length > 2){
-					img1 = element.nextBG;
-					do {
-						img2 = randInt(imgs.length);
-					} while (img1 === img2 || img2 === element.currentBG || img2 === element.nextBG);
-					element.currentBG = img1;
-					element.nextBG = img2;
 				}
 				element.css({
-					'background-image': `url('${$(imgs[img1]).attr('src')}'), url('${$(imgs[img2]).attr('src')}')`,
+					'background-image': `url('${$(imgs[0]).attr('src')}'), url('${$(imgs[1]).attr('src')}')`,
 				});
 
 				if (imgs.length > 1) {
@@ -132,7 +122,7 @@ controller($scope) {
 				}
 			};
 			$timeout(() => {
-				imgs = [...element.find('img')];
+				imgs = [...element.find('img')].shuffle();
 				if (imgs.length > 0) {
 					changeBackground();
 				}
@@ -152,3 +142,13 @@ controller($scope) {
 			}
 		};
 	}]);
+
+if (!Array.prototype.shuffle) {
+	Array.prototype.shuffle = function shuffleArray() {
+		for (let i = this.length - 1; i > 0; i--) {
+			const j = Math.floor(Math.random() * (i + 1));
+			[this[i], this[j]] = [this[j], this[i]];
+		}
+		return this;
+	}
+}
