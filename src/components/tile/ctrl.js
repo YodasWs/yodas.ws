@@ -113,10 +113,7 @@ controller($scope) {
 					element.addClass('single-img');
 				}
 				element.on('click', () => {
-					element.toggleClass('expanded');
-					[...element.siblings('.expanded')].forEach((el) => {
-						el.classList.remove('expanded');
-					});
+					element.toggleClass('expanded').siblings('.expanded').removeClass('expanded');
 				});
 			}, 0);
 		},
