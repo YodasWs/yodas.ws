@@ -95,17 +95,43 @@ controller($scope) {
 		link(scope, element, attrs, controller, transcludeFn) {
 			const randInt = (max) => Math.floor(Math.random() * Math.floor(max));
 			let imgs;
+			// Set random background image
 			const changeBackground = () => {
-				// Set random background image
+				if (imgs.length === 0) {
+					// No images for background. Exit
+					return;
+				}
+
+				if (imgs.length === 1) {
+					// Only one image. Set and exit
+					element.css({
+						'background-image': `url('${$(imgs[0]).attr('src')}')`,
+					});
+					return;
+				}
+
+				let img1 = 0;
+				let img2 = 1;
+
+				if (imgs.length === 2 && !element.is('.expanded')) {
+					imgs.push(imgs.shift());
+				} else if (imgs.length > 2){
+					do {
+						img1 = randInt(imgs.length);
+						img2 = randInt(imgs.length);
+					} while (img1 === img2 || img1 === element.currentBG);
+					element.currentBG = img1;
+				}
 				element.css({
-					'background-image': `url('${$(imgs[randInt(imgs.length)]).attr('src')}')`,
+					'background-image': `url('${$(imgs[img1]).attr('src')}'), url('${$(imgs[img2]).attr('src')}')`,
 				});
+
 				if (imgs.length > 1) {
 					$timeout(changeBackground, (randInt(5) + 5) * 1000);
 				}
 			};
 			$timeout(() => {
-				imgs = element.find('img');
+				imgs = [...element.find('img')];
 				if (imgs.length > 0) {
 					changeBackground();
 				}
