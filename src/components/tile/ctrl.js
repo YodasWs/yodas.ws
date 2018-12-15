@@ -118,7 +118,7 @@ controller($scope) {
 				});
 
 				if (imgs.length > 1) {
-					$timeout(changeBackground, (randInt(5) + 5) * 1000);
+					$timeout(changeBackground, (randInt(16) + 5) * 1000);
 				}
 			};
 			$timeout(() => {
