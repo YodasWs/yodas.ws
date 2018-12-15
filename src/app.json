@@ -9,6 +9,9 @@
 	"modules": [
 		"ngRoute"
 	],
+	"js": [
+		"includes/resize"
+	],
 	"json": {
 		"travels": "travels"
 	},
