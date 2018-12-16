@@ -114,7 +114,7 @@ controller($scope) {
 					imgs.push(imgs.shift());
 				}
 				element.css({
-					'background-image': `url('${$(imgs[0]).attr('src')}'), url('${$(imgs[1]).attr('src')}')`,
+					'background-image': `url('${$(imgs[0]).attr('src')}')`,
 				});
 
 				if (imgs.length > 1) {

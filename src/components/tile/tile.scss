@@ -51,15 +51,29 @@ comp-tile {
 	}
 
 	&.expanded {
-		background-position: center left, center right;
-		background-size: auto;
+		background-image: none !important;
 		min-height: 400px;
 		max-width: 98%;
 		flex-basis: 98%;
 		cursor: auto;
+
+		display: flex;
+		flex-flow: row wrap;
+		justify-content: space-around;
+
+		> h1 {
+			flex-basis: 100%;
+		}
+
+		> img {
+			display: block;
+			margin: 10px;
+			max-width: calc(50% - 10px * 2);
+		}
 	}
 
 	&.expanded.single-img {
-		background-position: center center;
+		background-position: center;
+		background-size: contain;
 	}
 }
