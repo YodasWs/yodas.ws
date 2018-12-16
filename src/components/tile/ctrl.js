@@ -131,9 +131,11 @@ controller($scope) {
 				}
 				element.on('click', () => {
 					element.toggleClass('expanded').siblings('.expanded').removeClass('expanded');
-					$(window).trigger('resize', {
-						eleScrollTo: element,
-					});
+					setTimeout(() => {
+						$(window).trigger('resize', {
+							eleScrollTo: element,
+						});
+					}, 1000);
 				});
 			}, 0);
 		},
