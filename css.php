@@ -25,9 +25,6 @@ if (strpos($_SERVER['HTTP_HOST'], 'dev') === 0 or !file_exists($minfile) or time
 		if (strpos($css, '.ie.') !== 0 || $isIE)
 			$files[] = $css;
 	}
-	// Require CSSTidy
-	require_once('csstidy/class.csstidy.php');
-	$tidy = new csstidy();
 	// Gather and Sort CSS
 	ob_start();
 	usort($files, function($a, $b) {
@@ -46,10 +43,6 @@ if (strpos($_SERVER['HTTP_HOST'], 'dev') === 0 or !file_exists($minfile) or time
 	// Output CSS to browser immediately and get CSS for slow minification process
 	$css = ob_get_flush();
 	// TODO: Can we terminate the connection to the client so the below code can continue to run on the server without affecting the client?
-	// Minify
-	$tidy->load_template('highest_compression');
-	$tidy->parse($css);
-	$css = $tidy->print->plain();
 	file_put_contents($minfile, $css);
 	exit;
 } else {
