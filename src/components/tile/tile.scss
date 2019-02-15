@@ -26,23 +26,24 @@ comp-tile {
 		max-width: 300px;
 	}
 
+	> * {
+		display: none;
+	}
+
 	> h1 {
+		display: block;
 		text-align: center;
 		letter-spacing: 1px;
 		font-size: 1.2rem;
 		font-family: Calibri, sans-serif;
 		font-weight: bold;
 		margin: 0.5rem 0 1rem;
-		text-shadow: 1px 1px 0px white, -1px 0px 0px white;
+		text-shadow: 1px 1px 0px white, -1px -1px 0px white, -1px 1px 0px white, -1px -1px 0px white;
 	}
 
 	&:not(.expanded) > h1 > a:visited:not(:hover),
 	&:not(.expanded) > h1 > a:link:not(:hover) {
 		color: black;
-	}
-
-	> img {
-		display: none;
 	}
 
 	> .alt {
@@ -60,20 +61,23 @@ comp-tile {
 		display: flex;
 		flex-flow: row wrap;
 		justify-content: space-around;
+		align-items: flex-start;
+		align-content: flex-start;
+
+		overflow: auto;
 
 		> h1 {
 			flex-basis: 100%;
 		}
 
-		> img {
+		> * {
 			display: block;
-			margin: 10px;
-			max-width: calc(50% - 10px * 2);
 		}
-	}
 
-	&.expanded.single-img {
-		background-position: center;
-		background-size: contain;
+		> img {
+			margin: 10px;
+			max-width: calc(100% - 10px * 2);
+			flex: 0 0 auto;
+		}
 	}
 }

@@ -6,6 +6,7 @@ angular.module('compTile')
 	},
 	controller: 'ctrlTile',
 	/*
+
 controller($scope) {
 	console.log('Sam, $ctrl:', this);
 	const loadImage = () => {
@@ -89,6 +90,7 @@ controller($scope) {
 		});
 	});
 },
+
 		/**/
 })
 	.directive('compTile', ['$timeout', ($timeout) => ({
@@ -122,7 +124,7 @@ controller($scope) {
 				}
 			};
 			$timeout(() => {
-				imgs = [...element.find('img')].shuffle();
+				imgs = [...element.children('img')].shuffle();
 				if (imgs.length > 0) {
 					changeBackground();
 				}
@@ -133,7 +135,10 @@ controller($scope) {
 					element.toggleClass('expanded').siblings('.expanded').removeClass('expanded');
 					setTimeout(() => {
 						$(window).trigger('resize', {
-							eleScrollTo: element,
+							scrollTo: {
+								element,
+								block: element[0].classList.contains('expanded') && window.innerHeight - 20 < element[0].offsetHeight ? 'start' : 'center',
+							},
 						});
 					}, 1000);
 				});
