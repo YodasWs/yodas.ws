@@ -3,39 +3,70 @@
 		{
 			"lat": 36.0726354,
 			"lng": -79.7919754,
+			"z": 5,
 			"home": true,
 			"cc": "us",
-			"name": "Greensboro"
+			"name": "Greensboro",
+			"map": {
+				"src": "/yodas.ws/components/google-maps/maps/Greensboro.png",
+				"icon": "home"
+			}
 		},
 		{
 			"lat": 53.0033991,
 			"lng": -2.2715907,
 			"home": true,
+			"z": 6,
 			"cc": "uk",
-			"name": "Keele University"
+			"name": "Keele University",
+			"map": {
+				"src": "/yodas.ws/components/google-maps/maps/Keele_University.png"
+			}
 		},
 		{
 			"lat": 35.1967729,
 			"lng": 128.5679727,
+			"z": 6,
 			"home": true,
 			"cc": "kr",
-			"name": "Masan"
+			"name": "Masan",
+			"map": {
+				"src": "/yodas.ws/components/google-maps/maps/Masan.png"
+			}
 		},
 		{
 			"lat": 34.2257255,
 			"lng": -77.9447102,
+			"z": 5,
 			"home": true,
 			"cc": "us",
+			"map": {
+				"src": "/yodas.ws/components/google-maps/maps/Wilmington_NC.png"
+			},
 			"name": "Wilmington, NC"
 		},
 		{
 			"lat": 35.5848596,
 			"lng": -80.81007239999997,
+			"z": 8,
 			"home": true,
 			"cc": "us",
+			"map": {
+				"src": "/yodas.ws/components/google-maps/maps/Mooresville_NC.png",
+				"visible": [
+					"Greensboro, NC",
+					"Charlotte"
+				]
+			},
 			"name": "Mooresville, NC"
 		},
 		{
+			"lat": 35.227087,
+			"lng": -80.843127,
+			"z": 5,
+			"map": {
+				"src": "/yodas.ws/components/google-maps/maps/Charlotte.png"
+			},
 			"home": true,
 			"cc": "us",
 			"name": "Charlotte, NC"
@@ -43,12 +74,23 @@
 		{
 			"lat": 38.8951118,
 			"lng": -77.0363658,
+			"z": 5,
+			"map": {
+				"icon": "congress"
+			},
 			"cc": "us",
 			"name": "Washington, DC"
 		},
 		{
 			"lat": 51.5001524,
 			"lng": -0.1262362,
+			"z": 3,
+			"map": {
+				"icon": "congress",
+				"visible": [
+					"Bucharest"
+				]
+			},
 			"cc": "uk",
 			"name": "London"
 		},
@@ -173,6 +215,9 @@
 		{
 			"lat": 40.7143528,
 			"lng": -74.0059731,
+			"map": {
+				"icon": "bigcity"
+			},
 			"cc": "us",
 			"name": "New York",
 			"date": [
@@ -411,6 +456,9 @@
 		{
 			"lat": 42.331427,
 			"lng": -83.0457538,
+			"map": {
+				"icon": "bigcity"
+			},
 			"cc": "us",
 			"name": "Detroit"
 		},
@@ -423,6 +471,9 @@
 		{
 			"lat": 41.8781136,
 			"lng": -87.62979819999998,
+			"map": {
+				"icon": "bigcity"
+			},
 			"cc": "us",
 			"name": "Chicago"
 		},

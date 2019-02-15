@@ -3,6 +3,10 @@
 	"components": [
 		{
 			"path": "tile"
+		},
+		{
+			"path": "google-maps",
+			"module": "googleMaps"
 		}
 	],
 	"sections": [],

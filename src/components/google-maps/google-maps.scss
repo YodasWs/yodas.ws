@@ -1,0 +1,23 @@
+comp-tile {
+	> google-maps {
+		align-self: center;
+		transition: opacity 1s step-end, height 1s 1s, width 1s 1s;
+
+		> img {
+			opacity: 0;
+			height: 1px;
+			width: 1px;
+			transition: opacity 1ms step-end, height 1ms 1ms, width 1ms 1ms;
+		}
+	}
+
+	&.expanded > google-maps {
+
+		> img {
+			opacity: 1;
+			height: 300px;
+			width: 300px;
+			transition: opacity 1s step-end, height 1s 1s, width 1s 1s;
+		}
+	}
+}

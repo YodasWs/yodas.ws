@@ -1,4 +1,5 @@
 <!-- htmllint attr-validate="false" -->
 <!-- htmllint img-req-alt="false" -->
 <h1>{{$ctrl.locale.name}}</h1>
+<google-maps locale="$ctrl.locale"></google-maps>
 <img ng-repeat="image in $ctrl.locale.img" src="{{image.src}}"/>
