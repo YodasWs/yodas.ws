@@ -51,7 +51,7 @@ body {
 	align-items: stretch;
 	background: white;
 
-	@media (min-width: 1201px) {
+	@media #{$large} {
 		border: solid black;
 		border-width: 0 1px;
 		max-width: 1200px;

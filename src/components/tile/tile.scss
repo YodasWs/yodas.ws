@@ -16,11 +16,11 @@ comp-tile {
 	cursor: pointer;
 	flex-basis: 98%;
 
-	@media (min-width: 20em) {
+	@media #{$two-columns} {
 		flex-basis: 45%;
 	}
 
-	@media (min-width: 30em) {
+	@media #{$three-columns} {
 		flex-basis: 25%;
 		margin: 0.5rem;
 		max-width: 300px;
@@ -78,6 +78,14 @@ comp-tile {
 			margin: 10px;
 			max-width: calc(100% - 10px * 2);
 			flex: 0 0 auto;
+
+			@media #{$three-columns} {
+				max-width: calc(50% - 10px * 2);
+			}
+
+			@media #{$large} {
+				max-width: calc(33% - 10px * 2);
+			}
 		}
 	}
 }
