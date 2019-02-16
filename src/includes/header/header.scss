@@ -1,18 +1,23 @@
-$header-second-color: black;
-$black: #000000;
-$grey: #222222;
-$site-blue: #6080CC;
-
 body > header {
 	background: $site-blue;
 	color: $black;
+	text-align: center;
 
 	h1 {
-		padding: 10px 1em 15px;
 		display: inline-block;
 		font-size: 2rem;
-		margin: 0;
-		color: $black;
+		margin: 10px auto 15px;
+
+		> a:link {
+			display: block;
+			height: 100%;
+			width: 100%;
+		}
+
+		> a:link,
+		> a:visited {
+			color: inherit;
+		}
 	}
 
 	h2 {

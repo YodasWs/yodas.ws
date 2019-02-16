@@ -7,7 +7,7 @@
 html {
 	height: 100%;
 	width: 100%;
-	background: whitesmoke;
+	background: $white;
 }
 
 h1,
@@ -28,17 +28,21 @@ body {
 
 a:link,
 a:visited {
-	color: dodgerblue;
+	color: $link-color;
 }
 
-a:link:focus,
-a:link:active,
-a:link:hover {
-	text-decoration: underline;
+a:link {
+	text-decoration: none;
+
+	&:focus,
+	&:active,
+	&:hover {
+		text-decoration: underline;
+	}
 }
 
 a:link:focus {
-	outline: 1px solid blue;
+	outline: 1px solid $link-color;
 }
 
 a img { border: 0 none; }
@@ -49,77 +53,72 @@ body {
 	flex-flow: column nowrap;
 	justify-content: flex-start;
 	align-items: stretch;
-	background: white;
-
-	@media #{$large} {
-		border: solid black;
-		border-width: 0 1px;
-		max-width: 1200px;
-		margin: 0 auto;
-	}
+	background: $black;
 }
 
 main {
 	margin: 0 auto;
+	padding: 1px;
 	width: 100%;
+	max-width: 1200px;
 	flex-grow: 1;
 	display: flex;
 	flex-flow: row wrap;
 	align-items: flex-start;
 	align-content: flex-start;
 	justify-content: space-around;
-}
 
-main > header,
-main > h1,
-main > h2,
-main > h3,
-main > h4,
-main > h5,
-main > h6 {
-	text-align: center;
-	flex-basis: 100%;
-	margin: 0 0 1rem;
-}
+	> header,
+	> h1,
+	> h2,
+	> h3,
+	> h4,
+	> h5,
+	> h6 {
+		text-align: center;
+		flex-basis: 100%;
+		margin: 0 0 1rem;
+	}
 
-main > header:first-child,
-main > h1:first-child,
-main > h2:first-child,
-main > h3:first-child,
-main > h4:first-child,
-main > h5:first-child,
-main > h6:first-child {
-	margin-top: 0.5rem;
-}
+	> header:first-child,
+	> h1:first-child,
+	> h2:first-child,
+	> h3:first-child,
+	> h4:first-child,
+	> h5:first-child,
+	> h6:first-child {
+		margin-top: 0.5rem;
+	}
 
-main > * {
-	display: block;
-	margin: 0.5rem 2%;
-}
+	> * {
+		display: block;
+		margin: 0.5rem 2%;
+	}
 
-main > header > h1,
-main > header > h2,
-main > header > h3,
-main > header > h4,
-main > header > h5,
-main > header > h6 {
-	display: inline;
-}
+	> header > h1,
+	> header > h2,
+	> header > h3,
+	> header > h4,
+	> header > h5,
+	> header > h6 {
+		display: inline;
+	}
 
-main > header > h1 + h2::before {
-	display: inline;
-	content: ', ';
-}
+	> header > h1 + h2::before {
+		display: inline;
+		content: ', ';
+	}
 
-main > section.wide {
-	flex-basis: 100%;
-	margin: 0 0 1rem;
-}
+	> section.wide {
+		flex-basis: 100%;
+		margin: 0 0 1rem;
 
-main > section.wide > h1,
-main > section.wide > h2 {
-	text-align: center;
-	margin: 0.3rem 0 0.5rem;
+		> h1,
+		> h2 {
+			text-align: center;
+			margin: 0.3rem 0 0.5rem;
+		}
+	}
 }
 
 /* To Keep Google Maps within Frame */
