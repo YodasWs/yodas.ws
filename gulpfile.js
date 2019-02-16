@@ -139,7 +139,7 @@ options = {
 	2, 'global'
 ],
 'indent': [
-	2, 'tab'
+	1, 'tab'
 ],
 'space-before-function-paren': 0,
 'comma-dangle': 0,
@@ -352,56 +352,87 @@ options = {
 				// Read app.json to build site!
 				let site = require('./src/app.json');
 				if (!site.modules) site.modules = ['ngRoute'];
-				const requiredFiles = [];
+				const requiredFiles = {
+					js: [],
+					json: {},
+					workers: {},
+				};
+
 				[
 					{
 						prop:'pages',
-						pref:'page',
+						prefix:'page',
 					},
 					{
 						prop:'components',
-						pref:'comp',
+						prefix:'comp',
 					},
 				].forEach((p) => {
 					if (!site[p.prop]) site[p.prop] = [];
 					site[p.prop].forEach((c) => {
-						const module = c.module || camelCase(p.pref, c.path);
+						const module = c.module || camelCase(p.prefix, c.path);
 						if (!site.modules.includes(module)) site.modules.push(module);
-						['module', 'ctrl'].forEach((k) => {
+						[
+							'module',
+							'ctrl',
+						].forEach((k) => {
 							const file = path.join(p.prop, c.path, `${k}.js`);
 							console.log(`checking for file ${file}`);
 							try {
 								fs.accessSync(`./src/${file}`);
-								requiredFiles.push(file);
+								requiredFiles.js.push(file);
 							} catch (e) {}
 						});
 					});
 				});
-				[
-					'json',
-					'js',
-				].forEach((prop) => {
-					if (site[prop]) for (const i in site[prop]) {
+
+				Object.keys(requiredFiles).forEach((prop) => {
+					if (site[prop]) Object.entries(site[prop]).forEach(([i, filename]) => {
 						try {
-							fs.accessSync(`./src/${site[prop][i]}.${prop}`);
-							if (Number.isNaN(Number.parseInt(i, 10))) {
-								requiredFiles[i] = `${site[prop][i]}.${prop}`;
-							} else {
-								requiredFiles.push(`${site[prop][i]}.${prop}`);
+							switch (prop) {
+								case 'js':
+									fs.accessSync(`./src/${filename}.${prop}`);
+									requiredFiles[prop].push(`${filename}.${prop}`);
+									break;
+								case 'json':
+									fs.accessSync(`./src/${filename}.${prop}`);
+									requiredFiles[prop][i] = `${filename}.${prop}`;
+									break;
+								case 'workers':
+									fs.accessSync(`./src/${filename}.js`);
+									requiredFiles[prop][i] = `${filename}.js`;
+									break;
 							}
 						} catch (e) {}
+					});
+				});
+
+				let requires = 'const json = window.json = {};\n';
+				Object.entries(requiredFiles).forEach(([prop, files]) => {
+					switch (prop) {
+						case 'json':
+							Object.entries(files).forEach(([key, filename]) => {
+								console.log(prop, filename);
+								requires += `json.${key} = require('../src/${filename}');\n`;
+							});
+							break;
+						case 'js':
+							files.forEach((filename) => {
+								console.log(prop, filename);
+								requires += `require('../src/${filename}');\n`;
+							});
+							break;
+						case 'workers':
+							Object.entries(files).forEach(([key, filename]) => {
+								console.log(prop, filename);
+								requires += `worker.${key} = new Worker('includes/workers/${filename}');\n`;
+							});
+							break;
 					}
 				});
-				let requires = 'const json = window.json = {};\n';
-				for (const i in requiredFiles) {
-					if (Number.isNaN(Number.parseInt(i, 10))) {
-						requires += `json.${i} = `;
-					}
-					requires += `require('../src/${requiredFiles[i]}');\n`;
-				}
 				return `const modules = ${JSON.stringify(site.modules, null, '\t')};\n${requires}`;
 			},
-			options:{
+			options: {
 				notReplaced: false,
 			},
 		},
@@ -542,6 +573,7 @@ function runTasks(task) {
 			'./src/**/*.png',
 			'./src/**/*.ttf',
 			'./src/**/*.txt',
+			'./src/includes/workers/*.js',
 		],
 		tasks: [],
 	}
