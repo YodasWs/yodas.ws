@@ -392,7 +392,7 @@ options = {
 						} catch (e) {}
 					}
 				});
-				let requires = 'const json = {};\n';
+				let requires = 'const json = window.json = {};\n';
 				for (const i in requiredFiles) {
 					if (Number.isNaN(Number.parseInt(i, 10))) {
 						requires += `json.${i} = `;
@@ -541,6 +541,7 @@ function runTasks(task) {
 			'./src/**/*.gif',
 			'./src/**/*.png',
 			'./src/**/*.ttf',
+			'./src/**/*.txt',
 		],
 		tasks: [],
 	}

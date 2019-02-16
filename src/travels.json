@@ -69,7 +69,8 @@
 			},
 			"home": true,
 			"cc": "us",
-			"name": "Charlotte, NC"
+			"gtfs": true,
+			"name": "Charlotte"
 		},
 		{
 			"lat": 38.8951118,
@@ -320,6 +321,7 @@
 			"lat": 35.2323553,
 			"lng": 139.10693749999996,
 			"cc": "jp",
+			"gtfs": true,
 			"name": "Hakone"
 		},
 		{

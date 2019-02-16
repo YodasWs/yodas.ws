@@ -5,6 +5,9 @@
 			"path": "tile"
 		},
 		{
+			"path": "gtfs"
+		},
+		{
 			"path": "google-maps",
 			"module": "googleMaps"
 		}

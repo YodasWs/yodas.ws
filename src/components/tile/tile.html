@@ -2,4 +2,5 @@
 <!-- htmllint img-req-alt="false" -->
 <h1>{{$ctrl.locale.name}}</h1>
 <google-maps locale="$ctrl.locale"></google-maps>
+<comp-gtfs locale="$ctrl.locale" ng-if="$ctrl.locale.gtfs"></comp-gtfs>
 <img ng-repeat="image in $ctrl.locale.img" src="{{image.src}}"/>
