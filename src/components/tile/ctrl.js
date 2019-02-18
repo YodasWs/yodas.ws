@@ -19,7 +19,7 @@ angular.module('compTile')
 				}
 
 				if (imgs.length === 1) {
-					// Only one image. Set and exit
+					// Only one image in tile. Set and exit
 					element.css({
 						'background-image': `url('${$(imgs[0]).attr('src')}')`,
 					});
@@ -39,19 +39,25 @@ angular.module('compTile')
 			};
 			$timeout(() => {
 				imgs = [...element.children('img')].shuffle();
+
+				// Add Map to Background Rotation if Tile has few Images
 				if (
-					imgs.length === 0
+					imgs.length <= 1
 					&& (
-						typeof scope.locale.map === 'string'
-						|| (typeof scope.locale.map === 'object' && typeof scope.locale.map.src === 'string')
+						typeof scope.locale.map === 'object' && typeof scope.locale.map.src === 'string'
+						|| typeof scope.locale.map === 'string'
 					)
 				) {
 					new MutationObserver((mutationList, observer) => {
-						const imgMap = element.find('google-maps > img');
-						if (imgMap.length > 0) {
-							imgs = [...element.find('google-maps > img')].shuffle();
+						if (element.find('google-maps > img').length > 0) {
+							imgs = [...element.find('google-maps > img')]
+								.concat([...element.children('img')])
+								.shuffle();
+							setTimeout(
+								changeBackground,
+								imgs.length === 1 ? 0 : (randInt(5) + 5) * 1000
+							);
 							observer.disconnect();
-							changeBackground();
 						}
 					}).observe(element[0], {
 						childList: true,
