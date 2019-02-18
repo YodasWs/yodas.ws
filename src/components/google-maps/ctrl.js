@@ -21,12 +21,8 @@ angular.module('googleMaps')
 			const img = new Image(300, 300);
 
 			if (typeof locale.map === 'string') {
-				console.log('loading map for', locale.name);
-				console.log('loading map', locale.map);
 				img.src = locale.map;
 			} else if (typeof locale.map === 'object' && typeof locale.map.src === 'string') {
-				console.log('loading map for', locale.name);
-				console.log('loading map', locale.map.src);
 				img.src = locale.map.src;
 			} else if (Number.isInteger(locale.z) && locale.z >= 0 && Number.isFinite(locale.lat) && Number.isFinite(locale.lng)) {
 				// PS: Road Sign warning yellow: #FCD047
@@ -43,10 +39,10 @@ angular.module('googleMaps')
 				const markers = [];
 				if (typeof locale.map === 'object' && typeof locale.map.icon === 'string') {
 					markers.push('anchor:bottom');
-					markers.push(`icon:http://yodasws.github.io/yodas.ws/components/google-maps/icons/${locale.map.icon}.png`);
+					markers.push(`icon:https://yodasws.github.io/yodas.ws/components/google-maps/icons/${locale.map.icon}.png`);
 				} else if (locale.home) {
 					markers.push('anchor:bottom');
-					markers.push('icon:http://yodasws.github.io/yodas.ws/components/google-maps/icons/home.png');
+					markers.push('icon:https://yodasws.github.io/yodas.ws/components/google-maps/icons/home.png');
 				} else {
 					markers.push('size:small');
 				}

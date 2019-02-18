@@ -3,18 +3,18 @@
  */
 'use strict';
 
-const fs = require('fs')
-const packageJson = JSON.parse(fs.readFileSync('./package.json'))
+const fs = require('fs');
+const packageJson = JSON.parse(fs.readFileSync('./package.json'));
 
 function camelCase() {
 	return (
 		Array.isArray(arguments[0]) ? arguments[0] : Array.from(arguments).join('-')
 	).split(/\s+|\/|-/).filter((e) => {
-		return e !== '' && e !== null && e !== undefined
+		return e !== '' && e !== null && e !== undefined;
 	}).map((n, i) => {
-		if (i === 0) return n
-		return n.charAt(0).toUpperCase() + n.slice(1)
-	}).join('')
+		if (i === 0) return n;
+		return n.charAt(0).toUpperCase() + n.slice(1);
+	}).join('');
 }
 
 const argv = require('yargs')
@@ -64,13 +64,13 @@ const argv = require('yargs')
 	.command('watch', 'Watch files for changes to recompile')
 	.help('?')
 	.epilog(' ©2017 Samuel B Grundman')
-	.argv
+	.argv;
 
-const gulp = require('gulp'),
-	path = require('path'),
-	fileExists = require('file-exists'),
+const gulp = require('gulp');
+const path = require('path');
+const fileExists = require('file-exists');
 
-plugins = require('gulp-load-plugins')({
+const plugins = require('gulp-load-plugins')({
 	rename:{
 		'gulp-autoprefixer': 'prefixCSS',
 		'gulp-run-command': 'cli',
@@ -87,9 +87,9 @@ plugins = require('gulp-load-plugins')({
 			return cli.default
 		},
 	},
-}),
+});
 
-options = {
+const options = {
 	compileJS:{
 		comments: false,
 		minified: true,
@@ -456,7 +456,7 @@ options = {
 	ssi: {
 		root: 'src',
 	},
-}
+};
 
 plugins.named = require('vinyl-named');
 plugins.lintHTML = require('@yodasws/gulp-htmllint');

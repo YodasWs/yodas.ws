@@ -77,6 +77,7 @@
 			"lng": -77.0363658,
 			"z": 5,
 			"map": {
+				"src": "/yodas.ws/components/google-maps/maps/Washington_DC.png",
 				"icon": "congress"
 			},
 			"cc": "us",
@@ -87,6 +88,7 @@
 			"lng": -0.1262362,
 			"z": 3,
 			"map": {
+				"src": "/yodas.ws/components/google-maps/maps/London.png",
 				"icon": "congress",
 				"visible": [
 					"Bucharest"
