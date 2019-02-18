@@ -3,12 +3,13 @@ comp-tile {
 	background-position: center center;
 	background-repeat: no-repeat;
 	background-size: cover;
-	background-color: $tile-bg;
+	background-color: $site-blue;
 	display: inline-block;
 	min-height: 200px;
 	align-self: center;
 	flex-grow: 1;
-	text-shadow: 1px 1px 0 white, -1px -1px 0 white, -1px 1px 0 white, 1px -1px 0 white;
+	text-shadow: 1px 1px 0 $black, -1px -1px 0 $black, -1px 1px 0 $black, 1px -1px 0 $black;
+	color: $white;
 	letter-spacing: 2px;
 	text-rendering: optimizeLegibility;
 	overflow: hidden;
