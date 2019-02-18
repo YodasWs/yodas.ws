@@ -22,6 +22,9 @@
 	"json": {
 		"travels": "travels"
 	},
+	"workers": {
+		"gtfs": "gtfs"
+	},
 	"pages": [
 		{
 			"path": "home",
