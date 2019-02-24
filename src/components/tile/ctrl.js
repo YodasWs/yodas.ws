@@ -7,7 +7,14 @@ angular.module('compTile')
 		controllerAs: '$ctrl',
 		controller: 'ctrlTile',
 	})
-	.directive('compTile', ['$timeout', ($timeout) => ({
+	.controller('ctrlTile', ['$document', '$scope', function($document, $scope) {
+		this.$onInit = () => {
+			if (this.locale && this.locale.name.includes('Beijing')) {
+				console.log('Sam, $ctrl:', this);
+			}
+		};
+	}])
+	.directive('compTile', [() => ({
 		link(scope, element, attrs, controller, transcludeFn) {
 			const randInt = (max) => Math.floor(Math.random() * Math.floor(max));
 			let imgs;
@@ -34,10 +41,10 @@ angular.module('compTile')
 				});
 
 				if (imgs.length > 1) {
-					$timeout(changeBackground, (randInt(16) + 5) * 1000);
+					setTimeout(changeBackground, (randInt(16) + 5) * 1000);
 				}
 			};
-			$timeout(() => {
+			setTimeout(() => {
 				imgs = [...element.children('img')].shuffle();
 
 				// Add Map to Background Rotation if Tile has few Images
@@ -81,13 +88,6 @@ angular.module('compTile')
 			}, 0);
 		},
 	})])
-	.controller('ctrlTile', ['$document', '$scope', function($document, $scope) {
-		this.$onInit = () => {
-			if (this.locale && this.locale.name.includes('Beijing')) {
-				console.log('Sam, $ctrl:', this);
-			}
-		};
-	}]);
 
 if (!Array.prototype.shuffle) {
 	Array.prototype.shuffle = function shuffleArray() {

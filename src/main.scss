@@ -58,7 +58,7 @@ body {
 
 main {
 	margin: 0 auto;
-	padding: 2px;
+	padding: $tile-margin;
 	width: 100%;
 	max-width: 1200px;
 	flex-grow: 1;
