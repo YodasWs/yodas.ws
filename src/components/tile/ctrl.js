@@ -74,7 +74,7 @@ angular.module('compTile')
 				if (imgs.length > 0) {
 					changeBackground();
 				}
-				element.on('click', () => {
+				const toggleExpand = () => {
 					element.toggleClass('expanded').siblings('.expanded').removeClass('expanded');
 					setTimeout(() => {
 						$(window).trigger('resize', {
@@ -84,6 +84,17 @@ angular.module('compTile')
 							},
 						});
 					}, 1000);
+				};
+				element.on('click', toggleExpand);
+				element.on('keydown', (e) => {
+					if ([
+						'Spacebar',
+						'Enter',
+						' ',
+					].includes(e.key)) {
+						e.preventDefault();
+						toggleExpand();
+					}
 				});
 			}, 0);
 		},
