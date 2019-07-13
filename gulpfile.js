@@ -84,10 +84,11 @@ const plugins = require('gulp-load-plugins')({
 	},
 	postRequireTransforms:{
 		cli(cli) {
-			return cli.default
+			return cli.default;
 		},
 	},
 });
+plugins['connect.reload'] = plugins.connect.reload;
 
 const options = {
 	compileJS:{
@@ -323,10 +324,8 @@ const options = {
 			path: 'min.js',
 		},
 	},
-	webserver: {
-		path: `/${packageJson.name}/`,
-		directoryListing: false,
-		defaultFile: 'index.html',
+
+	connect: {
 		fallback: 'index.html',
 		livereload: true,
 		port: argv.port,
@@ -514,6 +513,7 @@ function runTasks(task) {
 			'stripCssComments',
 			'rmLines',
 			'prefixCSS',
+			'connect.reload',
 		],
 		fileType: 'css',
 	},
@@ -549,6 +549,7 @@ function runTasks(task) {
 		tasks: [
 			'compileJS',
 			'rmLines',
+			'connect.reload',
 		],
 		fileType: 'js',
 	},
@@ -562,6 +563,7 @@ function runTasks(task) {
 			'lintHTML',
 			'ssi',
 			'compileHTML',
+			'connect.reload',
 		],
 		fileType: 'html',
 	},
@@ -651,8 +653,7 @@ gulp.task('watch', () => {
 });
 
 gulp.task('serve', () => {
-	return gulp.src(options.dest)
-		.pipe(plugins.webserver(options.webserver));
+	return plugins.connect.server(options.connect);
 });
 
 gulp.task('generate:page', gulp.series(
@@ -912,16 +913,16 @@ body > nav:not([hidden]) {\n\tdisplay: flex;\n\tflex-flow: row wrap;\n\tjustify-
 	plugins.cli([
 		`git status`,
 	])
-))
+));
 
-gulp.task('compile:scss', gulp.series('compile:sass'))
-gulp.task('compile:css', gulp.series('compile:sass'))
+gulp.task('compile:scss', gulp.series('compile:sass'));
+gulp.task('compile:css', gulp.series('compile:sass'));
 
 gulp.task('default', gulp.series(
 	'lint',
 	'compile',
 	gulp.parallel(
 		'serve',
-		'watch'
+		'watch',
 	)
-))
+));
